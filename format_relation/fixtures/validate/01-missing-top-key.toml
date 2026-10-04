@@ -1,0 +1,6 @@
+relation_version = "0.1.0"
+
+[[edges]]
+from = "alpha-service:a.md"
+relation = "documents"
+to = "alpha-service:b.md"

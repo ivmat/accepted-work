@@ -1,0 +1,4 @@
+# JSONL fixtures are byte-exact test inputs (CRLF / bare-CR / invalid-UTF-8 cases): never normalize.
+format_obligation/fixtures/fold-cases/*.jsonl -text
+# impact-rule changed-path lists with deliberate CRLF / bare-CR line endings (byte-exact inputs).
+format_impact-rule/fixtures/validate/eval-changed-list-*.txt -text

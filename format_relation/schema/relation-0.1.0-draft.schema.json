@@ -1,0 +1,171 @@
+{
+  "$id": "https://formats.example/schema/relation-0.1.0-draft.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "relation/first-cut 0.1.0-draft",
+  "description": "Two object families: (1) the parsed RELATIONS FILE (TOML, caller-supplied via one or more `--relations FILE` arguments, read as an equivalent JSON structure by tomllib), and (2) one QUERY REPORT of an impact-query tool (`impacted`/`depends`; that tool is not included in this export, but its report shape is documented here). SHAPE vs SEMANTICS: this schema is shape/enum-normative for both; the entity-ref grammar, the relation-vs-propagates cross-field rule, self-loop/duplicate-edge/unresolved-@self detection, and the traversal/determinism rules are cross-field/semantic rules this draft schema does not encode — `tools/relation_vocab.py` checks those (see x-semantic-only-rules).",
+  "$defs": {
+    "entity_ref": {
+      "description": "One raw entity-ref string. Minimal shape check (non-empty string); the FULL grammar (repo-id shape, path-segment rules, the whole-repo '**' exception, `@self` forms, `resource:<name>@<host>`) is semantic-only, enforced by tools/relation_vocab.py::parse_entity_ref (see x-semantic-only-rules 'entity-ref-grammar').",
+      "type": "string",
+      "minLength": 1
+    },
+    "closed_relation": {
+      "type": "string",
+      "enum": ["depends-on", "pins", "traces-to", "records", "documents", "governs",
+               "template-of", "supersedes", "owns"]
+    },
+    "relation_token": {
+      "description": "Either a closed_relation, or an x-<token> matching ^x-[a-z0-9-]+$. This schema's `pattern` alternation checks the SHAPE only; tools/relation_vocab.py::is_known_relation / is_x_token is the executable norm.",
+      "type": "string",
+      "pattern": "^(depends-on|pins|traces-to|records|documents|governs|template-of|supersedes|owns|x-[a-z0-9-]+)$"
+    },
+    "propagates_value": {
+      "type": "string",
+      "enum": ["to-from", "from-to", "none"]
+    },
+    "edge": {
+      "type": "object",
+      "properties": {
+        "from": {"$ref": "#/$defs/entity_ref"},
+        "relation": {"$ref": "#/$defs/relation_token"},
+        "to": {"$ref": "#/$defs/entity_ref"},
+        "directed": {"type": "boolean"},
+        "propagates": {"$ref": "#/$defs/propagates_value"},
+        "note": {"type": "string"},
+        "source": {"$ref": "#/$defs/entity_ref"}
+      },
+      "required": ["from", "relation", "to"],
+      "additionalProperties": false,
+      "description": "SEMANTIC: `propagates` MUST NOT be present when `relation` is a closed_relation; when `relation` is an x-token, `propagates` is optional and defaults to 'none' at query time when absent. `from`/`to` MUST NOT resolve to the same entity (self-loop). Both cross-field rules are enforced by tools/relation_vocab.py, not by this schema."
+    },
+    "relations_file": {
+      "type": "object",
+      "properties": {
+        "relation_version": {"type": "string", "minLength": 1},
+        "repo": {"type": "string", "minLength": 1},
+        "edges": {"type": "array", "items": {"$ref": "#/$defs/edge"}}
+      },
+      "required": ["relation_version", "repo", "edges"],
+      "additionalProperties": false,
+      "description": "SEMANTIC: no two edges (within this file, or across every --relations file merged into one invocation) may have an identical (from, relation, to, directed, propagates) tuple once every entity-ref is resolved against one --self value — a cross-document rule this draft schema does not encode; tools/relation_vocab.py checks it. An edge using '@self'/'@self:<path>' is invalid unless the invocation supplies --self."
+    },
+    "chain_link": {
+      "type": "object",
+      "properties": {
+        "from": {"type": "string", "description": "canonical (resolved) entity-ref string"},
+        "relation": {"$ref": "#/$defs/relation_token"},
+        "to": {"type": "string", "description": "canonical (resolved) entity-ref string"}
+      },
+      "required": ["from", "relation", "to"],
+      "additionalProperties": false
+    },
+    "hit": {
+      "type": "object",
+      "properties": {
+        "entity": {"type": "string", "description": "canonical (resolved) entity-ref string of the impacted/depended-on entity"},
+        "depth": {"type": "integer", "minimum": 1},
+        "chain": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/chain_link"}}
+      },
+      "required": ["entity", "depth", "chain"],
+      "additionalProperties": false,
+      "description": "SEMANTIC: `depth` is the length of the SHORTEST chain that explains this hit; `chain.length == depth` always. `hits[]` as a whole is sorted by (depth, entity) ascending — enforced by tools/relation_vocab.py::traverse, not by this schema."
+    },
+    "error_item": {
+      "description": "One diagnostic emitted by a relation tool.",
+      "type": "object",
+      "properties": {
+        "code": {"type": "integer"},
+        "reason": {"type": "string"}
+      },
+      "required": ["code", "reason"],
+      "additionalProperties": false
+    },
+    "validate_report": {
+      "type": "object",
+      "properties": {
+        "status": {"type": "string", "enum": ["valid", "invalid", "unknown"]},
+        "exit_code": {"type": "integer"},
+        "errors": {"type": "array", "items": {"$ref": "#/$defs/error_item"}},
+        "files": {"type": "array", "items": {"type": "string"}},
+        "edge_count": {"type": "integer", "minimum": 0},
+        "relation_version": {"type": ["string", "null"]},
+        "repo": {"type": ["string", "null"]},
+        "self": {"type": ["string", "null"]},
+        "relation_vocab_version": {"type": "string"}
+      },
+      "required": ["status", "exit_code", "errors"],
+      "additionalProperties": false
+    },
+    "query_report": {
+      "type": "object",
+      "properties": {
+        "status": {"type": "string", "enum": ["ok", "unknown"]},
+        "exit_code": {"type": "integer"},
+        "errors": {"type": "array", "items": {"$ref": "#/$defs/error_item"}},
+        "hits": {"type": ["array", "null"], "items": {"$ref": "#/$defs/hit"}},
+        "self": {"type": "string"},
+        "changed": {"type": "array", "items": {"type": "string"}},
+        "untouched": {"type": ["array", "null"], "items": {"$ref": "#/$defs/hit"}},
+        "other_repo": {"type": ["array", "null"], "items": {"$ref": "#/$defs/hit"}},
+        "touched": {"type": ["array", "null"], "items": {"$ref": "#/$defs/hit"}},
+        "cycles_detected": {"type": ["boolean", "null"]},
+        "relation_vocab_version": {"type": "string"}
+      },
+      "required": ["status", "exit_code"],
+      "additionalProperties": false,
+      "description": "SEMANTIC: every non-ok report, including usage and internal/input failures, has status=='unknown'. For impacted/depends it REQUIRES hits==null AND cycles_detected==null; for cochange it REQUIRES untouched/other_repo/touched==null. status=='ok' carries real result arrays and a boolean cycles_detected. This draft schema does not encode those conditionals; relation_query.py enforces them."
+    }
+  },
+  "oneOf": [
+    {"$ref": "#/$defs/relations_file"},
+    {"$ref": "#/$defs/validate_report"},
+    {"$ref": "#/$defs/query_report"}
+  ],
+  "x-semantic-only-rules": [
+    {
+      "id": "entity-ref-grammar",
+      "description": "Every entity-ref (from/to/source, and CLI --changed/--entity values) must satisfy the full grammar: <repo> id shape, no leading '/', no '.'/'..' segment, no empty segment, no backslash/control chars, '*'/'**' disallowed except the whole-repo '<repo>:**' form, resource:<name>@<host> shape, and @self/@self:<path> forms.",
+      "enforced_by": "tools/relation_vocab.py::parse_entity_ref"
+    },
+    {
+      "id": "self-resolution",
+      "description": "An @self/@self:<path> ref only resolves given a --self <repo> value; otherwise it is E_UNRESOLVED_SELF.",
+      "enforced_by": "tools/relation_vocab.py::resolve_entity_ref"
+    },
+    {
+      "id": "containment-and-overlap",
+      "description": "contains(a,b): equal; a whole-repo and same repo as b; or a a subtree whose path is a whole-segment prefix of b's path. overlap(a,b) = contains(a,b) or contains(b,a). Used both for self-loop/duplicate detection (equality) and for impact-query matching (overlap).",
+      "enforced_by": "tools/relation_vocab.py::contains / overlap"
+    },
+    {
+      "id": "propagates-only-on-x-token",
+      "description": "propagates is invalid on a closed_relation (its direction is the fixed §3 table value); on an x-token it is optional, one of to-from/from-to/none, defaulting to none when absent.",
+      "enforced_by": "tools/relation_vocab.py::_validate_edge_shape / relation_direction"
+    },
+    {
+      "id": "self-loop-rejected",
+      "description": "An edge whose from/to resolve to the same canonical entity is invalid, regardless of relation.",
+      "enforced_by": "tools/relation_vocab.py::validate_merged"
+    },
+    {
+      "id": "duplicate-edge-rejected",
+      "description": "Two edges (within one file or across every --relations file in one invocation) with an identical resolved (from, relation, to, directed, propagates) tuple are invalid.",
+      "enforced_by": "tools/relation_vocab.py::validate_merged"
+    },
+    {
+      "id": "impact-query-overlap-match-and-shortest-chain",
+      "description": "A changed/starting entity matches a propagation edge's source endpoint via OVERLAP (not exact equality); hits[] holds the shortest cycle-safe chain per entity, ties broken by lexicographically smallest chain.",
+      "enforced_by": "tools/relation_vocab.py::traverse"
+    },
+    {
+      "id": "depends-is-impacted-on-the-reversed-graph",
+      "description": "`depends --entity X` runs the identical traversal as `impacted`, with every propagation edge's source/target swapped first — 'walk against propagation'.",
+      "enforced_by": "tools/relation_vocab.py::reverse_propagation_edges"
+    },
+    {
+      "id": "invalid-relations-gate",
+      "description": "If the merged --relations set does not validate, a query report is status=unknown with hits/cycles_detected both null (never an empty array/false) and exit_code = the lowest validation error class.",
+      "enforced_by": "not enforced in this export (the impact-query tool is not included)"
+    }
+  ]
+}

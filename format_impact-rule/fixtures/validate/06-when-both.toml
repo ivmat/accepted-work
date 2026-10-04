@@ -1,0 +1,20 @@
+impact_version = "0.1.0"
+repo = "alpha-service"
+
+[[rules]]
+id = "when-both"
+relation = "governs"
+importance = "high"
+urgency = "same-session"
+
+[rules.when]
+changed = ["src/*.py"]
+event = "new-dependency"
+
+[rules.decided_by]
+detect = "program"
+fix = "model"
+
+[[rules.must_update]]
+target = "test suite"
+action = "re-verify"

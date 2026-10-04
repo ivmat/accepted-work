@@ -1,0 +1,16 @@
+impact_version = "0.1.0"
+repo = "alpha-service"
+
+[[rules]]
+id = "empty-must-update"
+relation = "governs"
+importance = "high"
+urgency = "same-session"
+must_update = []
+
+[rules.when]
+changed = ["src/*.py"]
+
+[rules.decided_by]
+detect = "program"
+fix = "model"

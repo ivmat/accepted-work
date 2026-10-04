@@ -1,0 +1,8 @@
+relation_version = "0.1.0"
+repo = "alpha-service"
+
+[[edges]]
+from = "@self:src/router.py"
+relation = "traces-to"
+to = "@self:docs/routing.md"
+note = "query-side @self resolution fixture"

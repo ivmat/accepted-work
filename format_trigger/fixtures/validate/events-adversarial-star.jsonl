@@ -1,0 +1,2 @@
+{"event_id": "star-01-no-trailing-b", "event": "path-changed", "source": "acme", "at": "2026-09-24T00:00:00Z", "params": {"paths": ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"]}}
+{"event_id": "star-02-matches", "event": "path-changed", "source": "acme", "at": "2026-09-24T00:00:01Z", "params": {"paths": ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab"]}}

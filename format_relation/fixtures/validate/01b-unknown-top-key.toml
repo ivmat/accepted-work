@@ -1,0 +1,8 @@
+relation_version = "0.1.0"
+repo = "alpha-service"
+inherit = ["example-kit:full@v5"]
+
+[[edges]]
+from = "alpha-service:a.md"
+relation = "documents"
+to = "alpha-service:b.md"

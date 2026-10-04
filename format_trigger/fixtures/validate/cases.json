@@ -1,0 +1,648 @@
+{
+  "digest": "trigger_validate.py / trigger_fire.py --selftest driver. validate_cases: one case per exit class (10-16, 65), plus positive baselines (0) for a minimal file, an @self-resolving source, and the full all-event-kinds triggers file used by fire_cases. fire_cases: one positive+negative pair per event kind's firing rule (glob */**, containment repo/subtree/file, thresholds, cadence, first-src-commit exact-match, the 10 no-param kinds), once-vs-every-event across a single run and across --history, duplicate redelivery within a run and via --history, invalid-triggers-gives-unknown, a malformed/invalid event record gives unknown (never an empty fired list), and a real no-match success.",
+  "validate_cases": [
+    {
+      "name": "00-valid-minimal",
+      "triggers": "00-valid-minimal.toml",
+      "expected_exit": 0,
+      "expected_error_codes": []
+    },
+    {
+      "name": "00b-valid-self-ref",
+      "triggers": "00b-valid-self-ref.toml",
+      "expected_exit": 0,
+      "expected_error_codes": []
+    },
+    {
+      "name": "00c-valid-resource-dotted-host",
+      "triggers": "00c-valid-resource-dotted-host.toml",
+      "expected_exit": 0,
+      "expected_error_codes": []
+    },
+    {
+      "name": "14-valid-self-repo-named-resource",
+      "triggers": "14-valid-self-repo-named-resource.toml",
+      "expected_exit": 0,
+      "expected_error_codes": []
+    },
+    {
+      "name": "16-valid-glob-many-doublestar-segments",
+      "triggers": "16-valid-glob-many-doublestar-segments.toml",
+      "expected_exit": 0,
+      "expected_error_codes": []
+    },
+    {
+      "name": "21-glob-boundary-exact-limits",
+      "triggers": "21-glob-boundary-exact-limits.toml",
+      "expected_exit": 0,
+      "expected_error_codes": []
+    },
+    {
+      "name": "22-glob-wildcard-vs-literal-star-in-candidate",
+      "triggers": "22-glob-wildcard-vs-literal-star-in-candidate.toml",
+      "expected_exit": 0,
+      "expected_error_codes": []
+    },
+    {
+      "name": "23-bad-glob-over-length-limit",
+      "triggers": "23-bad-glob-over-length-limit.toml",
+      "expected_exit": 16,
+      "expected_error_codes": [16]
+    },
+    {
+      "name": "triggers-all-events-is-itself-valid",
+      "triggers": "triggers-all-events.toml",
+      "expected_exit": 0,
+      "expected_error_codes": []
+    },
+    {
+      "name": "01-bad-top-level-missing-repo",
+      "triggers": "01-bad-top-level-missing-repo.toml",
+      "expected_exit": 10,
+      "expected_error_codes": [10]
+    },
+    {
+      "name": "01b-bad-top-level-unknown-key",
+      "triggers": "01b-bad-top-level-unknown-key.toml",
+      "expected_exit": 10,
+      "expected_error_codes": [10]
+    },
+    {
+      "name": "01c-bad-top-level-repo-control-char",
+      "triggers": "01c-bad-top-level-repo-control-char.toml",
+      "expected_exit": 10,
+      "expected_error_codes": [10]
+    },
+    {
+      "name": "02-bad-trigger-id-grammar",
+      "triggers": "02-bad-trigger-id-grammar.toml",
+      "expected_exit": 11,
+      "expected_error_codes": [11]
+    },
+    {
+      "name": "02b-duplicate-trigger-id",
+      "triggers": "02b-duplicate-trigger-id.toml",
+      "expected_exit": 11,
+      "expected_error_codes": [11]
+    },
+    {
+      "name": "03-bad-entity-ref",
+      "triggers": "03-bad-entity-ref.toml",
+      "expected_exit": 12,
+      "expected_error_codes": [12]
+    },
+    {
+      "name": "03b-bad-entity-ref-dot-segment",
+      "triggers": "03b-bad-entity-ref-dot-segment.toml",
+      "expected_exit": 12,
+      "expected_error_codes": [12]
+    },
+    {
+      "name": "03c-bad-entity-ref-control-char",
+      "triggers": "03c-bad-entity-ref-control-char.toml",
+      "expected_exit": 12,
+      "expected_error_codes": [12]
+    },
+    {
+      "name": "04-bad-event",
+      "triggers": "04-bad-event.toml",
+      "expected_exit": 13,
+      "expected_error_codes": [13]
+    },
+    {
+      "name": "09-bad-trigger-id-trailing-newline",
+      "triggers": "09-bad-trigger-id-trailing-newline.toml",
+      "expected_exit": 11,
+      "expected_error_codes": [11]
+    },
+    {
+      "name": "10-bad-resource-double-at",
+      "triggers": "10-bad-resource-double-at.toml",
+      "expected_exit": 12,
+      "expected_error_codes": [12]
+    },
+    {
+      "name": "17-bad-resource-blank-name",
+      "triggers": "17-bad-resource-blank-name.toml",
+      "expected_exit": 12,
+      "expected_error_codes": [12]
+    },
+    {
+      "name": "18-bad-resource-blank-host",
+      "triggers": "18-bad-resource-blank-host.toml",
+      "expected_exit": 12,
+      "expected_error_codes": [12]
+    },
+    {
+      "name": "05-bad-params-missing",
+      "triggers": "05-bad-params-missing.toml",
+      "expected_exit": 14,
+      "expected_error_codes": [14]
+    },
+    {
+      "name": "05b-bad-params-unknown",
+      "triggers": "05b-bad-params-unknown.toml",
+      "expected_exit": 14,
+      "expected_error_codes": [14]
+    },
+    {
+      "name": "06-bad-retrigger",
+      "triggers": "06-bad-retrigger.toml",
+      "expected_exit": 15,
+      "expected_error_codes": [15]
+    },
+    {
+      "name": "07-bad-glob",
+      "triggers": "07-bad-glob.toml",
+      "expected_exit": 16,
+      "expected_error_codes": [16]
+    },
+    {
+      "name": "07b-bad-duration",
+      "triggers": "07b-bad-duration.toml",
+      "expected_exit": 16,
+      "expected_error_codes": [16]
+    },
+    {
+      "name": "11-bad-glob-trailing-newline",
+      "triggers": "11-bad-glob-trailing-newline.toml",
+      "expected_exit": 16,
+      "expected_error_codes": [16]
+    },
+    {
+      "name": "12-bad-duration-trailing-newline",
+      "triggers": "12-bad-duration-trailing-newline.toml",
+      "expected_exit": 16,
+      "expected_error_codes": [16]
+    },
+    {
+      "name": "13-bad-repo-type-toml-date-not-a-crash",
+      "triggers": "13-bad-repo-type-toml-date.toml",
+      "expected_exit": 10,
+      "expected_error_codes": [10]
+    },
+    {
+      "name": "08-malformed-toml-syntax",
+      "triggers": "08-malformed.toml",
+      "expected_exit": 65,
+      "expected_error_codes": [65]
+    },
+    {
+      "name": "09-unreadable-triggers-file",
+      "triggers": "does-not-exist.toml",
+      "expected_exit": 65,
+      "expected_error_codes": [65]
+    },
+    {
+      "name": "docs-site-triggers-is-itself-valid",
+      "triggers": "docs-site.triggers.toml",
+      "expected_exit": 0,
+      "expected_error_codes": []
+    },
+    {
+      "name": "11-non-finite-toml-rejected-h1",
+      "triggers": "11-non-finite-toml.toml",
+      "expected_exit": 65,
+      "expected_error_codes": [65]
+    },
+    {
+      "name": "12-huge-int-param-over-int64-max-h3",
+      "triggers": "12-huge-int-param-over-max.toml",
+      "expected_exit": 14,
+      "expected_error_codes": [14]
+    },
+    {
+      "name": "12b-int64-max-boundary-accepted-h3",
+      "triggers": "12b-int64-boundary-ok.toml",
+      "expected_exit": 0,
+      "expected_error_codes": []
+    },
+    {
+      "name": "13-toml-int-literal-5000-digits-h3",
+      "triggers": "13-toml-int-literal-too-many-digits.toml",
+      "expected_exit": 65,
+      "expected_error_codes": [65]
+    },
+    {
+      "name": "14-trigger-id-too-long-h3",
+      "triggers": "14-trigger-id-too-long.toml",
+      "expected_exit": 11,
+      "expected_error_codes": [11]
+    },
+    {
+      "name": "15-entity-ref-10000-chars-bounded-reason-h4",
+      "triggers": "15-entity-ref-too-long.toml",
+      "expected_exit": 12,
+      "expected_error_codes": [12]
+    },
+    {
+      "name": "16-retrigger-1000-astral-chars-bounded-reason-h4",
+      "triggers": "16-retrigger-unicode-flood.toml",
+      "expected_exit": 15,
+      "expected_error_codes": [15]
+    },
+    {
+      "name": "17-cadence-duration-too-many-digits-h3",
+      "triggers": "17-cadence-duration-too-many-digits.toml",
+      "expected_exit": 16,
+      "expected_error_codes": [16]
+    }
+  ],
+  "fire_cases": [
+    {
+      "name": "fire-01-glob-star-vs-doublestar",
+      "triggers": "triggers-all-events.toml",
+      "events": "events-glob.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [
+        ["path-doublestar", "glob-01-direct"],
+        ["path-star", "glob-01-direct"],
+        ["path-doublestar", "glob-02-nested"]
+      ],
+      "expected_suppressed": []
+    },
+    {
+      "name": "fire-02-containment-repo-subtree-file",
+      "triggers": "triggers-all-events.toml",
+      "events": "events-containment.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [
+        ["rule-added-file", "cont-01-exact-file"],
+        ["rule-added-repo", "cont-01-exact-file"],
+        ["rule-added-subtree", "cont-01-exact-file"],
+        ["rule-added-repo", "cont-02-other-file-in-subtree"],
+        ["rule-added-subtree", "cont-02-other-file-in-subtree"],
+        ["rule-added-repo", "cont-03-outside-subtree"]
+      ],
+      "expected_suppressed": []
+    },
+    {
+      "name": "fire-03-thresholds-commits-and-days",
+      "triggers": "triggers-all-events.toml",
+      "events": "events-thresholds.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [
+        ["on-commits-at-least-50", "thr-01-commits-60"],
+        ["on-days-since-setup-30", "thr-03-days-45"]
+      ],
+      "expected_suppressed": []
+    },
+    {
+      "name": "fire-04-cadence-exact-duration-match",
+      "triggers": "triggers-all-events.toml",
+      "events": "events-cadence.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [
+        ["on-cadence-7d", "cad-01-match"]
+      ],
+      "expected_suppressed": []
+    },
+    {
+      "name": "fire-05-first-src-commit-exact-src-glob-match",
+      "triggers": "triggers-all-events.toml",
+      "events": "events-first-src-commit.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [
+        ["on-first-src-commit", "fsc-01-match"]
+      ],
+      "expected_suppressed": []
+    },
+    {
+      "name": "fire-06-ten-no-param-event-kinds",
+      "triggers": "triggers-all-events.toml",
+      "events": "events-simple-kinds.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [
+        ["on-instantiated", "simple-instantiated"],
+        ["on-first-test", "simple-first-test"],
+        ["on-first-spec", "simple-first-spec"],
+        ["on-first-dependency", "simple-first-dependency"],
+        ["on-new-dependency", "simple-new-dependency"],
+        ["on-first-release", "simple-first-release"],
+        ["on-public", "simple-public"],
+        ["on-template-tag-moved", "simple-template-tag-moved"],
+        ["on-session-closed", "simple-session-closed"],
+        ["on-session-started", "simple-session-started"]
+      ],
+      "expected_suppressed": []
+    },
+    {
+      "name": "fire-07-once-vs-every-event-within-one-run",
+      "triggers": "triggers-all-events.toml",
+      "events": "events-once-vs-every.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [
+        ["on-instantiated", "once-01"],
+        ["on-session-closed", "every-01"],
+        ["on-session-closed", "every-02"]
+      ],
+      "expected_suppressed": [
+        ["on-instantiated", "once-02", "suppressed-once"]
+      ]
+    },
+    {
+      "name": "fire-08-duplicate-redelivery-within-one-run",
+      "triggers": "triggers-all-events.toml",
+      "events": "events-duplicate.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [
+        ["on-session-closed", "dup-01"]
+      ],
+      "expected_suppressed": [
+        ["on-session-closed", "dup-01", "duplicate"]
+      ]
+    },
+    {
+      "name": "fire-09-once-suppressed-via-prior-history",
+      "triggers": "triggers-all-events.toml",
+      "events": "events-once-after-history.jsonl",
+      "history": "history-prior-instantiated.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [],
+      "expected_suppressed": [
+        ["on-instantiated", "once-03-after-hist", "suppressed-once"]
+      ]
+    },
+    {
+      "name": "fire-10-duplicate-redelivery-via-history",
+      "triggers": "triggers-all-events.toml",
+      "events": "events-duplicate-via-history.jsonl",
+      "history": "history-duplicate-source.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [],
+      "expected_suppressed": [
+        ["on-instantiated", "hist-dup-01", "duplicate"]
+      ]
+    },
+    {
+      "name": "fire-11-invalid-triggers-gives-unknown-not-empty",
+      "triggers": "04-bad-event.toml",
+      "events": "events-empty.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 13,
+      "expect_fired_null": true
+    },
+    {
+      "name": "fire-17-newline-trigger-id-rejected-never-fires-or-suppresses",
+      "triggers": "09-bad-trigger-id-trailing-newline.toml",
+      "events": "events-empty.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 11,
+      "expect_fired_null": true
+    },
+    {
+      "name": "fire-18-self-ref-at-host-is-a-file-not-a-resource",
+      "triggers": "15-self-at-host-file-not-resource.toml",
+      "events": "events-self-at-host.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [
+        ["self-at-host-watch", "file-01-match"]
+      ],
+      "expected_suppressed": []
+    },
+    {
+      "name": "fire-19-glob-many-doublestar-segments-no-crash",
+      "triggers": "16-valid-glob-many-doublestar-segments.toml",
+      "events": "events-deep-glob.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [
+        ["deep-glob-watch", "deep-01-match"]
+      ],
+      "expected_suppressed": []
+    },
+    {
+      "name": "fire-20-glob-star-backtrack-adversarial-bounded-time",
+      "triggers": "19-glob-star-backtrack-adversarial.toml",
+      "events": "events-adversarial-star.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [
+        ["adversarial-star-backtrack", "star-02-matches"]
+      ],
+      "expected_suppressed": [],
+      "max_seconds": 1.0
+    },
+    {
+      "name": "fire-21-glob-never-prefix-deep-path-bounded-time",
+      "triggers": "20-glob-never-prefix-deep-path.toml",
+      "events": "events-never-prefix-deep-path.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [],
+      "expected_suppressed": [],
+      "max_seconds": 1.0
+    },
+    {
+      "name": "fire-22-glob-boundary-exact-limits-bounded-time",
+      "triggers": "21-glob-boundary-exact-limits.toml",
+      "events": "events-boundary-exact-path.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [],
+      "expected_suppressed": [],
+      "max_seconds": 1.0
+    },
+    {
+      "name": "fire-23-glob-wildcard-matches-candidate-literal-star",
+      "triggers": "22-glob-wildcard-vs-literal-star-in-candidate.toml",
+      "events": "events-wildcard-vs-literal-star.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [
+        ["wildcard-matches-candidate-with-literal-star", "wc-01-star-in-candidate"],
+        ["literal-pattern-exact-match-only", "wc-02-literal-exact-match"],
+        ["wildcard-matches-candidate-with-literal-star", "wc-02-literal-exact-match"],
+        ["wildcard-matches-candidate-with-literal-star", "wc-03-literal-pattern-vs-differing-star-candidate"]
+      ],
+      "expected_suppressed": []
+    },
+    {
+      "name": "fire-12-malformed-events-json-line",
+      "triggers": "00-valid-minimal.toml",
+      "events": "events-malformed.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 65,
+      "expect_fired_null": true
+    },
+    {
+      "name": "fire-13-bad-event-record-unknown-event-kind",
+      "triggers": "00-valid-minimal.toml",
+      "events": "events-bad-record.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 65,
+      "expect_fired_null": true
+    },
+    {
+      "name": "fire-14-no-match-is-a-normal-success",
+      "triggers": "00-valid-minimal.toml",
+      "events": "events-empty.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [],
+      "expected_suppressed": []
+    },
+    {
+      "name": "fire-15-unicode-line-separator-inside-event-id",
+      "triggers": "triggers-all-events.toml",
+      "events": "events-unicode-line-separator.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [
+        ["on-session-closed", "evt sep"]
+      ],
+      "expected_suppressed": []
+    },
+    {
+      "name": "fire-16-timestamp-overflow-on-utc-conversion-is-unknown",
+      "triggers": "triggers-all-events.toml",
+      "events": "events-timestamp-overflow.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 65,
+      "expect_fired_null": true
+    },
+    {
+      "name": "fire-24-lone-surrogate-in-event-id-is-unknown-not-a-crash",
+      "triggers": "00-valid-minimal.toml",
+      "events": "events-lone-surrogate.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 65,
+      "expect_fired_null": true
+    },
+    {
+      "name": "fire-25-lone-surrogate-in-history-trigger-id-is-unknown-not-a-crash",
+      "triggers": "00-valid-minimal.toml",
+      "events": "events-empty.jsonl",
+      "history": "history-lone-surrogate.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 65,
+      "expect_fired_null": true
+    },
+    {
+      "name": "fire-26-duplicate-key-surrogate-overwrite-in-event-is-rejected",
+      "triggers": "00-valid-minimal.toml",
+      "events": "events-duplicate-key-surrogate.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 65,
+      "expect_fired_null": true
+    },
+    {
+      "name": "fire-27-duplicate-key-surrogate-overwrite-in-history-is-rejected",
+      "triggers": "00-valid-minimal.toml",
+      "events": "events-empty.jsonl",
+      "history": "history-duplicate-key-surrogate.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 65,
+      "expect_fired_null": true
+    },
+    {
+      "name": "fire-28-nan-constant-in-history-is-rejected",
+      "triggers": "00-valid-minimal.toml",
+      "events": "events-empty.jsonl",
+      "history": "history-nan-constant.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 65,
+      "expect_fired_null": true
+    },
+    {
+      "name": "fire-29-history-nesting-depth-65-rejected",
+      "triggers": "00-valid-minimal.toml",
+      "events": "events-empty.jsonl",
+      "history": "history-deep-nesting-65.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 65,
+      "expect_fired_null": true
+    },
+    {
+      "name": "fire-30-history-nesting-depth-100000-rejected-bounded-time",
+      "triggers": "00-valid-minimal.toml",
+      "events": "events-empty.jsonl",
+      "history": "history-deep-nesting-100000.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 65,
+      "expect_fired_null": true,
+      "max_seconds": 1.0
+    },
+    {
+      "name": "fire-100-bad-event-records-aggregated-h4",
+      "triggers": "00-valid-minimal.toml",
+      "events": "events-100-bad.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 65,
+      "expect_fired_null": true
+    },
+    {
+      "name": "fire-non-finite-nested-event-param-h1",
+      "triggers": "00-valid-minimal.toml",
+      "events": "events-non-finite-nested.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 65,
+      "expect_fired_null": true
+    },
+    {
+      "name": "docs-site-change-1-content-only",
+      "triggers": "docs-site.triggers.toml",
+      "events": "docs-site-change-1.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [
+        ["content-changed", "docs-site-c1"]
+      ],
+      "expected_suppressed": []
+    },
+    {
+      "name": "docs-site-change-2-root-files-no-match",
+      "triggers": "docs-site.triggers.toml",
+      "events": "docs-site-change-2.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [],
+      "expected_suppressed": []
+    },
+    {
+      "name": "docs-site-change-3-content-and-theme",
+      "triggers": "docs-site.triggers.toml",
+      "events": "docs-site-change-3.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [
+        ["content-changed", "docs-site-c3"],
+        ["theme-changed", "docs-site-c3"]
+      ],
+      "expected_suppressed": []
+    },
+    {
+      "name": "docs-site-change-4-build-script-only",
+      "triggers": "docs-site.triggers.toml",
+      "events": "docs-site-change-4.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [
+        ["build-script-changed", "docs-site-c4"]
+      ],
+      "expected_suppressed": []
+    },
+    {
+      "name": "docs-site-change-5-theme-only",
+      "triggers": "docs-site.triggers.toml",
+      "events": "docs-site-change-5.jsonl",
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [
+        ["theme-changed", "docs-site-c5"]
+      ],
+      "expected_suppressed": []
+    }
+  ]
+}

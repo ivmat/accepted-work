@@ -1,0 +1,37 @@
+# Invented example trigger file for a fictional documentation site (not a record of a real
+# repository).
+trigger_version = "0.1.0"
+repo = "docs-site"
+
+[[triggers]]
+id = "content-changed"
+retrigger = "every-event"
+
+[triggers.when]
+source = "docs-site"
+event = "path-changed"
+
+[triggers.when.params]
+paths = ["content/**/*.md"]
+
+[[triggers]]
+id = "theme-changed"
+retrigger = "every-event"
+
+[triggers.when]
+source = "docs-site"
+event = "path-changed"
+
+[triggers.when.params]
+paths = ["theme/**"]
+
+[[triggers]]
+id = "build-script-changed"
+retrigger = "every-event"
+
+[triggers.when]
+source = "docs-site"
+event = "path-changed"
+
+[triggers.when.params]
+paths = ["build.py"]

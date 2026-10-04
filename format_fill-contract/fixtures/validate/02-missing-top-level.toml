@@ -1,0 +1,8 @@
+fill_version = ""
+
+[[contracts]]
+file = "X.md"
+importance = "normal"
+urgency_after_due = "7d"
+filled_when = { any = [ { predicate = "no-marker" } ] }
+due_when = { any = [ { predicate = "instantiated" } ] }

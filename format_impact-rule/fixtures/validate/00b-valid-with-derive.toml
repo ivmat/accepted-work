@@ -1,0 +1,22 @@
+# Invented, independently-designed rules file (not a record of any real repository).
+impact_version = "0.1.0"
+repo = "alpha-service"
+derive = ["pinned-sha", "declared-coverage", "erlang-xref",
+          { git-cochange = { min_support = 5, min_confidence = 0.6, advisory = true } }]
+
+[[rules]]
+id = "new-dependency-note"
+relation = "records"
+importance = "normal"
+urgency = "within:14d"
+
+[rules.when]
+event = "new-dependency"
+
+[rules.decided_by]
+detect = "program"
+fix = "model"
+
+[[rules.must_update]]
+target = "DEPENDENCIES.md"
+action = "update"

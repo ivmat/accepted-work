@@ -1,0 +1,3 @@
+{"event_id": "fsc-01-match", "event": "first-src-commit", "source": "acme", "at": "2026-09-24T00:00:00Z", "params": {"src_glob": "src/**"}}
+{"event_id": "fsc-02-mismatch", "event": "first-src-commit", "source": "acme", "at": "2026-09-24T00:01:00Z", "params": {"src_glob": "lib/**"}}
+{"event_id": "fsc-03-no-glob", "event": "first-src-commit", "source": "acme", "at": "2026-09-24T00:02:00Z", "params": {}}

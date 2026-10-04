@@ -1,0 +1,12 @@
+fill_version = "0.1.0"
+template = "t"
+extra_top = true
+
+[[contracts]]
+file = "x"
+importance = "normal"
+urgency_after_due = "1000000000d"
+template_rows = -1
+extra_entry = true
+filled_when = { any = [ { predicate = "rows-beyond-template", min = 0 } ], extra_combinator = true }
+due_when = { predicate = "commits-at-least", n = 0 }

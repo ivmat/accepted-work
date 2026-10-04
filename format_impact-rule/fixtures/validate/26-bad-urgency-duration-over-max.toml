@@ -1,0 +1,19 @@
+impact_version = "0.1.0"
+repo = "alpha-service"
+
+[[rules]]
+id = "urgency-duration-over-max"
+relation = "governs"
+importance = "high"
+urgency = "within:1000000000d"
+
+[rules.when]
+changed = ["src/*.py"]
+
+[rules.decided_by]
+detect = "program"
+fix = "model"
+
+[[rules.must_update]]
+target = "test suite"
+action = "re-verify"

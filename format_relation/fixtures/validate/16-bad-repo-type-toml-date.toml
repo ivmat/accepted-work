@@ -1,0 +1,7 @@
+relation_version = "0.1.0"
+repo = 2026-09-30T00:00:00Z
+
+[[edges]]
+from = "alpha-service:a.md"
+relation = "documents"
+to = "alpha-service:b.md"

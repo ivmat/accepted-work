@@ -1,0 +1,8 @@
+relation_version = "0.1.0"
+repo = "alpha-service"
+
+[[edges]]
+from = "alpha-service"
+relation = "owns"
+to = "alpha-service:**"
+note = "different spellings ('<repo>' vs '<repo>:**') of the SAME whole-repo entity -- still a self-loop"

@@ -1,0 +1,8 @@
+relation_version = "0.1.0"
+repo = "alpha-service"
+
+[[edges]]
+from = "alpha-service:a.md"
+relation = "depends-on"
+to = "alpha-service:b.md"
+propagates = "to-from"

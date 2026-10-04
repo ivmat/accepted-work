@@ -1,0 +1,3 @@
+{"event_id": "wc-01-star-in-candidate", "event": "path-changed", "source": "acme", "at": "2026-09-24T00:00:00Z", "params": {"paths": ["spec/*.md"]}}
+{"event_id": "wc-02-literal-exact-match", "event": "path-changed", "source": "acme", "at": "2026-09-24T00:00:01Z", "params": {"paths": ["spec/report"]}}
+{"event_id": "wc-03-literal-pattern-vs-differing-star-candidate", "event": "path-changed", "source": "acme", "at": "2026-09-24T00:00:02Z", "params": {"paths": ["spec/rep*rt"]}}

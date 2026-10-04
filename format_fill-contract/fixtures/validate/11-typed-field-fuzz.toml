@@ -1,0 +1,9 @@
+fill_version = "0.1.0"
+template = "t"
+
+[[contracts]]
+file = 2026-09-24
+importance = ["critical"]
+urgency_after_due = 99999999999999999999999999999999
+filled_when = true
+due_when = { any = [ { predicate = "instantiated" } ] }

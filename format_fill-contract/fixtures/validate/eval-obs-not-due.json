@@ -1,0 +1,22 @@
+{
+  "repo": "n/a",
+  "contract": "eval-due-state.toml",
+  "now": "2026-09-01",
+  "observer_version": "fixture",
+  "maturity": {
+    "instantiated_date": "2026-08-01",
+    "first_src_commit_date": null,
+    "first_test_date": null,
+    "first_spec_date": null,
+    "first_dependency_date": null,
+    "first_release_date": null,
+    "commits_count": 1,
+    "commit_dates": ["2026-08-01"],
+    "days_since_setup": 31
+  },
+  "files": [
+    { "file": "PROGRESS.md", "exists": true, "markers_present": ["x"], "contains_text": {},
+      "table_rows_actual": 0, "line_count": 5, "stamps": {}, "digest_present": false,
+      "declared_rules_count": 0, "last_modified_date": "2026-08-01" }
+  ]
+}

@@ -1,0 +1,4 @@
+{"event_id": "thr-01-commits-60", "event": "commits-at-least", "source": "acme", "at": "2026-09-24T00:00:00Z", "params": {"n": 60}}
+{"event_id": "thr-02-commits-10", "event": "commits-at-least", "source": "acme", "at": "2026-09-24T00:01:00Z", "params": {"n": 10}}
+{"event_id": "thr-03-days-45", "event": "days-since-setup", "source": "acme", "at": "2026-09-24T00:02:00Z", "params": {"n": 45}}
+{"event_id": "thr-04-days-5", "event": "days-since-setup", "source": "acme", "at": "2026-09-24T00:03:00Z", "params": {"n": 5}}

@@ -1,0 +1,4 @@
+# changed-paths fixture for --changed-file
+schema/pricing.yaml
+src/foo.py
+billing-schemas:pricing/tools/pricing_sync.py

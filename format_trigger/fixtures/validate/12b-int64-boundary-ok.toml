@@ -1,0 +1,13 @@
+trigger_version = "0.1.0"
+repo = "acme"
+
+[[triggers]]
+id = "commits-trigger"
+retrigger = "once"
+
+[triggers.when]
+source = "acme:**"
+event = "commits-at-least"
+
+[triggers.when.params]
+n = 9223372036854775807

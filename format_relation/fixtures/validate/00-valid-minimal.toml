@@ -1,0 +1,13 @@
+relation_version = "0.1.0"
+repo = "alpha-service"
+
+[[edges]]
+from = "alpha-service:docs/setup.md"
+relation = "documents"
+to = "alpha-service:scripts/install.sh"
+note = "baseline valid edge: a known relation, no propagates, no directed override"
+
+[[edges]]
+from = "alpha-service:CHANGELOG.md"
+relation = "records"
+to = "alpha-service:src/"

@@ -1,0 +1,224 @@
+{
+  "digest": "fill_validate.py --selftest driver. One case per distinct exit-code class plus extra negative shapes for richness. Every eval-*.toml fixture is ALSO a valid contract by this validator's own rules \u2014 cross-checked here (exit 0) before fill_evaluate.py's own selftest consumes the same files with observations.",
+  "cases": [
+    {
+      "name": "01-valid",
+      "contract": "01-valid.toml",
+      "expected_exit": 0,
+      "expected_error_codes": []
+    },
+    {
+      "name": "01b-valid-with-not-combinator",
+      "contract": "01b-valid-with-not-combinator.toml",
+      "expected_exit": 0,
+      "expected_error_codes": []
+    },
+    {
+      "name": "eval-due-state-is-valid",
+      "contract": "eval-due-state.toml",
+      "expected_exit": 0,
+      "expected_error_codes": []
+    },
+    {
+      "name": "eval-filled-marker-is-valid",
+      "contract": "eval-filled-marker.toml",
+      "expected_exit": 0,
+      "expected_error_codes": []
+    },
+    {
+      "name": "eval-filled-stamp-is-valid",
+      "contract": "eval-filled-stamp.toml",
+      "expected_exit": 0,
+      "expected_error_codes": []
+    },
+    {
+      "name": "eval-filled-rows-is-valid",
+      "contract": "eval-filled-rows.toml",
+      "expected_exit": 0,
+      "expected_error_codes": []
+    },
+    {
+      "name": "eval-unknown-command-is-valid",
+      "contract": "eval-unknown-command.toml",
+      "expected_exit": 0,
+      "expected_error_codes": []
+    },
+    {
+      "name": "eval-unknown-new-dependency-is-valid",
+      "contract": "eval-unknown-new-dependency.toml",
+      "expected_exit": 0,
+      "expected_error_codes": []
+    },
+    {
+      "name": "eval-retrigger-note-is-valid",
+      "contract": "eval-retrigger-note.toml",
+      "expected_exit": 0,
+      "expected_error_codes": []
+    },
+    {
+      "name": "eval-no-observation-is-valid",
+      "contract": "eval-no-observation.toml",
+      "expected_exit": 0,
+      "expected_error_codes": []
+    },
+    {
+      "name": "02-missing-top-level-field",
+      "contract": "02-missing-top-level.toml",
+      "expected_exit": 10,
+      "expected_error_codes": [
+        10,
+        10
+      ]
+    },
+    {
+      "name": "03-contracts-empty",
+      "contract": "03-contracts-empty.toml",
+      "expected_exit": 11,
+      "expected_error_codes": [
+        11
+      ]
+    },
+    {
+      "name": "04-entry-missing-file",
+      "contract": "04-entry-missing-file.toml",
+      "expected_exit": 12,
+      "expected_error_codes": [
+        12
+      ]
+    },
+    {
+      "name": "04b-bad-importance",
+      "contract": "04b-bad-importance.toml",
+      "expected_exit": 12,
+      "expected_error_codes": [
+        12
+      ]
+    },
+    {
+      "name": "10-duplicate-file",
+      "contract": "10-duplicate-file.toml",
+      "expected_exit": 12,
+      "expected_error_codes": [
+        12
+      ]
+    },
+    {
+      "name": "15-leading-colon-path",
+      "contract": "15-leading-colon-path.toml",
+      "expected_exit": 12,
+      "expected_error_codes": [
+        12
+      ]
+    },
+    {
+      "name": "05-unknown-predicate",
+      "contract": "05-unknown-predicate.toml",
+      "expected_exit": 13,
+      "expected_error_codes": [
+        13
+      ]
+    },
+    {
+      "name": "05b-missing-param",
+      "contract": "05b-missing-param.toml",
+      "expected_exit": 13,
+      "expected_error_codes": [
+        13
+      ]
+    },
+    {
+      "name": "05c-leaf-with-combinator-key",
+      "contract": "05c-leaf-with-combinator-key.toml",
+      "expected_exit": 13,
+      "expected_error_codes": [
+        13
+      ]
+    },
+    {
+      "name": "06-not-in-due-when",
+      "contract": "06-not-in-due-when.toml",
+      "expected_exit": 14,
+      "expected_error_codes": [
+        14
+      ]
+    },
+    {
+      "name": "07-missing-template-rows",
+      "contract": "07-missing-template-rows.toml",
+      "expected_exit": 15,
+      "expected_error_codes": [
+        15
+      ]
+    },
+    {
+      "name": "08-bad-retrigger",
+      "contract": "08-bad-retrigger.toml",
+      "expected_exit": 16,
+      "expected_error_codes": [
+        16
+      ]
+    },
+    {
+      "name": "08b-bad-adequacy",
+      "contract": "08b-bad-adequacy.toml",
+      "expected_exit": 16,
+      "expected_error_codes": [
+        16
+      ]
+    },
+    {
+      "name": "09-malformed-toml",
+      "contract": "09-malformed.toml",
+      "expected_exit": 65
+    },
+    {
+      "name": "11-typed-field-fuzz",
+      "contract": "11-typed-field-fuzz.toml",
+      "expected_exit": 12,
+      "expected_error_codes": [
+        12,
+        12,
+        12,
+        13
+      ]
+    },
+    {
+      "name": "12-closed-keys-and-bounds-fuzz",
+      "contract": "12-closed-keys-and-bounds-fuzz.toml",
+      "expected_exit": 10,
+      "expected_error_codes": [
+        10,
+        12,
+        12,
+        12,
+        13,
+        13,
+        13
+      ]
+    },
+    {
+      "name": "13-duration-trailing-newline",
+      "contract": "13-duration-trailing-newline.toml",
+      "expected_exit": 12,
+      "expected_error_codes": [
+        12
+      ]
+    },
+    {
+      "name": "14-duration-hour-unit-rejected",
+      "contract": "14-duration-hour-unit-rejected.toml",
+      "expected_exit": 12,
+      "expected_error_codes": [
+        12
+      ]
+    },
+    {
+      "name": "16-huge-int-in-container-field",
+      "contract": "16-huge-int-in-container-field.toml",
+      "expected_exit": 12,
+      "expected_error_codes": [
+        12
+      ]
+    }
+  ]
+}

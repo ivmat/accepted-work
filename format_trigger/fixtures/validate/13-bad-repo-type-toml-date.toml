@@ -1,0 +1,10 @@
+trigger_version = "0.1.0"
+repo = 2026-09-30T00:00:00Z
+
+[[triggers]]
+id = "t1"
+retrigger = "every-event"
+
+[triggers.when]
+source = "acme"
+event = "instantiated"

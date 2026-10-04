@@ -1,0 +1,17 @@
+relation_version = "0.1.0"
+repo = "chain"
+
+[[edges]]
+from = "chain:a"
+relation = "depends-on"
+to = "chain:b"
+
+[[edges]]
+from = "chain:b"
+relation = "depends-on"
+to = "chain:c"
+
+[[edges]]
+from = "chain:c"
+relation = "depends-on"
+to = "chain:d"

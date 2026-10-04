@@ -1,0 +1,19 @@
+impact_version = "0.1.0"
+repo = "alpha-service"
+
+[[rules]]
+id = "bad-cross-repo-prefix"
+relation = "pins"
+importance = "high"
+urgency = "same-session"
+
+[rules.when]
+changed = ["repo!bad:x/*"]
+
+[rules.decided_by]
+detect = "program"
+fix = "model"
+
+[[rules.must_update]]
+target = "somewhere"
+action = "attend"

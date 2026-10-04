@@ -1,0 +1,4 @@
+{"event_id": "once-01", "event": "instantiated", "source": "acme", "at": "2026-09-24T00:00:00Z", "params": {}}
+{"event_id": "once-02", "event": "instantiated", "source": "acme", "at": "2026-09-24T00:01:00Z", "params": {}}
+{"event_id": "every-01", "event": "session-closed", "source": "acme", "at": "2026-09-24T00:02:00Z", "params": {}}
+{"event_id": "every-02", "event": "session-closed", "source": "acme", "at": "2026-09-24T00:03:00Z", "params": {}}

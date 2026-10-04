@@ -1,0 +1,8 @@
+relation_version = "0.1.0"
+repo = "alpha-service"
+
+[[edges]]
+from = "@self:src/billing_client.py"
+relation = "pins"
+to = "billing-lib:src/formats.py"
+note = "one @self ref + one fully-qualified cross-repo ref on the same edge -- valid once --self alpha-service is given"

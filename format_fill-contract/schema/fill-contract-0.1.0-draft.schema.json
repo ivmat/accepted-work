@@ -1,0 +1,426 @@
+{
+  "$id": "https://formats.example/schema/fill-contract-0.1.0-draft.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "fill-contract/first-cut 0.1.0-draft",
+  "description": "The fill-contract object family: the TOML CONTRACT that names, per tracked file, what 'filled' means and when it becomes due (validated by this schema's root, and by $defs.contract directly), the OBSERVATIONS JSON fill_observe.py emits ($defs.observations), and the REPORT fill_evaluate.py emits ($defs.report), including its optional report-only obligation-duty projection ($defs.obligation_projection_item). The root validates a CONTRACT document; validate OBSERVATIONS or REPORT documents against their named definitions. Predicate leaves are closed typed registries, and separate filled/due expression grammars structurally exclude mixed leaf/combinator objects and `not` in due_when. Cross-field and evaluation rules that JSON Schema does not express remain named in x-semantic-only-rules and enforced by the tools. TOML and JSON agree on these object structures after decoding.",
+  "allOf": [{"$ref": "#/$defs/contract"}],
+  "$defs": {
+    "importance": {
+      "type": "string",
+      "enum": ["critical", "high", "normal", "low"]
+    },
+    "duration": {
+      "type": "string",
+      "pattern": "^[0-9]+d$",
+      "description": "<int>d (days) only — every observed fact this format reasons about is day-granular, so an hour unit would be false precision. This draft does not encode the numeric bound (1..36500 days, `fill_common.DURATION_MIN_DAYS`/`DURATION_MAX_DAYS`) or the exact-string (no leading/trailing whitespace) rule — `fill_common.py`'s `parse_duration` checks both."
+    },
+    "filled_predicate_name": {
+      "type": "string",
+      "enum": ["no-marker", "not-contains", "rows-beyond-template", "min-lines", "stamp", "fresh",
+               "digest-present", "declared-rules", "command"]
+    },
+    "due_predicate_name": {
+      "type": "string",
+      "enum": ["instantiated", "first-src-commit", "first-test", "first-spec", "first-dependency",
+               "first-release", "commits-at-least", "days-since-setup", "public", "session-closed",
+               "new-dependency"]
+    },
+    "filled_predicate_leaf": {
+      "oneOf": [
+        {"type": "object", "properties": {"predicate": {"const": "no-marker"}}, "required": ["predicate"], "additionalProperties": false},
+        {"type": "object", "properties": {"predicate": {"const": "not-contains"}, "text": {"type": "string"}}, "required": ["predicate", "text"], "additionalProperties": false},
+        {"type": "object", "properties": {"predicate": {"const": "rows-beyond-template"}, "min": {"type": "integer", "minimum": 1, "maximum": 100000}}, "required": ["predicate", "min"], "additionalProperties": false},
+        {"type": "object", "properties": {"predicate": {"const": "min-lines"}, "n": {"type": "integer", "minimum": 1, "maximum": 100000}}, "required": ["predicate", "n"], "additionalProperties": false},
+        {"type": "object", "properties": {"predicate": {"const": "stamp"}, "key": {"type": "string"}}, "required": ["predicate", "key"], "additionalProperties": false},
+        {"type": "object", "properties": {"predicate": {"const": "fresh"}, "max_age": {"$ref": "#/$defs/duration"}, "key": {"type": "string"}}, "required": ["predicate", "max_age"], "additionalProperties": false},
+        {"type": "object", "properties": {"predicate": {"const": "digest-present"}}, "required": ["predicate"], "additionalProperties": false},
+        {"type": "object", "properties": {"predicate": {"const": "declared-rules"}, "min": {"type": "integer", "minimum": 1, "maximum": 100000}}, "required": ["predicate", "min"], "additionalProperties": false},
+        {"type": "object", "properties": {"predicate": {"const": "command"}, "shell": {"type": "string"}}, "required": ["predicate", "shell"], "additionalProperties": false}
+      ],
+      "description": "Closed typed registry for filled_when leaves. Each branch fixes one predicate name and exactly its required/optional parameters."
+    },
+    "due_predicate_leaf": {
+      "oneOf": [
+        {"type": "object", "properties": {"predicate": {"const": "instantiated"}}, "required": ["predicate"], "additionalProperties": false},
+        {"type": "object", "properties": {"predicate": {"const": "first-src-commit"}}, "required": ["predicate"], "additionalProperties": false},
+        {"type": "object", "properties": {"predicate": {"const": "first-test"}}, "required": ["predicate"], "additionalProperties": false},
+        {"type": "object", "properties": {"predicate": {"const": "first-spec"}}, "required": ["predicate"], "additionalProperties": false},
+        {"type": "object", "properties": {"predicate": {"const": "first-dependency"}}, "required": ["predicate"], "additionalProperties": false},
+        {"type": "object", "properties": {"predicate": {"const": "first-release"}}, "required": ["predicate"], "additionalProperties": false},
+        {"type": "object", "properties": {"predicate": {"const": "commits-at-least"}, "n": {"type": "integer", "minimum": 1, "maximum": 100000}}, "required": ["predicate", "n"], "additionalProperties": false},
+        {"type": "object", "properties": {"predicate": {"const": "days-since-setup"}, "n": {"type": "integer", "minimum": 1, "maximum": 100000}}, "required": ["predicate", "n"], "additionalProperties": false},
+        {"type": "object", "properties": {"predicate": {"const": "public"}}, "required": ["predicate"], "additionalProperties": false},
+        {"type": "object", "properties": {"predicate": {"const": "session-closed"}}, "required": ["predicate"], "additionalProperties": false},
+        {"type": "object", "properties": {"predicate": {"const": "new-dependency"}}, "required": ["predicate"], "additionalProperties": false}
+      ],
+      "description": "Closed typed registry for due_when leaves. Each branch fixes one predicate name and exactly its required parameters."
+    },
+    "filled_predicate_expr": {
+      "description": "A filled_when predicate-expression tree: exactly one closed filled leaf or one recursive combinator.",
+      "oneOf": [
+        { "$ref": "#/$defs/filled_predicate_leaf" },
+        {
+          "type": "object",
+          "properties": {
+            "any": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/filled_predicate_expr" } }
+          },
+          "required": ["any"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "all": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/filled_predicate_expr" } }
+          },
+          "required": ["all"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "not": { "$ref": "#/$defs/filled_predicate_expr" }
+          },
+          "required": ["not"],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "due_predicate_expr": {
+      "description": "A due_when predicate-expression tree: exactly one closed due leaf or one recursive any/all combinator. `not` is absent because it is forbidden in due_when.",
+      "oneOf": [
+        { "$ref": "#/$defs/due_predicate_leaf" },
+        {"type": "object", "properties": {"any": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/due_predicate_expr"}}}, "required": ["any"], "additionalProperties": false},
+        {"type": "object", "properties": {"all": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/due_predicate_expr"}}}, "required": ["all"], "additionalProperties": false}
+      ]
+    },
+    "retrigger": {
+      "description": "Carried, NOT evaluated in this first cut. Must declare 'on' (event list) or 'every' (duration), or both.",
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "on": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/due_predicate_name" } },
+            "every": { "$ref": "#/$defs/duration" }
+          },
+          "required": ["on"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "on": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/due_predicate_name" } },
+            "every": { "$ref": "#/$defs/duration" }
+          },
+          "required": ["every"],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "adequacy": {
+      "type": "object",
+      "description": "Carried, NOT evaluated in this first cut. No model call, no verdict, no adjudicated state.",
+      "properties": {
+        "decided_by": { "type": "string", "minLength": 1 },
+        "when": { "type": "string", "enum": ["on-filled"] }
+      },
+      "required": ["decided_by", "when"],
+      "additionalProperties": false
+    },
+    "contract_entry": {
+      "type": "object",
+      "properties": {
+        "file": { "type": "string", "minLength": 1, "maxLength": 4096 },
+        "importance": { "$ref": "#/$defs/importance" },
+        "urgency_after_due": { "$ref": "#/$defs/duration" },
+        "template_rows": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100000,
+          "description": "Required when filled_when uses rows-beyond-template (x-semantic-only-rules 'template-rows-required'). This is a ONE-WAY rule, not an iff: an entry MAY carry template_rows even when filled_when does not use rows-beyond-template (it is simply unused in that case) — this schema and fill_common.py's validate_contract agree on that one-way reading. The bound (0..100000, fill_common.TEMPLATE_ROWS_MIN/MAX) keeps this value far from any arithmetic limit."
+        },
+        "filled_when": { "$ref": "#/$defs/filled_predicate_expr" },
+        "due_when": { "$ref": "#/$defs/due_predicate_expr" },
+        "retrigger": { "$ref": "#/$defs/retrigger" },
+        "adequacy": { "$ref": "#/$defs/adequacy" }
+      },
+      "required": ["file", "importance", "urgency_after_due", "filled_when", "due_when"],
+      "additionalProperties": false
+    },
+    "contract": {
+      "type": "object",
+      "properties": {
+        "fill_version": { "type": "string", "minLength": 1 },
+        "template": { "type": "string", "minLength": 1 },
+        "contracts": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/contract_entry" } }
+      },
+      "required": ["fill_version", "template", "contracts"],
+      "additionalProperties": false
+    },
+    "file_observation": {
+      "type": "object",
+      "description": "One entry of observations.files[] (fill_observe.py). `exists: false` permits only `file`, `exists`, and optional `unreadable_reason`; `exists: true` forbids `unreadable_reason` and permits the content-fact fields. Reason fields may be null, but a string reason must contain at least one non-whitespace character under JSON Schema's ECMAScript `\\S` definition. This is a ONE-WAY rule: `exists: true` does NOT imply every content-fact field is present — `command_result` appears only when the entry's filled_when tree declares a `command` predicate, and `scan_skipped_reason` appears only when the file was too large to scan. The allOf conditional below encodes the field-state rule; fill_common.py's validate_file_observation is the executable norm.",
+      "properties": {
+        "file": { "type": "string", "minLength": 1 },
+        "exists": { "type": "boolean" },
+        "unreadable_reason": { "type": ["string", "null"], "pattern": "\\S" },
+        "markers_present": { "type": "array", "items": { "type": "string" } },
+        "contains_text": { "type": "object", "additionalProperties": { "type": "boolean" } },
+        "table_rows_actual": { "type": "integer", "minimum": 0, "maximum": 10000000 },
+        "line_count": { "type": "integer", "minimum": 0, "maximum": 10000000 },
+        "stamps": { "type": "object", "additionalProperties": { "type": ["string", "null"] } },
+        "digest_present": { "type": "boolean" },
+        "declared_rules_count": { "type": "integer", "minimum": 0, "maximum": 10000000 },
+        "last_modified_date": { "type": ["string", "null"] },
+        "command_result": { "type": "string", "enum": ["unknown"] },
+        "scan_skipped_reason": { "type": ["string", "null"], "pattern": "\\S" }
+      },
+      "required": ["file", "exists"],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {"properties": {"exists": {"const": false}}, "required": ["exists"]},
+          "then": {
+            "not": {
+              "anyOf": [
+                {"required": ["markers_present"]},
+                {"required": ["contains_text"]},
+                {"required": ["table_rows_actual"]},
+                {"required": ["line_count"]},
+                {"required": ["stamps"]},
+                {"required": ["digest_present"]},
+                {"required": ["declared_rules_count"]},
+                {"required": ["last_modified_date"]},
+                {"required": ["command_result"]},
+                {"required": ["scan_skipped_reason"]}
+              ]
+            }
+          },
+          "else": {"not": {"required": ["unreadable_reason"]}}
+        }
+      ]
+    },
+    "maturity": {
+      "type": "object",
+      "properties": {
+        "instantiated_date": { "type": ["string", "null"] },
+        "first_src_commit_date": { "type": ["string", "null"] },
+        "first_test_date": { "type": ["string", "null"] },
+        "first_spec_date": { "type": ["string", "null"] },
+        "first_dependency_date": { "type": ["string", "null"] },
+        "first_release_date": { "type": ["string", "null"] },
+        "commits_count": { "type": "integer", "minimum": 0, "maximum": 10000000 },
+        "commit_dates": { "type": "array", "items": { "type": "string" } },
+        "days_since_setup": { "type": ["integer", "null"], "minimum": 0, "maximum": 10000000 }
+      },
+      "additionalProperties": false
+    },
+    "observations": {
+      "type": "object",
+      "properties": {
+        "repo": { "type": "string" },
+        "contract": { "type": "string" },
+        "now": { "type": "string" },
+        "observer_version": { "type": "string" },
+        "maturity": { "$ref": "#/$defs/maturity" },
+        "files": { "type": "array", "items": { "$ref": "#/$defs/file_observation" } }
+      },
+      "required": ["files", "maturity"],
+      "additionalProperties": false
+    },
+    "error_item": {
+      "type": "object",
+      "properties": {
+        "code": { "type": "integer" },
+        "reason": { "type": "string" }
+      },
+      "required": ["code", "reason"],
+      "additionalProperties": false
+    },
+    "error_report": {
+      "description": "Closed error output shared by fill_observe.py and fill_evaluate.py. Computation failures use status unknown, matching the other accepted-work evaluators.",
+      "type": "object",
+      "properties": {
+        "status": { "type": "string", "enum": ["unknown"] },
+        "exit_code": { "type": "integer" },
+        "errors": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/error_item" } }
+      },
+      "required": ["status", "exit_code", "errors"],
+      "additionalProperties": false
+    },
+    "validate_report": {
+      "type": "object",
+      "properties": {
+        "status": { "type": "string", "enum": ["valid", "invalid", "unknown"] },
+        "exit_code": { "type": "integer" },
+        "errors": { "type": "array", "items": { "$ref": "#/$defs/error_item" } },
+        "validator_version": { "type": "string" }
+      },
+      "required": ["status", "exit_code", "errors"],
+      "additionalProperties": false
+    },
+    "deep_tree_selftest_output": {
+      "type": "object",
+      "properties": {
+        "error_codes": { "type": "array", "items": { "type": "integer" } },
+        "depth_error_present": { "type": "boolean" },
+        "walk_leaves_count": { "type": "integer", "minimum": 0 },
+        "expr_has_predicate": { "type": "boolean" }
+      },
+      "required": ["error_codes", "depth_error_present", "walk_leaves_count", "expr_has_predicate"],
+      "additionalProperties": false
+    },
+    "validate_output": {
+      "oneOf": [
+        { "$ref": "#/$defs/validate_report" },
+        { "$ref": "#/$defs/deep_tree_selftest_output" }
+      ]
+    },
+    "observer_selftest_output": {
+      "type": "object",
+      "properties": {
+        "exists": { "type": "boolean" },
+        "scan_skipped": { "type": "boolean" },
+        "markers_present": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["exists", "scan_skipped", "markers_present"],
+      "additionalProperties": false
+    },
+    "observe_output": {
+      "oneOf": [
+        { "$ref": "#/$defs/observations" },
+        { "$ref": "#/$defs/error_report" },
+        { "$ref": "#/$defs/observer_selftest_output" }
+      ]
+    },
+    "state": {
+      "type": "string",
+      "enum": ["not-due", "due", "overdue", "filled", "unknown"]
+    },
+    "report_item": {
+      "type": "object",
+      "properties": {
+        "file": { "type": "string" },
+        "state": { "$ref": "#/$defs/state" },
+        "reasons": { "type": "array", "items": { "type": "string" } },
+        "due_at": { "type": ["string", "null"] },
+        "required_by": { "type": ["string", "null"] },
+        "importance": { "$ref": "#/$defs/importance" }
+      },
+      "required": ["file", "state", "reasons", "due_at", "required_by", "importance"],
+      "additionalProperties": false
+    },
+    "obligation_projection_item": {
+      "type": "object",
+      "description": "A REPORT-ONLY summary shaped loosely after a format_obligation duty record, printed only by `fill_evaluate.py --obligations`, never minted into any ledger. This projection does NOT conform to the format_obligation record format (different trigger/discharge-predicate structure, no id/natural_key/authority binding, several fields explicitly null) and requires conversion before it could be accepted as one — it is a fill-contract report, not an obligation-format document.",
+      "properties": {
+        "action": { "type": "string", "enum": ["update"] },
+        "target": { "type": "string" },
+        "trigger": { "$ref": "#/$defs/due_predicate_expr" },
+        "required_by": { "type": ["string", "null"] },
+        "discharge_predicate": { "$ref": "#/$defs/filled_predicate_expr" },
+        "duty_kind": { "type": "string", "enum": ["one-time"] },
+        "retrigger": { "type": "string", "enum": ["every-event"] },
+        "status": { "type": "string", "enum": ["due", "overdue"] },
+        "id": { "type": "null" },
+        "natural_key": { "type": "null" },
+        "authority": { "type": "null" },
+        "created_by": { "type": "null" },
+        "created_at": { "type": "null" }
+      },
+      "required": ["action", "target", "trigger", "required_by", "discharge_predicate", "duty_kind",
+                   "retrigger", "status", "id", "natural_key", "authority", "created_by", "created_at"],
+      "additionalProperties": false
+    },
+    "computed_report": {
+      "type": "object",
+      "properties": {
+        "contract": { "type": "string" },
+        "observations": { "type": "string" },
+        "now": { "type": "string" },
+        "evaluator_version": { "type": "string" },
+        "items": { "type": "array", "items": { "$ref": "#/$defs/report_item" } },
+        "obligation_projection": { "type": "array", "items": { "$ref": "#/$defs/obligation_projection_item" } }
+      },
+      "required": ["contract", "observations", "now", "items"],
+      "additionalProperties": false
+    },
+    "report": {
+      "oneOf": [
+        { "$ref": "#/$defs/computed_report" },
+        { "$ref": "#/$defs/error_report" }
+      ]
+    }
+  },
+  "x-semantic-only-rules": [
+    {
+      "id": "canonical-calendar-dates-and-finite-values",
+      "description": "Dates must fullmatch ASCII YYYY-MM-DD and name a real calendar day. Observation now and CLI --now may add THH:MM:SS, optional fractional seconds (1..6 digits), and optional Z or +/-HH:MM offset. No whitespace trimming; UTC conversion must fit years 1..9999. Non-finite numbers are rejected in all input fields. These semantic rules are checked by the tools, not encoded by the schema's string types.",
+      "enforced_by": "../tools/fill_common.py parse_iso_date / parse_now / validate_contract / validate_observations / load_json_strict"
+    },
+    {
+      "id": "composed-due-date-uncertainty",
+      "description": "A true all takes the latest child date; a true any takes the earliest date among true children. If any contributing true child has no date, the combined date remains unknown, including through nested expressions. Comparisons use parsed calendar dates.",
+      "enforced_by": "../tools/fill_evaluate.py eval_due_tree / evaluate_item"
+    },
+    {
+      "id": "closed-predicate-vocabulary",
+      "description": "Every filled_when leaf's `predicate` must be one of $defs.filled_predicate_name; every due_when leaf's `predicate` must be one of $defs.due_predicate_name. Each predicate's own required/optional parameter set is checked too, including an integer parameter's numeric bound (fill_common.PREDICATE_INT_MIN..PREDICATE_INT_MAX, currently 1..100000 — 'at least N' has no meaningful N=0 reading, and the bound keeps days-since-setup's own date arithmetic far from overflowing). An unknown name, a missing/mistyped parameter, or an out-of-bounds one is a contract validation error (exit 13), never silently ignored.",
+      "enforced_by": "../tools/fill_common.py validate_expr (via _validate_predicate_leaf), invoked by ../tools/fill_validate.py (and, fail-closed, by ../tools/fill_observe.py / ../tools/fill_evaluate.py before either trusts a contract)"
+    },
+    {
+      "id": "not-forbidden-in-due-when",
+      "description": "The `not` combinator is valid inside filled_when but rejected (exit 14) inside due_when — negating a maturity event has no well-defined due_at.",
+      "enforced_by": "../tools/fill_common.py validate_expr's mode parameter"
+    },
+    {
+      "id": "template-rows-required",
+      "description": "A contract entry whose filled_when tree uses rows-beyond-template MUST also declare template_rows (a non-negative integer). Absent -> exit 15. One-way: template_rows may be present without rows-beyond-template being used (unused, not an error).",
+      "enforced_by": "../tools/fill_common.py validate_contract"
+    },
+    {
+      "id": "command-and-unobserved-due-events-always-unknown",
+      "description": "The `command` filled_when predicate, and the `public`/`session-closed`/`new-dependency` due_when predicates, are recognized (closed) vocabulary but this first cut's fill_observe.py never gathers a fact for them and fill_evaluate.py always resolves them to Kleene UNKNOWN.",
+      "enforced_by": "../tools/fill_common.py UNOBSERVED_FILLED_PREDICATES / UNOBSERVED_DUE_PREDICATES, read by ../tools/fill_evaluate.py"
+    },
+    {
+      "id": "kleene-three-valued-evaluation",
+      "description": "any/all/not combine child TRUE/FALSE/UNKNOWN values per standard fail-closed three-valued logic -- an UNKNOWN branch can be masked only by a deciding sibling (a TRUE under any, a FALSE under all), never silently outvoted by other UNKNOWNs or by trivial branches.",
+      "enforced_by": "../tools/fill_common.py eval_any/eval_all/eval_not, invoked by ../tools/fill_evaluate.py"
+    },
+    {
+      "id": "retrigger-and-adequacy-carried-not-evaluated",
+      "description": "retrigger and adequacy are shape-checked (exit 16 on a malformed table) but no tool in this first cut semantically evaluates either -- no model call, no adequacy verdict, no adjudicated state, no re-opened state. A filled item stays 'filled' regardless of a later retrigger event.",
+      "enforced_by": "../tools/fill_common.py validate_retrigger/validate_adequacy (shape only); ../tools/fill_evaluate.py's five-state machine has no adjudicated/re-opened state at all"
+    },
+    {
+      "id": "path-and-glob-grammar",
+      "description": "A contract entry's `file` value, and an observer's --src-glob/--test-glob/--spec-glob/--manifest arguments, must satisfy a closed path/glob grammar (length and segment-count ceilings, no '..'/absolute/control characters, no leading ':'). This draft does not encode that grammar — it is a plain `type: string` here; `fill_common.py`'s `validate_path_grammar`/`validate_glob_grammar` check it.",
+      "enforced_by": "../tools/fill_common.py validate_path_grammar / validate_glob_grammar"
+    },
+    {
+      "id": "no-duplicate-observation-file-entries",
+      "description": "Two observations.files[] entries naming the same `file` are a shape error (the same rule a contract's own duplicate `file` entry already follows) -- a plain JSON Schema `items` constraint cannot express 'unique by one subfield', only full-item uniqueness.",
+      "enforced_by": "../tools/fill_common.py validate_observations"
+    },
+    {
+      "id": "state-machine-monotone-in-now",
+      "description": "due_when resolving TRUE with a computed due_at decides due/overdue only when --now's date is not earlier than due_at; a due_at LATER than --now is not-due, never a guessed due/overdue with a required_by that has not arrived either.",
+      "enforced_by": "../tools/fill_evaluate.py evaluate_item"
+    },
+    {
+      "id": "shallow-clone-history-facts-omitted",
+      "description": "When --repo is a shallow clone (git rev-parse --is-shallow-repository), every history-derived maturity fact (instantiated_date, every first-*-date, commits_count, commit_dates, days_since_setup) is OMITTED from the observation entirely, never guessed from the truncated visible window -- fill_evaluate.py then resolves any due_when predicate needing one of them to Kleene UNKNOWN, the same as an observations document that never set the key at all. The per-file fact last_modified_date is ALSO omitted for every file in this case: the clone's one grafted boundary commit looks like a genuine change to every file present in its tree, not only to files actually touched inside the visible window, so a shallow clone yields no history-derived facts at all, per-file or repo-wide.",
+      "enforced_by": "../tools/fill_observe.py compute_maturity / observe_file / is_shallow_repo"
+    },
+    {
+      "id": "repo-must-be-git-toplevel",
+      "description": "--repo must name the SAME directory (inode/device identity, checked with os.path.samefile -- not string-equal resolved paths, which an alias spelling such as a case-variant path on a case-insensitive filesystem would wrongly fail) as `git rev-parse --show-toplevel` run inside it; a subdirectory of a repository is rejected (exit 11), not silently scanned with repository-wide facts describing the whole repository while per-file reads stay relative to the subdirectory.",
+      "enforced_by": "../tools/fill_observe.py run_observe / _git_toplevel"
+    },
+    {
+      "id": "commit-dates-sorted-oldest-first-not-history-order",
+      "description": "maturity.commit_dates is the list of commit author days (UTC calendar days) SORTED oldest-first -- not git log --reverse's own history order (parent before child). The two usually coincide but are not the same thing: a cherry-pick, a rebase, an amend of an old commit, or a contributor with a skewed clock can make a later-in-history commit carry an earlier author date. instantiated_date is the EARLIEST day in that sorted list, never history order's first entry.",
+      "enforced_by": "../tools/fill_observe.py compute_maturity; ../tools/fill_common.py validate_maturity (requires the emitted list to be non-decreasing)"
+    }
+  ]
+}

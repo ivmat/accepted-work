@@ -1,0 +1,39 @@
+# Invented example contract for a fictional documentation-kit repository. Four tracked files, each
+# with its own tree shape, combinator choice and optional-key set, deliberately unlike one another:
+# a bare leaf with no combinator at all, a `not`-wrapped leaf, a three-way `all`, a nested
+# `any`-of-`all`, a bare due_when leaf, and an `all`-combined due_when.
+fill_version = "0.1.0"
+template = "template-kit:full@v5"
+
+[[contracts]]
+file = "ROADMAP.md"
+importance = "low"
+urgency_after_due = "30d"
+filled_when = { predicate = "digest-present" }
+due_when = { any = [ { predicate = "first-spec" }, { predicate = "days-since-setup", n = 5 } ] }
+
+[[contracts]]
+file = "LICENSE-NOTES.md"
+importance = "normal"
+urgency_after_due = "15d"
+filled_when = { not = { predicate = "not-contains", text = "DRAFT-ONLY" } }
+due_when = { predicate = "first-release" }
+retrigger = { every = "15d" }
+
+[[contracts]]
+file = "ONBOARDING.md"
+importance = "critical"
+urgency_after_due = "3d"
+template_rows = 1
+filled_when = { all = [ { predicate = "no-marker" }, { predicate = "min-lines", n = 10 }, { predicate = "digest-present" } ] }
+due_when = { any = [ { predicate = "first-dependency" }, { predicate = "commits-at-least", n = 12 } ] }
+adequacy = { decided_by = "model", when = "on-filled" }
+
+[[contracts]]
+file = "FAQ.md"
+importance = "normal"
+urgency_after_due = "7d"
+filled_when = { any = [ { all = [ { predicate = "no-marker" }, { predicate = "declared-rules", min = 2 } ] }, { predicate = "stamp", key = "faq-checked" } ] }
+due_when = { all = [ { predicate = "first-test" }, { predicate = "first-dependency" } ] }
+retrigger = { every = "10d" }
+adequacy = { decided_by = "model", when = "on-filled" }

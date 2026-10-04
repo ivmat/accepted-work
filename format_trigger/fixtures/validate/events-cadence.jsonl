@@ -1,0 +1,2 @@
+{"event_id": "cad-01-match", "event": "cadence", "source": "acme", "at": "2026-09-24T00:00:00Z", "params": {"every": "7d"}}
+{"event_id": "cad-02-mismatch", "event": "cadence", "source": "acme", "at": "2026-09-24T00:01:00Z", "params": {"every": "1d"}}

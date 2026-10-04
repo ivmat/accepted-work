@@ -1,0 +1,225 @@
+{
+  "$id": "https://formats.example/schema/trigger-0.1.0-draft.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "trigger/first-cut 0.1.0-draft",
+  "description": "Three object families: (1) the parsed TRIGGER FILE (TOML, caller-supplied via `--triggers FILE`, read as an equivalent JSON structure by tomllib; this schema describes that JSON-shaped structure, not TOML syntax itself), (2) one EVENT RECORD (JSON Lines, what an emitter reports), and (3) the FIRE REPORT `trigger_fire.py` prints. SHAPE vs SEMANTICS: this schema is shape/enum-normative for all three; the entity-ref grammar's containment rule, the per-event closed params key set, the glob grammar, and the full firing/occurrence/retrigger algorithm are cross-field/semantic rules this draft schema does not encode — `tools/trigger_vocab.py` checks those (see x-semantic-only-rules).",
+  "$defs": {
+    "closed_event": {
+      "type": "string",
+      "enum": ["path-changed", "instantiated", "first-src-commit", "first-test", "first-spec",
+               "first-dependency", "new-dependency", "first-release", "public",
+               "template-tag-moved", "commits-at-least", "days-since-setup", "session-closed",
+               "session-started", "rule-added", "cadence"]
+    },
+    "closed_retrigger": {
+      "type": "string",
+      "enum": ["once", "every-event"]
+    },
+    "entity_ref": {
+      "description": "The entity-ref grammar. This schema only checks 'non-empty string'; the full grammar (repo id, path segment rules, resource/@self forms, containment) is semantic-only — see x-semantic-only-rules 'entity-ref-grammar'.",
+      "type": "string",
+      "minLength": 1
+    },
+    "glob_string": {
+      "description": "A paths[]/src_glob entry: an authored glob pattern in a trigger's own when.params (at most 1024 characters, 64 segments, 16 '*' per segment), or a reported literal value in an EVENT record's params (at most 4096 characters, 256 segments — this schema's maxLength is the wider of the two, since a plain JSON Schema field cannot vary by which object contains it). Minimal shape check only; the full glob grammar, and which of the two size ceilings applies, is semantic-only — see x-semantic-only-rules 'glob-grammar' and 'glob-and-path-size-limits'.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "duration_string": {
+      "description": "cadence's `every` param.",
+      "type": "string",
+      "pattern": "^[1-9][0-9]*[dhm]$"
+    },
+    "trigger_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
+    },
+    "when_params": {
+      "description": "SEMANTIC: the allowed/required key set depends on `when.event` (EVENT_VOCAB). This schema only constrains each KNOWN key's own shape when present; it does not enforce which keys are required or forbidden for a given event (that cross-field rule is enforced_by tools/trigger_vocab.py::validate_params).",
+      "type": "object",
+      "properties": {
+        "paths": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/glob_string"}},
+        "n": {"type": "integer", "minimum": 1},
+        "every": {"$ref": "#/$defs/duration_string"},
+        "src_glob": {"$ref": "#/$defs/glob_string"}
+      },
+      "additionalProperties": false
+    },
+    "when": {
+      "type": "object",
+      "properties": {
+        "source": {"$ref": "#/$defs/entity_ref"},
+        "event": {"$ref": "#/$defs/closed_event"},
+        "params": {"$ref": "#/$defs/when_params"}
+      },
+      "required": ["source", "event"],
+      "additionalProperties": false
+    },
+    "trigger": {
+      "type": "object",
+      "properties": {
+        "id": {"$ref": "#/$defs/trigger_id"},
+        "when": {"$ref": "#/$defs/when"},
+        "retrigger": {"$ref": "#/$defs/closed_retrigger"}
+      },
+      "required": ["id", "when", "retrigger"],
+      "additionalProperties": false,
+      "description": "SEMANTIC: `id` must be unique within the file — a cross-element rule this draft schema does not encode; tools/trigger_vocab.py::validate_trigger_doc checks it."
+    },
+    "trigger_file": {
+      "type": "object",
+      "properties": {
+        "trigger_version": {"type": "string", "minLength": 1},
+        "repo": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$"},
+        "triggers": {"type": "array", "items": {"$ref": "#/$defs/trigger"}}
+      },
+      "required": ["trigger_version", "repo", "triggers"],
+      "additionalProperties": false
+    },
+    "event_record": {
+      "description": "What an emitter reports. No emitter exists in this first cut; the exported fixtures/example event records are invented for illustration, not captured from a real emitter.",
+      "type": "object",
+      "properties": {
+        "event_id": {"type": "string", "minLength": 1},
+        "event": {"$ref": "#/$defs/closed_event"},
+        "source": {"$ref": "#/$defs/entity_ref"},
+        "at": {"type": "string", "minLength": 1, "description": "ISO-8601 UTC. Shape-only here; tools/trigger_vocab.py::parse_at is the executable norm."},
+        "params": {"$ref": "#/$defs/when_params"}
+      },
+      "required": ["event_id", "event", "source", "at", "params"],
+      "additionalProperties": false
+    },
+    "fired_entry": {
+      "type": "object",
+      "properties": {
+        "occurrence_id": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
+        "trigger_id": {"$ref": "#/$defs/trigger_id"},
+        "event_id": {"type": "string", "minLength": 1},
+        "event": {"$ref": "#/$defs/closed_event"},
+        "source": {"$ref": "#/$defs/entity_ref"},
+        "at": {"type": "string", "minLength": 1}
+      },
+      "required": ["occurrence_id", "trigger_id", "event_id", "event", "source", "at"],
+      "additionalProperties": false
+    },
+    "suppressed_entry": {
+      "type": "object",
+      "properties": {
+        "occurrence_id": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
+        "reason": {"type": "string", "enum": ["duplicate", "suppressed-once"]}
+      },
+      "required": ["occurrence_id", "reason"],
+      "additionalProperties": false
+    },
+    "error_item": {
+      "description": "One diagnostic emitted by trigger_validate.py or trigger_fire.py on any non-success path.",
+      "type": "object",
+      "properties": {
+        "code": {"type": "integer"},
+        "reason": {"type": "string"}
+      },
+      "required": ["code", "reason"],
+      "additionalProperties": false
+    },
+    "validate_report": {
+      "type": "object",
+      "properties": {
+        "status": {"type": "string", "enum": ["valid", "invalid", "unknown"]},
+        "exit_code": {"type": "integer"},
+        "errors": {"type": "array", "items": {"$ref": "#/$defs/error_item"}},
+        "file": {"type": "string"},
+        "trigger_count": {"type": "integer"},
+        "trigger_version": {"type": ["string", "null"]},
+        "repo": {"type": ["string", "null"]},
+        "trigger_vocab_version": {"type": "string"}
+      },
+      "required": ["status", "exit_code", "errors"],
+      "additionalProperties": false
+    },
+    "fire_report": {
+      "type": "object",
+      "properties": {
+        "status": {"type": "string", "enum": ["ok", "unknown"]},
+        "exit_code": {"type": "integer"},
+        "now": {"type": ["string", "null"], "description": "The validated --now value, or null only when no valid --now was parsed before the failure."},
+        "errors": {"type": "array", "items": {"$ref": "#/$defs/error_item"}},
+        "fired": {"type": ["array", "null"], "items": {"$ref": "#/$defs/fired_entry"}},
+        "suppressed": {"type": ["array", "null"], "items": {"$ref": "#/$defs/suppressed_entry"}},
+        "trigger_vocab_version": {"type": "string"}
+      },
+      "required": ["status", "exit_code"],
+      "additionalProperties": false,
+      "description": "SEMANTIC: every non-ok report, including usage and internal/input failures, has status=='unknown' and REQUIRES fired==null and suppressed==null. status=='ok' REQUIRES both to be arrays (possibly empty). `now` is null only when no valid --now was parsed. This draft schema does not encode those conditionals; tools/trigger_fire.py checks them."
+      },
+    "run_case_report": {
+      "description": "Closed internal self-test envelope. Every success and error form carries the inner command status and its schema-valid fire report.",
+      "type": "object",
+      "properties": {
+        "code": {"type": "integer"},
+        "report": {"$ref": "#/$defs/fire_report"}
+      },
+      "required": ["code", "report"],
+      "additionalProperties": false
+      }
+  },
+  "oneOf": [
+    {"$ref": "#/$defs/trigger_file"},
+    {"$ref": "#/$defs/event_record"},
+    {"$ref": "#/$defs/validate_report"},
+    {"$ref": "#/$defs/fire_report"},
+    {"$ref": "#/$defs/run_case_report"}
+  ],
+  "x-semantic-only-rules": [
+    {
+      "id": "entity-ref-grammar",
+      "description": "The full entity-ref grammar: <repo> id grammar, path segment rules (no leading '/', no '.'/'..' segment, no empty segment, no '\\', no control chars, no '*'/'**' outside the explicit <repo>:** whole-repo form), the resource:<name>@<host> form, and @self/@self:<path> resolution against the trigger file's own top-level `repo` field. The schema's entity_ref def only requires a non-empty string.",
+      "enforced_by": "tools/trigger_vocab.py::parse_entity_ref"
+    },
+    {
+      "id": "entity-ref-containment",
+      "description": "contains(a, b): equal; a whole-repo and same repo; a a subtree and b's path starts with that dir (same repo); a/b both resource with equal name+host. Used directionally as contains(trigger.when.source, event.source) — a cross-document rule over two different objects, which this schema cannot express.",
+      "enforced_by": "tools/trigger_vocab.py::contains"
+    },
+    {
+      "id": "trigger-id-uniqueness",
+      "description": "A trigger id must be unique within one trigger file.",
+      "enforced_by": "tools/trigger_vocab.py::validate_trigger_doc"
+    },
+    {
+      "id": "per-event-params-closed-set",
+      "description": "when.params/EVENT.params' allowed AND required keys depend on the event kind (EVENT_VOCAB) — e.g. path-changed REQUIRES paths, first-src-commit's src_glob is optional, ten event kinds allow no params at all. The schema's when_params def constrains each key's own shape but not which keys apply to which event.",
+      "enforced_by": "tools/trigger_vocab.py::validate_params"
+    },
+    {
+      "id": "glob-grammar",
+      "description": "Every paths[]/src_glob entry must satisfy the full glob grammar: no leading '/', no '.'/'..' segment, no empty segment, '**' only as a whole segment, each other segment restricted to [A-Za-z0-9_.*-]+.",
+      "enforced_by": "tools/trigger_vocab.py::validate_glob_grammar"
+    },
+    {
+      "id": "glob-and-path-size-limits",
+      "description": "Checked at VALIDATION, not only at firing. A trigger's own when.params glob (paths[]/src_glob): at most 1024 characters, at most 64 '/'-separated segments, at most 16 '*' characters in any one segment. An EVENT record's params (the reported literal value, not a pattern): at most 4096 characters, at most 256 segments (no '*'-count limit — '*' in a reported value is an ordinary literal character, never a wildcard).",
+      "enforced_by": "tools/trigger_vocab.py::validate_glob_grammar"
+    },
+    {
+      "id": "firing-rule",
+      "description": "A trigger fires on an event iff event-kind equality, source containment, AND the per-event params-match rule all hold — a three-way cross-document AND this draft schema does not encode.",
+      "enforced_by": "tools/trigger_vocab.py::fires"
+    },
+    {
+      "id": "occurrence-id-derivation",
+      "description": "occurrence_id = sha256(trigger.id + '\\n' + event.event_id).hexdigest()[:32] — derived, never authored.",
+      "enforced_by": "tools/trigger_vocab.py::occurrence_id"
+    },
+    {
+      "id": "duplicate-and-once-suppression",
+      "description": "Duplicate redelivery (same occurrence_id already fired, in history or this run) is always a no-op, checked before retrigger==once's own second-distinct-occurrence suppression.",
+      "enforced_by": "tools/trigger_vocab.py::evaluate_fire"
+    },
+    {
+      "id": "fired-suppressed-sort-order",
+      "description": "fired[]/suppressed[] are each sorted by (at, trigger_id, event_id) ascending — suppressed's own emitted shape (occurrence_id + reason only) does not carry the sort key, so this draft schema does not encode the ordering rule at all.",
+      "enforced_by": "tools/trigger_vocab.py::evaluate_fire"
+    }
+  ]
+}

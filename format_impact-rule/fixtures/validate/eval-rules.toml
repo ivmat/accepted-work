@@ -1,0 +1,94 @@
+# Invented, independently-designed rules file (not a record of any real repository) — a small
+# fictional billing/pricing service. Four fully independent rules (a spec-freeze pattern, a
+# single-segment-glob language rule, a cross-repo pin, and an event rule), an unrelated "never
+# fires" guard rule, and a top-level `derive` list.
+impact_version = "0.1.0"
+repo = "alpha-service"
+derive = ["pinned-sha", "declared-coverage"]
+
+[[rules]]
+id = "pricing-schema-freeze"
+relation = "governs"
+importance = "critical"
+urgency = "before-commit"
+
+[rules.when]
+changed = ["schema/**"]
+
+[rules.decided_by]
+detect = "program"
+fix = "human"
+
+[[rules.must_update]]
+target = "SCHEMA-FREEZE.md"
+action = "re-verify"
+check = "true"
+
+[[rules]]
+id = "python-unit-tests"
+relation = "depends-on"
+importance = "high"
+urgency = "same-session"
+
+[rules.when]
+changed = ["src/*.py"]
+
+[rules.decided_by]
+detect = "model"
+fix = "program"
+
+[[rules.must_update]]
+target = "pytest"
+action = "re-verify"
+
+[[rules]]
+id = "pricing-service-pin"
+relation = "pins"
+importance = "high"
+urgency = "within:7d"
+
+[rules.when]
+changed = ["billing-schemas:pricing/tools/pricing_sync.py"]
+
+[rules.decided_by]
+detect = "program"
+fix = "model"
+
+[[rules.must_update]]
+target = "src/pricing_client.py"
+action = "re-verify"
+check = "pytest tests/test_pricing_sync.py"
+
+[[rules]]
+id = "new-dependency-note"
+relation = "records"
+importance = "normal"
+urgency = "within:14d"
+
+[rules.when]
+event = "new-dependency"
+
+[rules.decided_by]
+detect = "model"
+fix = "model"
+
+[[rules.must_update]]
+target = "DEPENDENCIES.md"
+action = "update"
+
+[[rules]]
+id = "never-fires"
+relation = "documents"
+importance = "low"
+urgency = "next-maturity-event"
+
+[rules.when]
+changed = ["docs/NEVER/**"]
+
+[rules.decided_by]
+detect = "program"
+fix = "human"
+
+[[rules.must_update]]
+target = "nothing"
+action = "attend"

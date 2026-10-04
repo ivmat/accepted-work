@@ -1,0 +1,22 @@
+{
+  "repo": "n/a",
+  "contract": "eval-retrigger-note.toml",
+  "now": "2026-09-10",
+  "observer_version": "fixture",
+  "maturity": {
+    "instantiated_date": "2026-08-01",
+    "first_src_commit_date": "2026-08-05",
+    "first_test_date": null,
+    "first_spec_date": null,
+    "first_dependency_date": null,
+    "first_release_date": null,
+    "commits_count": 2,
+    "commit_dates": ["2026-08-01", "2026-08-05"],
+    "days_since_setup": 40
+  },
+  "files": [
+    { "file": "RETRIG.md", "exists": true, "markers_present": [], "contains_text": {},
+      "table_rows_actual": 0, "line_count": 5, "stamps": {}, "digest_present": false,
+      "declared_rules_count": 0, "last_modified_date": "2026-09-09" }
+  ]
+}

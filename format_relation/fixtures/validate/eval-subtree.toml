@@ -1,0 +1,14 @@
+relation_version = "0.1.0"
+repo = "alpha-service"
+
+[[edges]]
+from = "alpha-service:LICENSE.md"
+relation = "governs"
+to = "alpha-service:src/"
+note = "synthetic: LICENSE.md governs the whole src/ subtree"
+
+[[edges]]
+from = "alpha-service:CHANGELOG.md"
+relation = "records"
+to = "alpha-service:docs/RELEASE-NOTES.md"
+note = "synthetic: CHANGELOG.md records facts sourced from one specific doc file"

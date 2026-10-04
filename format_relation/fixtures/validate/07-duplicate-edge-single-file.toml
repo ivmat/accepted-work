@@ -1,0 +1,14 @@
+relation_version = "0.1.0"
+repo = "alpha-service"
+
+[[edges]]
+from = "alpha-service:a.md"
+relation = "documents"
+to = "alpha-service:b.md"
+note = "first copy"
+
+[[edges]]
+from = "alpha-service:a.md"
+relation = "documents"
+to = "alpha-service:b.md"
+note = "second copy -- note differs, but from/relation/to/directed/propagates are identical"

@@ -1,0 +1,10 @@
+trigger_version = "0.1.0"
+repo = "acme"
+
+[[triggers]]
+id = "self-at-host-watch"
+retrigger = "every-event"
+
+[triggers.when]
+source = "@self:build@host"
+event = "rule-added"

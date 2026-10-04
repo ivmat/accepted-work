@@ -1,0 +1,8 @@
+relation_version = "0.1.0"
+repo = "alpha-service"
+
+[[edges]]
+from = "@self:src/checkout.py"
+relation = "traces-to"
+to = "@self:docs/checkout-flow.md"
+note = "valid grammar, but neither ref can resolve without --self"

@@ -1,0 +1,13 @@
+trigger_version = "0.1.0"
+repo = "acme"
+
+[[triggers]]
+id = "boundary-exact-glob"
+retrigger = "every-event"
+
+[triggers.when]
+source = "acme"
+event = "path-changed"
+
+[triggers.when.params]
+paths = ["bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbbb/bbbbbbbbbbbbbb/bbbbbbbbbbbbbb/bbbbbbbbbbbbbb/bbbbbbbbbbbbbb/bbbbbbbbbbbbbb/bbbbbbbbbbbbbb/bbbbbbbbbbbbbb/bbbbbbbbbbbbbb/bbbbbbbbbbbbbb/bbbbbbbbbbbbbb/bbbbbbbbbbbbbb/bbbbbbbbbbbbbb/bbbbbbbbbbbbbb/bbbbbbbbbbbbbb/bbbbbbbbbbbbbb/bbbbbbbbbbbbbb/*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a"]

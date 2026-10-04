@@ -1,0 +1,8 @@
+relation_version = "0.1.0"
+repo = "alpha-service"
+
+[[edges]]
+from = "alpha-service:a.md"
+relation = "documents"
+to = "alpha-service:b.md"
+note = "redefines the same edge already declared in 07b-duplicate-edge-file1.toml"

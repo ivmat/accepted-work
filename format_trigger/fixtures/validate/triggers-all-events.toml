@@ -1,0 +1,159 @@
+trigger_version = "0.1.0"
+repo = "acme"
+
+# --- path-changed, glob variety ('*' one segment vs '**' zero-or-more segments) ---
+
+[[triggers]]
+id = "path-star"
+retrigger = "every-event"
+[triggers.when]
+source = "acme:src/"
+event = "path-changed"
+[triggers.when.params]
+paths = ["src/*.py"]
+
+[[triggers]]
+id = "path-doublestar"
+retrigger = "every-event"
+[triggers.when]
+source = "acme:src/"
+event = "path-changed"
+[triggers.when.params]
+paths = ["src/**/*.py"]
+
+# --- one trigger per no-param event kind (retrigger=once, to also exercise once/every-event) ---
+
+[[triggers]]
+id = "on-instantiated"
+retrigger = "once"
+[triggers.when]
+source = "acme"
+event = "instantiated"
+
+[[triggers]]
+id = "on-first-test"
+retrigger = "once"
+[triggers.when]
+source = "acme"
+event = "first-test"
+
+[[triggers]]
+id = "on-first-spec"
+retrigger = "once"
+[triggers.when]
+source = "acme"
+event = "first-spec"
+
+[[triggers]]
+id = "on-first-dependency"
+retrigger = "once"
+[triggers.when]
+source = "acme"
+event = "first-dependency"
+
+[[triggers]]
+id = "on-new-dependency"
+retrigger = "every-event"
+[triggers.when]
+source = "acme"
+event = "new-dependency"
+
+[[triggers]]
+id = "on-first-release"
+retrigger = "once"
+[triggers.when]
+source = "acme"
+event = "first-release"
+
+[[triggers]]
+id = "on-public"
+retrigger = "once"
+[triggers.when]
+source = "acme"
+event = "public"
+
+[[triggers]]
+id = "on-template-tag-moved"
+retrigger = "every-event"
+[triggers.when]
+source = "acme"
+event = "template-tag-moved"
+
+[[triggers]]
+id = "on-session-closed"
+retrigger = "every-event"
+[triggers.when]
+source = "acme"
+event = "session-closed"
+
+[[triggers]]
+id = "on-session-started"
+retrigger = "every-event"
+[triggers.when]
+source = "acme"
+event = "session-started"
+
+# --- first-src-commit, optional src_glob ---
+
+[[triggers]]
+id = "on-first-src-commit"
+retrigger = "once"
+[triggers.when]
+source = "acme"
+event = "first-src-commit"
+[triggers.when.params]
+src_glob = "src/**"
+
+# --- thresholds ---
+
+[[triggers]]
+id = "on-commits-at-least-50"
+retrigger = "once"
+[triggers.when]
+source = "acme"
+event = "commits-at-least"
+[triggers.when.params]
+n = 50
+
+[[triggers]]
+id = "on-days-since-setup-30"
+retrigger = "once"
+[triggers.when]
+source = "acme"
+event = "days-since-setup"
+[triggers.when.params]
+n = 30
+
+# --- cadence ---
+
+[[triggers]]
+id = "on-cadence-7d"
+retrigger = "every-event"
+[triggers.when]
+source = "acme"
+event = "cadence"
+[triggers.when.params]
+every = "7d"
+
+# --- containment matrix: repo vs subtree vs file source, same event kind ---
+
+[[triggers]]
+id = "rule-added-repo"
+retrigger = "every-event"
+[triggers.when]
+source = "acme"
+event = "rule-added"
+
+[[triggers]]
+id = "rule-added-subtree"
+retrigger = "every-event"
+[triggers.when]
+source = "acme:rules/"
+event = "rule-added"
+
+[[triggers]]
+id = "rule-added-file"
+retrigger = "every-event"
+[triggers.when]
+source = "acme:rules/core.toml"
+event = "rule-added"

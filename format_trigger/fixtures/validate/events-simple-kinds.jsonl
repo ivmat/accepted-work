@@ -1,0 +1,11 @@
+{"event_id": "simple-instantiated", "event": "instantiated", "source": "acme", "at": "2026-09-24T00:00:00Z", "params": {}}
+{"event_id": "simple-first-test", "event": "first-test", "source": "acme", "at": "2026-09-24T00:01:00Z", "params": {}}
+{"event_id": "simple-first-spec", "event": "first-spec", "source": "acme", "at": "2026-09-24T00:02:00Z", "params": {}}
+{"event_id": "simple-first-dependency", "event": "first-dependency", "source": "acme", "at": "2026-09-24T00:03:00Z", "params": {}}
+{"event_id": "simple-new-dependency", "event": "new-dependency", "source": "acme", "at": "2026-09-24T00:04:00Z", "params": {}}
+{"event_id": "simple-first-release", "event": "first-release", "source": "acme", "at": "2026-09-24T00:05:00Z", "params": {}}
+{"event_id": "simple-public", "event": "public", "source": "acme", "at": "2026-09-24T00:06:00Z", "params": {}}
+{"event_id": "simple-template-tag-moved", "event": "template-tag-moved", "source": "acme", "at": "2026-09-24T00:07:00Z", "params": {}}
+{"event_id": "simple-session-closed", "event": "session-closed", "source": "acme", "at": "2026-09-24T00:08:00Z", "params": {}}
+{"event_id": "simple-session-started", "event": "session-started", "source": "acme", "at": "2026-09-24T00:09:00Z", "params": {}}
+{"event_id": "simple-wrong-repo-first-test", "event": "first-test", "source": "other-repo", "at": "2026-09-24T00:10:00Z", "params": {}}

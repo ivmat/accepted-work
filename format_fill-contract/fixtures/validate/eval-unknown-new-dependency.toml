@@ -1,0 +1,9 @@
+fill_version = "0.1.0"
+template = "template-kit:full@v5"
+
+[[contracts]]
+file = "DUE_UNKNOWN.md"
+importance = "normal"
+urgency_after_due = "7d"
+filled_when = { any = [ { predicate = "no-marker" } ] }
+due_when = { any = [ { predicate = "new-dependency" } ] }

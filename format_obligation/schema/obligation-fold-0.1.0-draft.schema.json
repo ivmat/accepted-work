@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/accepted-work/obligation-fold-0.1.0-draft.schema.json",
+  "title": "Obligation fold report 0.1.0 draft",
+  "$defs": {
+    "error_item": {
+      "type": "object",
+      "properties": {
+        "code": {"type": "integer"},
+        "reason": {"type": "string"},
+        "duty_id": {"type": "string"},
+        "event_id": {"type": "string"},
+        "occurrence_id": {"type": "string"}
+      },
+      "required": ["code", "reason"],
+      "additionalProperties": false
+    },
+    "warning_item": {
+      "type": "object",
+      "properties": {
+        "reason": {"type": "string"},
+        "id": {"type": "string"},
+        "seq": {"type": "integer"}
+      },
+      "required": ["reason", "id", "seq"],
+      "additionalProperties": false
+    },
+    "duplicate_item": {
+      "type": "object",
+      "properties": {
+        "id": {"type": "string"},
+        "seq": {"type": "integer"},
+        "line": {"type": "integer"}
+      },
+      "required": ["id", "seq", "line"],
+      "additionalProperties": false
+    },
+    "occurrence": {
+      "type": "object",
+      "properties": {
+        "state": {"type": "string", "enum": ["open", "expired", "discharged", "dropped", "superseded", "invalid"]},
+        "contribution": {"type": "string", "enum": ["PASS", "PENDING", "FAIL", "WARN-recorded"]},
+        "reason": {"type": "string"}
+      },
+      "required": ["state", "contribution"],
+      "additionalProperties": false
+    },
+    "duty": {
+      "type": "object",
+      "properties": {
+        "id": {"type": "string"},
+        "state": {"type": "string", "enum": ["open", "expired", "discharged", "dropped", "superseded", "invalid"]},
+        "contribution": {"type": "string", "enum": ["PASS", "PENDING", "FAIL", "WARN-recorded"]},
+        "projection_reason": {"type": "string"},
+        "occurrences": {"type": "object", "additionalProperties": {"$ref": "#/$defs/occurrence"}}
+      },
+      "required": ["id", "state", "contribution", "occurrences"],
+      "additionalProperties": false
+    },
+    "required_action": {
+      "type": "object",
+      "properties": {
+        "kind": {"type": "string", "enum": ["obligation"]},
+        "duty_id": {"type": "string"},
+        "occurrence_id": {"type": ["string", "null"]},
+        "state": {"type": "string", "enum": ["open", "expired"]}
+      },
+      "required": ["kind", "duty_id", "occurrence_id", "state"],
+      "additionalProperties": false
+    },
+    "aggregate": {
+      "type": "object",
+      "properties": {
+        "block": {"type": "boolean"},
+        "required_actions": {"type": "array", "items": {"$ref": "#/$defs/required_action"}}
+      },
+      "required": ["block", "required_actions"],
+      "additionalProperties": false
+    },
+    "validation": {
+      "type": "object",
+      "properties": {
+        "status": {"type": "string", "enum": ["valid", "invalid", "unknown"]},
+        "exit_code": {"type": "integer"},
+        "errors": {"type": "array", "items": {"$ref": "#/$defs/error_item"}},
+        "warnings": {"type": "array", "items": {"$ref": "#/$defs/warning_item"}},
+        "duplicates_ignored": {"type": "array", "items": {"$ref": "#/$defs/duplicate_item"}}
+      },
+      "required": ["status", "exit_code", "errors", "warnings", "duplicates_ignored"],
+      "additionalProperties": false
+    },
+    "fold_report": {
+      "type": "object",
+      "properties": {
+        "boundary_id": {"type": ["string", "null"]},
+        "duties": {"type": "array", "items": {"$ref": "#/$defs/duty"}},
+        "aggregate": {"$ref": "#/$defs/aggregate"},
+        "validation": {"$ref": "#/$defs/validation"}
+      },
+      "required": ["boundary_id", "duties", "aggregate", "validation"],
+      "additionalProperties": false
+    }
+  },
+  "oneOf": [{"$ref": "#/$defs/fold_report"}]
+}

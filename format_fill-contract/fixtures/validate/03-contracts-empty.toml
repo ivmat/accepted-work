@@ -1,0 +1,3 @@
+fill_version = "0.1.0"
+template = "template-kit:full@v5"
+contracts = []

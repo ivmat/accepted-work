@@ -1,0 +1,13 @@
+trigger_version = "0.1.0"
+repo = "acme"
+
+[[triggers]]
+id = "spec-change-alert"
+retrigger = "every-event"
+
+[triggers.when]
+source = "acme:spec/"
+event = "path-changed"
+
+[triggers.when.params]
+paths = ["spec/**"]

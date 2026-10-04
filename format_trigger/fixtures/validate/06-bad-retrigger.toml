@@ -1,0 +1,10 @@
+trigger_version = "0.1.0"
+repo = "acme"
+
+[[triggers]]
+id = "t1"
+retrigger = "sometimes"
+
+[triggers.when]
+source = "acme"
+event = "instantiated"

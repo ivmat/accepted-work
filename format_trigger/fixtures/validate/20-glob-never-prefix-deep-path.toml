@@ -1,0 +1,13 @@
+trigger_version = "0.1.0"
+repo = "acme"
+
+[[triggers]]
+id = "never-prefix-deep-path"
+retrigger = "every-event"
+
+[triggers.when]
+source = "acme"
+event = "path-changed"
+
+[triggers.when.params]
+paths = ["never/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/**/a"]

@@ -1,0 +1,39 @@
+# Invented example edges file for a fictional service (not a record of a real repository).
+relation_version = "0.1.0"
+repo = "alpha-service"
+
+[[edges]]
+from = "alpha-service:docs/API.md"
+relation = "documents"
+to = "alpha-service:src/api/"
+note = "the API guide describes every public route under src/api/"
+
+[[edges]]
+from = "alpha-service:tests/"
+relation = "traces-to"
+to = "alpha-service:spec/"
+note = "the test suite traces to the written specification"
+
+[[edges]]
+from = "alpha-service:src/billing.py"
+relation = "traces-to"
+to = "alpha-service:spec/BILLING-SPEC.md"
+note = "billing.py implements the billing specification"
+
+[[edges]]
+from = "alpha-service:src/export.py"
+relation = "pins"
+to = "billing-lib:src/formats.py"
+note = "export.py pins the record formats of the billing library; a change there requires a re-pin"
+
+[[edges]]
+from = "alpha-service:CHANGELOG.md"
+relation = "records"
+to = "alpha-service:src/"
+note = "the changelog records changes to the source tree"
+
+[[edges]]
+from = "alpha-service:ci/pipeline.yaml"
+relation = "governs"
+to = "alpha-service:tests/"
+note = "the CI pipeline decides which tests run on every commit"

@@ -1,0 +1,16 @@
+fill_version = "0.1.0"
+template = "template-kit:full@v5"
+
+[[contracts]]
+file = "CMD_ALONE.md"
+importance = "normal"
+urgency_after_due = "7d"
+filled_when = { predicate = "command", shell = "true" }
+due_when = { any = [ { predicate = "instantiated" } ] }
+
+[[contracts]]
+file = "CMD_WITH_SIBLING.md"
+importance = "normal"
+urgency_after_due = "7d"
+filled_when = { any = [ { predicate = "command", shell = "true" }, { predicate = "no-marker" } ] }
+due_when = { any = [ { predicate = "instantiated" } ] }

@@ -1,0 +1,116 @@
+# Invented example rule set for a fictional Python billing service ("alpha-service"), not a
+# record of any real repository. Six rules: two event-triggered (a new-dependency note, a
+# template-tag-moved sync) and four changed-path-triggered (an export freeze, a billing-notes
+# parity check, a cross-repo schema pin, and a general Python source gate).
+impact_version = "0.1.0"
+repo = "alpha-service"
+
+[[rules]]
+id = "new-dependency-note"
+relation = "records"
+importance = "normal"
+urgency = "within:10d"
+
+[rules.when]
+event = "new-dependency"
+
+[rules.decided_by]
+detect = "program"
+fix = "model"
+
+[[rules.must_update]]
+target = "DEPENDENCIES.md"
+action = "update"
+
+[[rules]]
+id = "template-sync"
+relation = "template-of"
+importance = "low"
+urgency = "next-maturity-event"
+
+[rules.when]
+event = "template-tag-moved"
+
+[rules.decided_by]
+detect = "model"
+fix = "human"
+
+[[rules.must_update]]
+target = "docs/TEMPLATE-NOTES.md"
+action = "attend"
+
+[[rules]]
+id = "invoice-export-freeze"
+relation = "governs"
+importance = "critical"
+urgency = "before-commit"
+
+[rules.when]
+changed = ["exports/**"]
+
+[rules.decided_by]
+detect = "program"
+fix = "human"
+
+[[rules.must_update]]
+target = "EXPORT-FREEZE.md"
+action = "re-verify"
+check = "python3 tools/export_digest.py --verify"
+
+[[rules]]
+id = "billing-notes-parity"
+relation = "depends-on"
+importance = "high"
+urgency = "same-session"
+
+[rules.when]
+changed = ["src/billing_state*.py"]
+
+[rules.decided_by]
+detect = "program"
+fix = "model"
+
+[[rules.must_update]]
+target = "docs/BILLING-NOTES.md"
+action = "update"
+note = "refresh the billing-notes cross-check"
+
+[[rules.must_update]]
+target = "docs/CHANGELOG.md"
+action = "attend"
+note = "record the billing-state change"
+
+[[rules]]
+id = "cross-repo-schema-pin"
+relation = "pins"
+importance = "high"
+urgency = "within:14d"
+
+[rules.when]
+changed = ["shared-schemas:billing/invoice.schema.json"]
+
+[rules.decided_by]
+detect = "model"
+fix = "program"
+
+[[rules.must_update]]
+target = "src/billing_state.py"
+action = "re-verify"
+check = "pytest tests/test_invoice_schema.py"
+
+[[rules]]
+id = "python-source-gates"
+relation = "governs"
+importance = "normal"
+urgency = "before-commit"
+
+[rules.when]
+changed = ["src/**/*.py"]
+
+[rules.decided_by]
+detect = "program"
+fix = "model"
+
+[[rules.must_update]]
+target = "lint gate"
+action = "re-verify"

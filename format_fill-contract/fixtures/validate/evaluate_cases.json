@@ -1,0 +1,57 @@
+{
+  "digest": "fill_evaluate.py --selftest driver. Covers every one of the five states (not-due, due, overdue, filled, unknown), the three filled_when routes (marker removal, stamp, rows-beyond-template) each paired with a negative control, the two named unknown routes (an always-unknown predicate result, and a due_when naming an unobserved maturity event), a retrigger-carried-not-evaluated note, and the two file-missing/unrecorded unknown routes. `--obligations` is exercised on the due/overdue cases.",
+  "cases": [
+    { "name": "not-due", "contract": "eval-due-state.toml", "observations": "eval-obs-not-due.json",
+      "now": "2026-09-01", "expected_states": { "PROGRESS.md": "not-due" } },
+
+    { "name": "not-due-because-due-at-is-after-now", "contract": "eval-due-state.toml",
+      "observations": "eval-obs-due.json", "now": "2026-09-02",
+      "expected_states": { "PROGRESS.md": "not-due" } },
+
+    { "name": "due", "contract": "eval-due-state.toml", "observations": "eval-obs-due.json",
+      "now": "2026-09-08", "expected_states": { "PROGRESS.md": "due" },
+      "obligations": true, "expect_obligation_files": ["PROGRESS.md"] },
+
+    { "name": "overdue", "contract": "eval-due-state.toml", "observations": "eval-obs-overdue.json",
+      "now": "2026-09-20", "expected_states": { "PROGRESS.md": "overdue" },
+      "obligations": true, "expect_obligation_files": ["PROGRESS.md"] },
+
+    { "name": "filled-via-marker-removal", "contract": "eval-filled-marker.toml",
+      "observations": "eval-obs-filled-marker.json", "now": "2026-09-10",
+      "expected_states": { "MARKED.md": "filled" } },
+    { "name": "not-filled-marker-present (negative control)", "contract": "eval-filled-marker.toml",
+      "observations": "eval-obs-not-filled-marker.json", "now": "2026-09-10",
+      "expected_states": { "MARKED.md": "overdue" } },
+
+    { "name": "filled-via-stamp", "contract": "eval-filled-stamp.toml",
+      "observations": "eval-obs-filled-stamp.json", "now": "2026-09-10",
+      "expected_states": { "STAMPED.md": "filled" } },
+    { "name": "not-filled-stamp-absent (negative control)", "contract": "eval-filled-stamp.toml",
+      "observations": "eval-obs-not-filled-stamp.json", "now": "2026-09-10",
+      "expected_states": { "STAMPED.md": "overdue" } },
+
+    { "name": "filled-via-rows-beyond-template", "contract": "eval-filled-rows.toml",
+      "observations": "eval-obs-filled-rows.json", "now": "2026-09-10",
+      "expected_states": { "ROWS.md": "filled" } },
+    { "name": "not-filled-rows-not-beyond-template (negative control)", "contract": "eval-filled-rows.toml",
+      "observations": "eval-obs-not-filled-rows.json", "now": "2026-09-10",
+      "expected_states": { "ROWS.md": "overdue" } },
+
+    { "name": "unknown-via-command-predicate (+ any-sibling-dominance proof)",
+      "contract": "eval-unknown-command.toml", "observations": "eval-obs-unknown-command.json",
+      "now": "2026-09-10",
+      "expected_states": { "CMD_ALONE.md": "unknown", "CMD_WITH_SIBLING.md": "filled" } },
+
+    { "name": "unknown-via-new-dependency-due-event", "contract": "eval-unknown-new-dependency.toml",
+      "observations": "eval-obs-unknown-new-dependency.json", "now": "2026-09-10",
+      "expected_states": { "DUE_UNKNOWN.md": "unknown" } },
+
+    { "name": "retrigger-note-carried-not-evaluated", "contract": "eval-retrigger-note.toml",
+      "observations": "eval-obs-retrigger-note.json", "now": "2026-09-10",
+      "expected_states": { "RETRIG.md": "filled" } },
+
+    { "name": "unknown-file-missing-and-unrecorded", "contract": "eval-no-observation.toml",
+      "observations": "eval-obs-no-observation.json", "now": "2026-09-10",
+      "expected_states": { "GHOST.md": "unknown", "UNRECORDED.md": "unknown" } }
+  ]
+}

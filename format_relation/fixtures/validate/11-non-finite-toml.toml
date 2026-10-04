@@ -1,0 +1,7 @@
+relation_version = "0.1.0"
+repo = "alpha-service"
+edges = []
+# H1 regression: non-finite TOML floats anywhere in the document are rejected at load time, before
+# any shape validation runs -- nested in an array, at depth > 1, to prove the walk is not top-level
+# only.
+non_finite_probe = [nan, inf, -inf]

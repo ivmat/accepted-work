@@ -1,0 +1,2636 @@
+{
+  "cases": [
+    {
+      "name": "admission-invalid-mint-still-claims-natural-key",
+      "events": "admission-invalid-mint-still-claims-natural-key.events.jsonl",
+      "boundary": "admission-invalid-mint-still-claims-natural-key.boundary.json",
+      "category": "admission-fixed-point",
+      "expected_exit": 11,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 11,
+          "reason": "event.actor must be a string",
+          "duty_id": "duplicate",
+          "event_id": "duplicate"
+        },
+        {
+          "code": 13,
+          "reason": "natural_key is claimed by duties outside one valid reciprocal chain",
+          "duty_id": "obl-ordinary"
+        }
+      ],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-ordinary",
+          "occurrence_id": "sha256:1fd4b859f45162837b9169f3c3f09ee66ce65a2fd72952403d7dd9386d2c07e5",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "duplicate",
+          "state": "invalid",
+          "contribution": "FAIL"
+        },
+        {
+          "id": "obl-ordinary",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "migrated-ordinary-discharge-current-evaluation",
+      "events": "migrated-ordinary-discharge-current-evaluation.events.jsonl",
+      "boundary": "migrated-ordinary-discharge-current-evaluation.boundary.json",
+      "category": "migrated",
+      "expected_exit": 0,
+      "expected_block": false,
+      "expected_required_actions": [],
+      "expected_errors": [],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-ordinary",
+          "occurrence_id": "sha256:1fd4b859f45162837b9169f3c3f09ee66ce65a2fd72952403d7dd9386d2c07e5",
+          "state": "discharged",
+          "contribution": "PASS"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-ordinary",
+          "state": "discharged",
+          "contribution": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "migrated-second-checkpoint-occurrence",
+      "events": "migrated-second-checkpoint-occurrence.events.jsonl",
+      "boundary": "migrated-second-checkpoint-occurrence.boundary.json",
+      "category": "migrated",
+      "expected_exit": 0,
+      "expected_block": false,
+      "expected_required_actions": [
+        {
+          "kind": "obligation",
+          "duty_id": "obl-checkpoint",
+          "occurrence_id": "sha256:6fad86a2f1586b7569f1431d4fdbfbc4dcc166bd2580f22a800b44599b9923cc",
+          "state": "open"
+        },
+        {
+          "kind": "obligation",
+          "duty_id": "obl-checkpoint",
+          "occurrence_id": "sha256:a0fccf296cd9eb1b74f2a73e9e40d55325a231e65351572b36ee2e530c87f677",
+          "state": "open"
+        }
+      ],
+      "expected_errors": [],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-checkpoint",
+          "occurrence_id": "sha256:6fad86a2f1586b7569f1431d4fdbfbc4dcc166bd2580f22a800b44599b9923cc",
+          "state": "open",
+          "contribution": "WARN-recorded"
+        },
+        {
+          "duty_id": "obl-checkpoint",
+          "occurrence_id": "sha256:a0fccf296cd9eb1b74f2a73e9e40d55325a231e65351572b36ee2e530c87f677",
+          "state": "open",
+          "contribution": "WARN-recorded"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-checkpoint",
+          "state": "open",
+          "contribution": "WARN-recorded"
+        }
+      ]
+    },
+    {
+      "name": "migrated-zero-event-batch-with-open-duty",
+      "events": "migrated-zero-event-batch-with-open-duty.events.jsonl",
+      "boundary": "migrated-zero-event-batch-with-open-duty.boundary.json",
+      "category": "migrated",
+      "expected_exit": 19,
+      "expected_block": true,
+      "expected_required_actions": [
+        {
+          "kind": "obligation",
+          "duty_id": "obl-zero",
+          "occurrence_id": "sha256:2e986c2538c42129966b697e12a11b6a3f947fddf21a5f3770fa73e92a192c93",
+          "state": "open"
+        }
+      ],
+      "expected_errors": [
+        {
+          "code": 19,
+          "reason": "observation manifest does not enumerate the exact required kinds",
+          "duty_id": "obl-zero",
+          "occurrence_id": "sha256:2e986c2538c42129966b697e12a11b6a3f947fddf21a5f3770fa73e92a192c93"
+        },
+        {
+          "code": 19,
+          "reason": "zero-event batch is invalid while an in-scope duty is open"
+        }
+      ],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-zero",
+          "occurrence_id": "sha256:2e986c2538c42129966b697e12a11b6a3f947fddf21a5f3770fa73e92a192c93",
+          "state": "open",
+          "contribution": "FAIL"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-zero",
+          "state": "open",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "migrated-garbage-required-by",
+      "events": "migrated-garbage-required-by.events.jsonl",
+      "boundary": "migrated-garbage-required-by.boundary.json",
+      "category": "migrated",
+      "expected_exit": 11,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 11,
+          "reason": "fired.required_by must be an ISO date or boundary:<id>",
+          "duty_id": "obl-garbage",
+          "event_id": "obl-garbage",
+          "occurrence_id": "sha256:d0cfa57137f8e71eb8d1ef1b37781859a9c08286b8484f8582fa8672ed77b81e"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": [
+        {
+          "id": "obl-garbage",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "migrated-migration-ordering-counterexample-fails",
+      "events": "migrated-migration-ordering-counterexample-fails.events.jsonl",
+      "boundary": "migrated-migration-ordering-counterexample-fails.boundary.json",
+      "category": "migrated",
+      "expected_exit": 17,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 17,
+          "reason": "source migration requires later stale_detected coverage for every invalidated evaluation",
+          "duty_id": "obl-migration",
+          "event_id": "obl-migration",
+          "occurrence_id": "sha256:fee80d2305cbdc37747a5f30a337fad3317085ddde71371159c9e13e091a556b"
+        },
+        {
+          "code": 17,
+          "reason": "current evaluation does not revalidate against final folded bindings",
+          "duty_id": "obl-migration",
+          "occurrence_id": "sha256:fee80d2305cbdc37747a5f30a337fad3317085ddde71371159c9e13e091a556b"
+        }
+      ],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-migration",
+          "occurrence_id": "sha256:fee80d2305cbdc37747a5f30a337fad3317085ddde71371159c9e13e091a556b",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-migration",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "migrated-redelivery-conflict",
+      "events": "migrated-redelivery-conflict.events.jsonl",
+      "boundary": "migrated-redelivery-conflict.boundary.json",
+      "category": "migrated",
+      "expected_exit": 13,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 13,
+          "reason": "redelivered occurrence has conflicting bindings",
+          "duty_id": "obl-redelivery",
+          "event_id": "obl-redelivery",
+          "occurrence_id": "sha256:e88f936b4557e35f9435928bf04911f9ec8f39b0edd128feaf52df76c3ed47ff"
+        }
+      ],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-redelivery",
+          "occurrence_id": "sha256:e88f936b4557e35f9435928bf04911f9ec8f39b0edd128feaf52df76c3ed47ff",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-redelivery",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "migrated-natural-key-collision-rejects-both",
+      "events": "migrated-natural-key-collision-rejects-both.events.jsonl",
+      "boundary": "migrated-natural-key-collision-rejects-both.boundary.json",
+      "category": "migrated",
+      "expected_exit": 13,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 13,
+          "reason": "natural_key is claimed by duties outside one valid reciprocal chain",
+          "duty_id": "obl-collision-a"
+        },
+        {
+          "code": 13,
+          "reason": "natural_key is claimed by duties outside one valid reciprocal chain",
+          "duty_id": "obl-collision-b"
+        }
+      ],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-collision-a",
+          "occurrence_id": "sha256:1c9e4351b19626954c0fd184468712b19ae1895989fc5b711baea72b344a15c0",
+          "state": "invalid",
+          "contribution": "FAIL"
+        },
+        {
+          "duty_id": "obl-collision-b",
+          "occurrence_id": "sha256:e754dd3f1bb43572c7829600e141f0573d5b7da80a7c59eeb796e044469040aa",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-collision-a",
+          "state": "invalid",
+          "contribution": "FAIL"
+        },
+        {
+          "id": "obl-collision-b",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "migrated-observation-boundary-mismatch",
+      "events": "migrated-observation-boundary-mismatch.events.jsonl",
+      "boundary": "migrated-observation-boundary-mismatch.boundary.json",
+      "category": "migrated",
+      "expected_exit": 19,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 19,
+          "reason": "required observation is absent or not bound to this boundary snapshot",
+          "duty_id": "obl-ordinary",
+          "event_id": "obl-ordinary#3",
+          "occurrence_id": "sha256:1fd4b859f45162837b9169f3c3f09ee66ce65a2fd72952403d7dd9386d2c07e5"
+        }
+      ],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-ordinary",
+          "occurrence_id": "sha256:1fd4b859f45162837b9169f3c3f09ee66ce65a2fd72952403d7dd9386d2c07e5",
+          "state": "discharged",
+          "contribution": "FAIL"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-ordinary",
+          "state": "discharged",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "migrated-due-and-open",
+      "events": "migrated-due-and-open.events.jsonl",
+      "boundary": "migrated-due-and-open.boundary.json",
+      "category": "migrated",
+      "expected_exit": 1,
+      "expected_block": true,
+      "expected_required_actions": [
+        {
+          "kind": "obligation",
+          "duty_id": "obl-due",
+          "occurrence_id": "sha256:ace9ddf755e9379543037769dcba8cc39a65827a9a464636e94059bc95f571f0",
+          "state": "expired"
+        }
+      ],
+      "expected_errors": [],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-due",
+          "occurrence_id": "sha256:ace9ddf755e9379543037769dcba8cc39a65827a9a464636e94059bc95f571f0",
+          "state": "expired",
+          "contribution": "FAIL"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-due",
+          "state": "expired",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "migrated-unknown-kind",
+      "events": "migrated-unknown-kind.events.jsonl",
+      "boundary": "migrated-unknown-kind.boundary.json",
+      "category": "migrated",
+      "expected_exit": 10,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 10,
+          "reason": "unknown event kind: 'invented'",
+          "duty_id": "obl-garbage",
+          "event_id": "obl-garbage"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": [
+        {
+          "id": "obl-garbage",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "migrated-unresolved-activation-operand",
+      "events": "migrated-unresolved-activation-operand.events.jsonl",
+      "boundary": "migrated-unresolved-activation-operand.boundary.json",
+      "category": "migrated",
+      "expected_exit": 13,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 13,
+          "reason": "unresolved discharge predicate rejects activation",
+          "duty_id": "obl-garbage",
+          "event_id": "obl-garbage"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": [
+        {
+          "id": "obl-garbage",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "migrated-unknown-occurrence",
+      "events": "migrated-unknown-occurrence.events.jsonl",
+      "boundary": "migrated-unknown-occurrence.boundary.json",
+      "category": "migrated",
+      "expected_exit": 14,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 14,
+          "reason": "deadline_crossed names an unknown occurrence",
+          "duty_id": "obl-invalid",
+          "event_id": "obl-invalid",
+          "occurrence_id": "sha256:fdc8a8d6948e3718167496b50904107746b4adfce2924f84cfbb624a8020ddef"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": [
+        {
+          "id": "obl-invalid",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "migrated-illegal-transition",
+      "events": "migrated-illegal-transition.events.jsonl",
+      "boundary": "migrated-illegal-transition.boundary.json",
+      "category": "migrated",
+      "expected_exit": 15,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 15,
+          "reason": "first retained row event must be minted",
+          "duty_id": "obl-garbage"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": [
+        {
+          "id": "obl-garbage",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "migrated-sequence-gap",
+      "events": "migrated-sequence-gap.events.jsonl",
+      "boundary": "migrated-sequence-gap.boundary.json",
+      "category": "migrated",
+      "expected_exit": 16,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 16,
+          "reason": "per-duty seq must start at 1 and have no gaps",
+          "duty_id": "obl-garbage"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": [
+        {
+          "id": "obl-garbage",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "migrated-malformed-input",
+      "events": "migrated-malformed-input.events.jsonl",
+      "boundary": "migrated-malformed-input.boundary.json",
+      "category": "migrated",
+      "expected_exit": 65,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 65,
+          "reason": "invalid JSON or duplicate keys at migrated-malformed-input.events.jsonl:1"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "migrated-caller-supplied-clock",
+      "events": "migrated-caller-supplied-clock.events.jsonl",
+      "boundary": "migrated-caller-supplied-clock.boundary.json",
+      "category": "migrated",
+      "expected_exit": 18,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 18,
+          "reason": "caller-supplied clock field is forbidden"
+        }
+      ],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-ordinary",
+          "occurrence_id": "sha256:1fd4b859f45162837b9169f3c3f09ee66ce65a2fd72952403d7dd9386d2c07e5",
+          "state": "discharged",
+          "contribution": "FAIL"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-ordinary",
+          "state": "discharged",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "migrated-invalid-predicate-binding",
+      "events": "migrated-invalid-predicate-binding.events.jsonl",
+      "boundary": "migrated-invalid-predicate-binding.boundary.json",
+      "category": "migrated",
+      "expected_exit": 17,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 17,
+          "reason": "predicate evaluation bindings are invalid",
+          "duty_id": "obl-binding",
+          "event_id": "obl-binding",
+          "occurrence_id": "sha256:24a373f0b10979cb8f0412daef43848669dc420f2ce85af57b917d78be7355d1"
+        }
+      ],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-binding",
+          "occurrence_id": "sha256:24a373f0b10979cb8f0412daef43848669dc420f2ce85af57b917d78be7355d1",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-binding",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "due-date-fresh",
+      "events": "due-date-fresh.events.jsonl",
+      "boundary": "due-date-fresh.boundary.json",
+      "category": "migrated",
+      "expected_exit": 0,
+      "expected_block": false,
+      "expected_required_actions": [
+        {
+          "kind": "obligation",
+          "duty_id": "obl-date",
+          "occurrence_id": "sha256:be44d0f81d3ddb42a34bf61f292d080d343a6f26826cd63a3f81d9c17233044b",
+          "state": "open"
+        }
+      ],
+      "expected_errors": [],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-date",
+          "occurrence_id": "sha256:be44d0f81d3ddb42a34bf61f292d080d343a6f26826cd63a3f81d9c17233044b",
+          "state": "open",
+          "contribution": "WARN-recorded"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-date",
+          "state": "open",
+          "contribution": "WARN-recorded"
+        }
+      ]
+    },
+    {
+      "name": "early-crossing-rejected",
+      "events": "early-crossing-rejected.events.jsonl",
+      "boundary": "early-crossing-rejected.boundary.json",
+      "category": "migrated",
+      "expected_exit": 17,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 17,
+          "reason": "deadline_crossed.at precedes the end of required_by in Europe/Zagreb",
+          "duty_id": "obl-date",
+          "event_id": "obl-date",
+          "occurrence_id": "sha256:be44d0f81d3ddb42a34bf61f292d080d343a6f26826cd63a3f81d9c17233044b"
+        }
+      ],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-date",
+          "occurrence_id": "sha256:be44d0f81d3ddb42a34bf61f292d080d343a6f26826cd63a3f81d9c17233044b",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-date",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "midnight-fresh",
+      "events": "midnight-fresh.events.jsonl",
+      "boundary": "midnight-fresh.boundary.json",
+      "category": "migrated",
+      "expected_exit": 1,
+      "expected_block": true,
+      "expected_required_actions": [
+        {
+          "kind": "obligation",
+          "duty_id": "obl-date",
+          "occurrence_id": "sha256:be44d0f81d3ddb42a34bf61f292d080d343a6f26826cd63a3f81d9c17233044b",
+          "state": "expired"
+        }
+      ],
+      "expected_errors": [],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-date",
+          "occurrence_id": "sha256:be44d0f81d3ddb42a34bf61f292d080d343a6f26826cd63a3f81d9c17233044b",
+          "state": "expired",
+          "contribution": "FAIL"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-date",
+          "state": "expired",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "midnight-missing-crossing",
+      "events": "midnight-missing-crossing.events.jsonl",
+      "boundary": "midnight-missing-crossing.boundary.json",
+      "category": "migrated",
+      "expected_exit": 19,
+      "expected_block": true,
+      "expected_required_actions": [
+        {
+          "kind": "obligation",
+          "duty_id": "obl-date",
+          "occurrence_id": "sha256:be44d0f81d3ddb42a34bf61f292d080d343a6f26826cd63a3f81d9c17233044b",
+          "state": "open"
+        }
+      ],
+      "expected_errors": [
+        {
+          "code": 19,
+          "reason": "observation manifest does not enumerate the exact required kinds",
+          "duty_id": "obl-date",
+          "occurrence_id": "sha256:be44d0f81d3ddb42a34bf61f292d080d343a6f26826cd63a3f81d9c17233044b"
+        }
+      ],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-date",
+          "occurrence_id": "sha256:be44d0f81d3ddb42a34bf61f292d080d343a6f26826cd63a3f81d9c17233044b",
+          "state": "open",
+          "contribution": "FAIL"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-date",
+          "state": "open",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "winter-before-midnight",
+      "events": "winter-before-midnight.events.jsonl",
+      "boundary": "winter-before-midnight.boundary.json",
+      "category": "migrated",
+      "expected_exit": 0,
+      "expected_block": false,
+      "expected_required_actions": [
+        {
+          "kind": "obligation",
+          "duty_id": "obl-date",
+          "occurrence_id": "sha256:be44d0f81d3ddb42a34bf61f292d080d343a6f26826cd63a3f81d9c17233044b",
+          "state": "open"
+        }
+      ],
+      "expected_errors": [],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-date",
+          "occurrence_id": "sha256:be44d0f81d3ddb42a34bf61f292d080d343a6f26826cd63a3f81d9c17233044b",
+          "state": "open",
+          "contribution": "WARN-recorded"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-date",
+          "state": "open",
+          "contribution": "WARN-recorded"
+        }
+      ]
+    },
+    {
+      "name": "winter-midnight",
+      "events": "winter-midnight.events.jsonl",
+      "boundary": "winter-midnight.boundary.json",
+      "category": "migrated",
+      "expected_exit": 1,
+      "expected_block": true,
+      "expected_required_actions": [
+        {
+          "kind": "obligation",
+          "duty_id": "obl-date",
+          "occurrence_id": "sha256:be44d0f81d3ddb42a34bf61f292d080d343a6f26826cd63a3f81d9c17233044b",
+          "state": "expired"
+        }
+      ],
+      "expected_errors": [],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-date",
+          "occurrence_id": "sha256:be44d0f81d3ddb42a34bf61f292d080d343a6f26826cd63a3f81d9c17233044b",
+          "state": "expired",
+          "contribution": "FAIL"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-date",
+          "state": "expired",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "dst-change-midnight",
+      "events": "dst-change-midnight.events.jsonl",
+      "boundary": "dst-change-midnight.boundary.json",
+      "category": "migrated",
+      "expected_exit": 1,
+      "expected_block": true,
+      "expected_required_actions": [
+        {
+          "kind": "obligation",
+          "duty_id": "obl-date",
+          "occurrence_id": "sha256:be44d0f81d3ddb42a34bf61f292d080d343a6f26826cd63a3f81d9c17233044b",
+          "state": "expired"
+        }
+      ],
+      "expected_errors": [],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-date",
+          "occurrence_id": "sha256:be44d0f81d3ddb42a34bf61f292d080d343a6f26826cd63a3f81d9c17233044b",
+          "state": "expired",
+          "contribution": "FAIL"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-date",
+          "state": "expired",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "later-occurrence",
+      "events": "later-occurrence.events.jsonl",
+      "boundary": "later-occurrence.boundary.json",
+      "category": "migrated",
+      "expected_exit": 0,
+      "expected_block": false,
+      "expected_required_actions": [
+        {
+          "kind": "obligation",
+          "duty_id": "obl-weekly-checkpoint",
+          "occurrence_id": "sha256:7d1fd045e0d5088b1da0092ba633267bb084e46826e5a9d06f5cc3ee704b546a",
+          "state": "open"
+        },
+        {
+          "kind": "obligation",
+          "duty_id": "obl-weekly-checkpoint",
+          "occurrence_id": "sha256:e84a90b96a2cc5a51a0ff88bfcc9096bc1e2cd26d70f2c577eb5f08516a3c0a7",
+          "state": "open"
+        }
+      ],
+      "expected_errors": [],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-weekly-checkpoint",
+          "occurrence_id": "sha256:7d1fd045e0d5088b1da0092ba633267bb084e46826e5a9d06f5cc3ee704b546a",
+          "state": "open",
+          "contribution": "WARN-recorded"
+        },
+        {
+          "duty_id": "obl-weekly-checkpoint",
+          "occurrence_id": "sha256:e84a90b96a2cc5a51a0ff88bfcc9096bc1e2cd26d70f2c577eb5f08516a3c0a7",
+          "state": "open",
+          "contribution": "WARN-recorded"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-weekly-checkpoint",
+          "state": "open",
+          "contribution": "WARN-recorded"
+        }
+      ]
+    },
+    {
+      "name": "existing-occurrence-loosening-rejected",
+      "events": "existing-occurrence-loosening-rejected.events.jsonl",
+      "boundary": "existing-occurrence-loosening-rejected.boundary.json",
+      "category": "migrated",
+      "expected_exit": 17,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 17,
+          "reason": "firing required_by loosens the duty deadline rule",
+          "duty_id": "obl-weekly-checkpoint",
+          "event_id": "obl-weekly-checkpoint",
+          "occurrence_id": "sha256:e84a90b96a2cc5a51a0ff88bfcc9096bc1e2cd26d70f2c577eb5f08516a3c0a7"
+        }
+      ],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-weekly-checkpoint",
+          "occurrence_id": "sha256:7d1fd045e0d5088b1da0092ba633267bb084e46826e5a9d06f5cc3ee704b546a",
+          "state": "invalid",
+          "contribution": "FAIL"
+        },
+        {
+          "duty_id": "obl-weekly-checkpoint",
+          "occurrence_id": "sha256:e84a90b96a2cc5a51a0ff88bfcc9096bc1e2cd26d70f2c577eb5f08516a3c0a7",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-weekly-checkpoint",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "once-loosening-rejected",
+      "events": "once-loosening-rejected.events.jsonl",
+      "boundary": "once-loosening-rejected.boundary.json",
+      "category": "migrated",
+      "expected_exit": 17,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 17,
+          "reason": "firing required_by loosens the duty deadline rule",
+          "duty_id": "obl-once",
+          "event_id": "obl-once",
+          "occurrence_id": "sha256:2ce517f62a78a7d4c4ba5a0c37fe65875bb22489187cae280aa89a1c4dc59d92"
+        }
+      ],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-once",
+          "occurrence_id": "sha256:2ce517f62a78a7d4c4ba5a0c37fe65875bb22489187cae280aa89a1c4dc59d92",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-once",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "unicode",
+      "events": "unicode.events.jsonl",
+      "boundary": "unicode.boundary.json",
+      "category": "migrated",
+      "expected_exit": 0,
+      "expected_block": false,
+      "expected_required_actions": [],
+      "expected_errors": [],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-ordinary",
+          "occurrence_id": "sha256:1fd4b859f45162837b9169f3c3f09ee66ce65a2fd72952403d7dd9386d2c07e5",
+          "state": "discharged",
+          "contribution": "PASS"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-ordinary",
+          "state": "discharged",
+          "contribution": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "unicode-crlf",
+      "events": "unicode-crlf.events.jsonl",
+      "boundary": "unicode-crlf.boundary.json",
+      "category": "migrated",
+      "expected_exit": 0,
+      "expected_block": false,
+      "expected_required_actions": [],
+      "expected_errors": [],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-ordinary",
+          "occurrence_id": "sha256:1fd4b859f45162837b9169f3c3f09ee66ce65a2fd72952403d7dd9386d2c07e5",
+          "state": "discharged",
+          "contribution": "PASS"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-ordinary",
+          "state": "discharged",
+          "contribution": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "unicode-no-final-lf",
+      "events": "unicode-no-final-lf.events.jsonl",
+      "boundary": "unicode-no-final-lf.boundary.json",
+      "category": "migrated",
+      "expected_exit": 0,
+      "expected_block": false,
+      "expected_required_actions": [],
+      "expected_errors": [],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-ordinary",
+          "occurrence_id": "sha256:1fd4b859f45162837b9169f3c3f09ee66ce65a2fd72952403d7dd9386d2c07e5",
+          "state": "discharged",
+          "contribution": "PASS"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-ordinary",
+          "state": "discharged",
+          "contribution": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "jsonl-invalid-utf8",
+      "events": "jsonl-invalid-utf8.events.jsonl",
+      "boundary": "jsonl-invalid-utf8.boundary.json",
+      "category": "migrated",
+      "expected_exit": 65,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 65,
+          "reason": "invalid JSON or duplicate keys at jsonl-invalid-utf8.events.jsonl:2"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "bare-cr-separator",
+      "events": "bare-cr-separator.events.jsonl",
+      "boundary": "bare-cr-separator.boundary.json",
+      "category": "migrated",
+      "expected_exit": 0,
+      "expected_block": false,
+      "expected_required_actions": [],
+      "expected_errors": [],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-ordinary",
+          "occurrence_id": "sha256:1fd4b859f45162837b9169f3c3f09ee66ce65a2fd72952403d7dd9386d2c07e5",
+          "state": "discharged",
+          "contribution": "PASS"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-ordinary",
+          "state": "discharged",
+          "contribution": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "bare-cr-final",
+      "events": "bare-cr-final.events.jsonl",
+      "boundary": "bare-cr-final.boundary.json",
+      "category": "migrated",
+      "expected_exit": 0,
+      "expected_block": false,
+      "expected_required_actions": [],
+      "expected_errors": [],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-ordinary",
+          "occurrence_id": "sha256:1fd4b859f45162837b9169f3c3f09ee66ce65a2fd72952403d7dd9386d2c07e5",
+          "state": "discharged",
+          "contribution": "PASS"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-ordinary",
+          "state": "discharged",
+          "contribution": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "migrated-line-metadata-collision-rejected",
+      "events": "migrated-line-metadata-collision-rejected.events.jsonl",
+      "boundary": "migrated-line-metadata-collision-rejected.boundary.json",
+      "category": "migrated",
+      "expected_exit": 10,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 10,
+          "reason": "event must contain exactly the closed envelope fields",
+          "duty_id": "obl-garbage",
+          "event_id": "obl-garbage"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": [
+        {
+          "id": "obl-garbage",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "migrated-iso-week-date-recorded-at-rejected",
+      "events": "migrated-iso-week-date-recorded-at-rejected.events.jsonl",
+      "boundary": "migrated-iso-week-date-recorded-at-rejected.boundary.json",
+      "category": "migrated",
+      "expected_exit": 11,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 11,
+          "reason": "recorded_at must be RFC3339 with an offset",
+          "duty_id": "obl-garbage",
+          "event_id": "obl-garbage"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": [
+        {
+          "id": "obl-garbage",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "migrated-offset-minutes-out-of-range-rejected",
+      "events": "migrated-offset-minutes-out-of-range-rejected.events.jsonl",
+      "boundary": "migrated-offset-minutes-out-of-range-rejected.boundary.json",
+      "category": "migrated",
+      "expected_exit": 11,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 11,
+          "reason": "recorded_at must be RFC3339 with an offset",
+          "duty_id": "obl-garbage",
+          "event_id": "obl-garbage"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": [
+        {
+          "id": "obl-garbage",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "migrated-lowercase-t-z-cutoff-accepted",
+      "events": "migrated-lowercase-t-z-cutoff-accepted.events.jsonl",
+      "boundary": "migrated-lowercase-t-z-cutoff-accepted.boundary.json",
+      "category": "migrated",
+      "expected_exit": 0,
+      "expected_block": false,
+      "expected_required_actions": [],
+      "expected_errors": [],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-ordinary",
+          "occurrence_id": "sha256:1fd4b859f45162837b9169f3c3f09ee66ce65a2fd72952403d7dd9386d2c07e5",
+          "state": "discharged",
+          "contribution": "PASS"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-ordinary",
+          "state": "discharged",
+          "contribution": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "migrated-hour-24-rejected",
+      "events": "migrated-hour-24-rejected.events.jsonl",
+      "boundary": "migrated-hour-24-rejected.boundary.json",
+      "category": "migrated",
+      "expected_exit": 11,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 11,
+          "reason": "recorded_at must be RFC3339 with an offset",
+          "duty_id": "obl-garbage",
+          "event_id": "obl-garbage"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": [
+        {
+          "id": "obl-garbage",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "migrated-non-ascii-digit-rejected",
+      "events": "migrated-non-ascii-digit-rejected.events.jsonl",
+      "boundary": "migrated-non-ascii-digit-rejected.boundary.json",
+      "category": "migrated",
+      "expected_exit": 11,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 11,
+          "reason": "recorded_at must be RFC3339 with an offset",
+          "duty_id": "obl-garbage",
+          "event_id": "obl-garbage"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": [
+        {
+          "id": "obl-garbage",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "fraction-over-six-digits-rejected",
+      "events": "fraction-over-six-digits-rejected.events.jsonl",
+      "boundary": "fraction-over-six-digits-rejected.boundary.json",
+      "category": "migrated",
+      "expected_exit": 11,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 11,
+          "reason": "recorded_at must be RFC3339 with an offset",
+          "duty_id": "obl-garbage",
+          "event_id": "obl-garbage"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": [
+        {
+          "id": "obl-garbage",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "migrated-year-9999-rejected",
+      "events": "migrated-year-9999-rejected.events.jsonl",
+      "boundary": "migrated-year-9999-rejected.boundary.json",
+      "category": "migrated",
+      "expected_exit": 11,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 11,
+          "reason": "recorded_at must be RFC3339 with an offset",
+          "duty_id": "obl-garbage",
+          "event_id": "obl-garbage"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": [
+        {
+          "id": "obl-garbage",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "migrated-year-0001-rejected",
+      "events": "migrated-year-0001-rejected.events.jsonl",
+      "boundary": "migrated-year-0001-rejected.boundary.json",
+      "category": "migrated",
+      "expected_exit": 11,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 11,
+          "reason": "recorded_at must be RFC3339 with an offset",
+          "duty_id": "obl-garbage",
+          "event_id": "obl-garbage"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": [
+        {
+          "id": "obl-garbage",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "migrated-lone-surrogate-in-event-is-input-error-not-a-crash",
+      "events": "migrated-lone-surrogate-in-event-is-input-error-not-a-crash.events.jsonl",
+      "boundary": "migrated-lone-surrogate-in-event-is-input-error-not-a-crash.boundary.json",
+      "category": "migrated",
+      "expected_exit": 65,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 65,
+          "reason": "a string cannot encode as UTF-8 (contains a lone UTF-16 surrogate): '\\ud800' at migrated-lone-surrogate-in-event-is-input-error-not-a-crash.events.jsonl:1"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "migrated-duplicate-key-surrogate-overwrite-is-rejected",
+      "events": "migrated-duplicate-key-surrogate-overwrite-is-rejected.events.jsonl",
+      "boundary": "migrated-duplicate-key-surrogate-overwrite-is-rejected.boundary.json",
+      "category": "migrated",
+      "expected_exit": 65,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 65,
+          "reason": "invalid JSON or duplicate keys at migrated-duplicate-key-surrogate-overwrite-is-rejected.events.jsonl:1"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "migrated-nan-constant-is-rejected",
+      "events": "migrated-nan-constant-is-rejected.events.jsonl",
+      "boundary": "migrated-nan-constant-is-rejected.boundary.json",
+      "category": "migrated",
+      "expected_exit": 65,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 65,
+          "reason": "invalid JSON or duplicate keys at migrated-nan-constant-is-rejected.events.jsonl:1"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "migrated-nesting-depth-65-rejected",
+      "events": "migrated-nesting-depth-65-rejected.events.jsonl",
+      "boundary": "migrated-nesting-depth-65-rejected.boundary.json",
+      "category": "migrated",
+      "expected_exit": 65,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 65,
+          "reason": "nesting is deeper than 64 levels at migrated-nesting-depth-65-rejected.events.jsonl:1"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "migrated-nesting-depth-100000-rejected-not-a-crash",
+      "events": "migrated-nesting-depth-100000-rejected-not-a-crash.events.jsonl",
+      "boundary": "migrated-nesting-depth-100000-rejected-not-a-crash.boundary.json",
+      "category": "migrated",
+      "expected_exit": 65,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 65,
+          "reason": "nesting is deeper than 64 levels at migrated-nesting-depth-100000-rejected-not-a-crash.events.jsonl:1"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "migrated-boundary-nesting-depth-65-rejected",
+      "events": "migrated-boundary-nesting-depth-65-rejected.events.jsonl",
+      "boundary": "migrated-boundary-nesting-depth-65-rejected.boundary.json",
+      "category": "migrated",
+      "expected_exit": 65,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 65,
+          "reason": "nesting is deeper than 64 levels in migrated-boundary-nesting-depth-65-rejected.boundary.json"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "migrated-non-finite-float-nested-in-array-rejected",
+      "events": "migrated-non-finite-float-nested-in-array-rejected.events.jsonl",
+      "boundary": "migrated-non-finite-float-nested-in-array-rejected.boundary.json",
+      "category": "migrated",
+      "expected_exit": 65,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 65,
+          "reason": "non-finite number is not a JSON value at migrated-non-finite-float-nested-in-array-rejected.events.jsonl:1"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "five-thousand-digit-integer-is-input-error-not-a-crash",
+      "events": "five-thousand-digit-integer-is-input-error-not-a-crash.events.jsonl",
+      "boundary": "five-thousand-digit-integer-is-input-error-not-a-crash.boundary.json",
+      "category": "migrated",
+      "expected_exit": 65,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 65,
+          "reason": "invalid JSON or duplicate keys at five-thousand-digit-integer-is-input-error-not-a-crash.events.jsonl:1"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "migrated-discharged-with-120-unknown-occurrence-ids-aggregation-capped",
+      "events": "migrated-discharged-with-120-unknown-occurrence-ids-aggregation-capped.events.jsonl",
+      "boundary": "migrated-discharged-with-120-unknown-occurrence-ids-aggregation-capped.boundary.json",
+      "category": "migrated",
+      "expected_exit": 14,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 14,
+          "reason": "discharged names unknown occurrence(s): occ-0, occ-1, occ-2, occ-3, occ-4, occ-5, occ-6, occ-7, occ-8, occ-9, ... and 110 more",
+          "duty_id": "obl-many-unknown",
+          "event_id": "obl-many-unknown"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": [
+        {
+          "id": "obl-many-unknown",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "r1-owner-mint-pass",
+      "events": "r1-owner-mint-pass.events.jsonl",
+      "boundary": "r1-owner-mint-pass.boundary.json",
+      "category": "identity",
+      "expected_exit": 0,
+      "expected_block": false,
+      "expected_required_actions": [],
+      "expected_errors": [],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-ordinary",
+          "occurrence_id": "sha256:1fd4b859f45162837b9169f3c3f09ee66ce65a2fd72952403d7dd9386d2c07e5",
+          "state": "discharged",
+          "contribution": "PASS"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-ordinary",
+          "state": "discharged",
+          "contribution": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "r1-owner-mint-fail",
+      "events": "r1-owner-mint-fail.events.jsonl",
+      "boundary": "r1-owner-mint-fail.boundary.json",
+      "category": "identity",
+      "expected_exit": 13,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 13,
+          "reason": "R1 owner identity mismatch for minted",
+          "duty_id": "obl-ordinary",
+          "event_id": "obl-ordinary"
+        },
+        {
+          "code": 19,
+          "reason": "duty observation manifest must contain exactly every known occurrence",
+          "duty_id": "obl-ordinary"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": [
+        {
+          "id": "obl-ordinary",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "r2-owner-fire-pass",
+      "events": "r2-owner-fire-pass.events.jsonl",
+      "boundary": "r2-owner-fire-pass.boundary.json",
+      "category": "identity",
+      "expected_exit": 0,
+      "expected_block": false,
+      "expected_required_actions": [],
+      "expected_errors": [],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-ordinary",
+          "occurrence_id": "sha256:1fd4b859f45162837b9169f3c3f09ee66ce65a2fd72952403d7dd9386d2c07e5",
+          "state": "discharged",
+          "contribution": "PASS"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-ordinary",
+          "state": "discharged",
+          "contribution": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "r2-owner-fire-fail",
+      "events": "r2-owner-fire-fail.events.jsonl",
+      "boundary": "r2-owner-fire-fail.boundary.json",
+      "category": "identity",
+      "expected_exit": 13,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 13,
+          "reason": "R2 owner identity mismatch for fired",
+          "duty_id": "obl-ordinary",
+          "event_id": "obl-ordinary"
+        },
+        {
+          "code": 14,
+          "reason": "predicate_evaluated names an unknown occurrence",
+          "duty_id": "obl-ordinary",
+          "event_id": "obl-ordinary",
+          "occurrence_id": "sha256:1fd4b859f45162837b9169f3c3f09ee66ce65a2fd72952403d7dd9386d2c07e5"
+        },
+        {
+          "code": 14,
+          "reason": "discharged names unknown occurrence(s): sha256:1fd4b859f45162837b9169f3c3f09ee66ce65a2fd72952403d7dd9386d2c07e5",
+          "duty_id": "obl-ordinary",
+          "event_id": "obl-ordinary"
+        },
+        {
+          "code": 14,
+          "reason": "discharged names unknown occurrence(s): sha256:1fd4b859f45162837b9169f3c3f09ee66ce65a2fd72952403d7dd9386d2c07e5",
+          "duty_id": "obl-ordinary",
+          "event_id": "obl-ordinary"
+        },
+        {
+          "code": 19,
+          "reason": "duty observation manifest must contain exactly every known occurrence",
+          "duty_id": "obl-ordinary"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": [
+        {
+          "id": "obl-ordinary",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "r3-evaluator-provenance-pass",
+      "events": "r3-evaluator-provenance-pass.events.jsonl",
+      "boundary": "r3-evaluator-provenance-pass.boundary.json",
+      "category": "identity",
+      "expected_exit": 0,
+      "expected_block": false,
+      "expected_required_actions": [],
+      "expected_errors": [],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-ordinary",
+          "occurrence_id": "sha256:1fd4b859f45162837b9169f3c3f09ee66ce65a2fd72952403d7dd9386d2c07e5",
+          "state": "discharged",
+          "contribution": "PASS"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-ordinary",
+          "state": "discharged",
+          "contribution": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "r3-evaluator-nonblank-fail",
+      "events": "r3-evaluator-nonblank-fail.events.jsonl",
+      "boundary": "r3-evaluator-nonblank-fail.boundary.json",
+      "category": "identity",
+      "expected_exit": 11,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 11,
+          "reason": "event.actor must be non-blank",
+          "duty_id": "obl-ordinary",
+          "event_id": "obl-ordinary"
+        },
+        {
+          "code": 17,
+          "reason": "discharge requires a current true evaluation bound to its evidence",
+          "duty_id": "obl-ordinary",
+          "event_id": "obl-ordinary",
+          "occurrence_id": "sha256:1fd4b859f45162837b9169f3c3f09ee66ce65a2fd72952403d7dd9386d2c07e5"
+        },
+        {
+          "code": 17,
+          "reason": "discharge requires a current true evaluation bound to its evidence",
+          "duty_id": "obl-ordinary",
+          "event_id": "obl-ordinary",
+          "occurrence_id": "sha256:1fd4b859f45162837b9169f3c3f09ee66ce65a2fd72952403d7dd9386d2c07e5"
+        }
+      ],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-ordinary",
+          "occurrence_id": "sha256:1fd4b859f45162837b9169f3c3f09ee66ce65a2fd72952403d7dd9386d2c07e5",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-ordinary",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "drop-before-first-firing",
+      "events": "drop-before-first-firing.events.jsonl",
+      "boundary": "drop-before-first-firing.boundary.json",
+      "category": "drop",
+      "expected_exit": 0,
+      "expected_block": false,
+      "expected_required_actions": [],
+      "expected_errors": [],
+      "expected_occurrences": [],
+      "expected_duties": [
+        {
+          "id": "drop-before",
+          "state": "dropped",
+          "contribution": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "drop-after-firing-no-observations-zero-batch",
+      "events": "drop-after-firing-no-observations-zero-batch.events.jsonl",
+      "boundary": "drop-after-firing-no-observations-zero-batch.boundary.json",
+      "category": "drop",
+      "expected_exit": 0,
+      "expected_block": false,
+      "expected_required_actions": [],
+      "expected_errors": [],
+      "expected_occurrences": [
+        {
+          "duty_id": "drop-after",
+          "occurrence_id": "sha256:95d1f86b3b28d153ff5f113c631ae242fc95569e475b57ba5d53648ecd7e84f3",
+          "state": "dropped",
+          "contribution": "PASS"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "drop-after",
+          "state": "dropped",
+          "contribution": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "drop-wrong-actor-invalid-dominates",
+      "events": "drop-wrong-actor-invalid-dominates.events.jsonl",
+      "boundary": "drop-wrong-actor-invalid-dominates.boundary.json",
+      "category": "drop",
+      "expected_exit": 13,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 13,
+          "reason": "R2 owner identity mismatch for dropped",
+          "duty_id": "drop-wrong",
+          "event_id": "drop-wrong"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": [
+        {
+          "id": "drop-wrong",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "drop-blank-reason",
+      "events": "drop-blank-reason.events.jsonl",
+      "boundary": "drop-blank-reason.boundary.json",
+      "category": "drop",
+      "expected_exit": 11,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 11,
+          "reason": "dropped.reason must be a non-blank string",
+          "duty_id": "drop-blank",
+          "event_id": "drop-blank"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": [
+        {
+          "id": "drop-blank",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "drop-no-further-events",
+      "events": "drop-no-further-events.events.jsonl",
+      "boundary": "drop-no-further-events.boundary.json",
+      "category": "drop",
+      "expected_exit": 15,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 15,
+          "reason": "dropped is absorbing",
+          "duty_id": "drop-absorbing",
+          "event_id": "drop-absorbing"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": [
+        {
+          "id": "drop-absorbing",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "linked-reciprocal-pass",
+      "events": "linked-reciprocal-pass.events.jsonl",
+      "boundary": "linked-reciprocal-pass.boundary.json",
+      "category": "linked-relax",
+      "expected_exit": 0,
+      "expected_block": false,
+      "expected_required_actions": [
+        {
+          "kind": "obligation",
+          "duty_id": "linked-pass-b",
+          "occurrence_id": "sha256:4ad9d021b60fbfaec9017ab8443c2834c0f63d76c6b56860c2e5c22347c2bcb0",
+          "state": "open"
+        }
+      ],
+      "expected_errors": [],
+      "expected_occurrences": [
+        {
+          "duty_id": "linked-pass-b",
+          "occurrence_id": "sha256:4ad9d021b60fbfaec9017ab8443c2834c0f63d76c6b56860c2e5c22347c2bcb0",
+          "state": "open",
+          "contribution": "WARN-recorded"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "linked-pass-a",
+          "state": "superseded",
+          "contribution": "PASS"
+        },
+        {
+          "id": "linked-pass-b",
+          "state": "open",
+          "contribution": "WARN-recorded"
+        }
+      ]
+    },
+    {
+      "name": "linked-mismatched-fail",
+      "events": "linked-mismatched-fail.events.jsonl",
+      "boundary": "linked-mismatched-fail.boundary.json",
+      "category": "linked-relax",
+      "expected_exit": 13,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 13,
+          "reason": "superseded.by is dangling, mismatched, out of scope, or owner-inconsistent",
+          "duty_id": "linked-mismatch-a"
+        },
+        {
+          "code": 13,
+          "reason": "duty.supersedes is dangling, mismatched, out of scope, or owner-inconsistent",
+          "duty_id": "linked-mismatch-b"
+        }
+      ],
+      "expected_occurrences": [
+        {
+          "duty_id": "linked-mismatch-b",
+          "occurrence_id": "sha256:dc8d78c84b70ad981fab86b180a061c43076b723c564f39f005817968769cb6d",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "linked-mismatch-a",
+          "state": "invalid",
+          "contribution": "FAIL"
+        },
+        {
+          "id": "linked-mismatch-b",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "linked-dangling-supersedes-fail",
+      "events": "linked-dangling-supersedes-fail.events.jsonl",
+      "boundary": "linked-dangling-supersedes-fail.boundary.json",
+      "category": "linked-relax",
+      "expected_exit": 13,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 13,
+          "reason": "duty.supersedes is dangling, mismatched, out of scope, or owner-inconsistent",
+          "duty_id": "dangling-b"
+        }
+      ],
+      "expected_occurrences": [
+        {
+          "duty_id": "dangling-b",
+          "occurrence_id": "sha256:68de28da5a58dc5cce97d9db68c7ae50f172d91fe4930b0d9639977de870208e",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "dangling-b",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "natural-key-valid-chain-exemption",
+      "events": "natural-key-valid-chain-exemption.events.jsonl",
+      "boundary": "natural-key-valid-chain-exemption.boundary.json",
+      "category": "linked-relax",
+      "expected_exit": 0,
+      "expected_block": false,
+      "expected_required_actions": [
+        {
+          "kind": "obligation",
+          "duty_id": "natural-chain-b",
+          "occurrence_id": "sha256:f8d32d6e3713cb9a51e9d09e81ac5c2ae81802ed70f18f12ecdb909b4b2cce70",
+          "state": "open"
+        }
+      ],
+      "expected_errors": [],
+      "expected_occurrences": [
+        {
+          "duty_id": "natural-chain-b",
+          "occurrence_id": "sha256:f8d32d6e3713cb9a51e9d09e81ac5c2ae81802ed70f18f12ecdb909b4b2cce70",
+          "state": "open",
+          "contribution": "WARN-recorded"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "natural-chain-a",
+          "state": "superseded",
+          "contribution": "PASS"
+        },
+        {
+          "id": "natural-chain-b",
+          "state": "open",
+          "contribution": "WARN-recorded"
+        }
+      ]
+    },
+    {
+      "name": "linked-branching-fail",
+      "events": "linked-branching-fail.events.jsonl",
+      "boundary": "linked-branching-fail.boundary.json",
+      "category": "linked-relax",
+      "expected_exit": 13,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 13,
+          "reason": "supersession branches from branching-a",
+          "duty_id": "branching-b"
+        },
+        {
+          "code": 13,
+          "reason": "supersession branches from branching-a",
+          "duty_id": "branching-c"
+        },
+        {
+          "code": 13,
+          "reason": "superseded.by is dangling, mismatched, out of scope, or owner-inconsistent",
+          "duty_id": "branching-a"
+        }
+      ],
+      "expected_occurrences": [
+        {
+          "duty_id": "branching-b",
+          "occurrence_id": "sha256:988e5d9ddae2628529d2cd5087cf65b32f1136cc67b8822100a3e397123fe129",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "branching-a",
+          "state": "invalid",
+          "contribution": "FAIL"
+        },
+        {
+          "id": "branching-b",
+          "state": "invalid",
+          "contribution": "FAIL"
+        },
+        {
+          "id": "branching-c",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "linked-cycle-fail",
+      "events": "linked-cycle-fail.events.jsonl",
+      "boundary": "linked-cycle-fail.boundary.json",
+      "category": "linked-relax",
+      "expected_exit": 13,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 13,
+          "reason": "supersession cycle detected",
+          "duty_id": "cycle-a"
+        },
+        {
+          "code": 13,
+          "reason": "supersession cycle detected",
+          "duty_id": "cycle-b"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": [
+        {
+          "id": "cycle-a",
+          "state": "invalid",
+          "contribution": "FAIL"
+        },
+        {
+          "id": "cycle-b",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "linked-three-duty-natural-chain-pass",
+      "events": "linked-three-duty-natural-chain-pass.events.jsonl",
+      "boundary": "linked-three-duty-natural-chain-pass.boundary.json",
+      "category": "linked-relax",
+      "expected_exit": 0,
+      "expected_block": false,
+      "expected_required_actions": [
+        {
+          "kind": "obligation",
+          "duty_id": "chain3-c",
+          "occurrence_id": "sha256:57cec744a23b4c6b903ed8e8ba864fc2ff7a1a531593926db55ac9ef57f83939",
+          "state": "open"
+        }
+      ],
+      "expected_errors": [],
+      "expected_occurrences": [
+        {
+          "duty_id": "chain3-c",
+          "occurrence_id": "sha256:57cec744a23b4c6b903ed8e8ba864fc2ff7a1a531593926db55ac9ef57f83939",
+          "state": "open",
+          "contribution": "WARN-recorded"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "chain3-a",
+          "state": "superseded",
+          "contribution": "PASS"
+        },
+        {
+          "id": "chain3-b",
+          "state": "superseded",
+          "contribution": "PASS"
+        },
+        {
+          "id": "chain3-c",
+          "state": "open",
+          "contribution": "WARN-recorded"
+        }
+      ]
+    },
+    {
+      "name": "linked-invalid-intermediate-breaks-natural-exemption",
+      "events": "linked-invalid-intermediate-breaks-natural-exemption.events.jsonl",
+      "boundary": "linked-invalid-intermediate-breaks-natural-exemption.boundary.json",
+      "category": "linked-relax",
+      "expected_exit": 13,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 13,
+          "reason": "R2 owner identity mismatch for superseded",
+          "duty_id": "chain3-b",
+          "event_id": "chain3-b"
+        },
+        {
+          "code": 13,
+          "reason": "superseded.by is dangling, mismatched, out of scope, or owner-inconsistent",
+          "duty_id": "chain3-a"
+        },
+        {
+          "code": 13,
+          "reason": "duty.supersedes is dangling, mismatched, out of scope, or owner-inconsistent",
+          "duty_id": "chain3-c"
+        }
+      ],
+      "expected_occurrences": [
+        {
+          "duty_id": "chain3-c",
+          "occurrence_id": "sha256:57cec744a23b4c6b903ed8e8ba864fc2ff7a1a531593926db55ac9ef57f83939",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "chain3-a",
+          "state": "invalid",
+          "contribution": "FAIL"
+        },
+        {
+          "id": "chain3-b",
+          "state": "invalid",
+          "contribution": "FAIL"
+        },
+        {
+          "id": "chain3-c",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "extension-duty-authority",
+      "events": "extension-duty-authority.events.jsonl",
+      "boundary": "extension-duty-authority.boundary.json",
+      "category": "extension-prepass",
+      "expected_exit": 20,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 20,
+          "reason": "uses the authority extension: minted.duty.authority",
+          "duty_id": "obl-ordinary",
+          "event_id": "obl-ordinary#1"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "extension-duty-waiver",
+      "events": "extension-duty-waiver.events.jsonl",
+      "boundary": "extension-duty-waiver.boundary.json",
+      "category": "extension-prepass",
+      "expected_exit": 20,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 20,
+          "reason": "uses the authority extension: minted.duty.waiver",
+          "duty_id": "obl-ordinary",
+          "event_id": "obl-ordinary#1"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "extension-waived-kind",
+      "events": "extension-waived-kind.events.jsonl",
+      "boundary": "extension-waived-kind.boundary.json",
+      "category": "extension-prepass",
+      "expected_exit": 20,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 20,
+          "reason": "uses the authority extension: event kind waived",
+          "duty_id": "x",
+          "event_id": "x#1"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "extension-waiver-lapsed-kind",
+      "events": "extension-waiver-lapsed-kind.events.jsonl",
+      "boundary": "extension-waiver-lapsed-kind.boundary.json",
+      "category": "extension-prepass",
+      "expected_exit": 20,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 20,
+          "reason": "uses the authority extension: event kind waiver_lapsed",
+          "duty_id": "x",
+          "event_id": "x#1"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "extension-envelope-authority-ref",
+      "events": "extension-envelope-authority-ref.events.jsonl",
+      "boundary": "extension-envelope-authority-ref.boundary.json",
+      "category": "extension-prepass",
+      "expected_exit": 20,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 20,
+          "reason": "uses the authority extension: event.authority_ref",
+          "duty_id": "obl-ordinary",
+          "event_id": "obl-ordinary#1"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "extension-source-revised-authority-ref",
+      "events": "extension-source-revised-authority-ref.events.jsonl",
+      "boundary": "extension-source-revised-authority-ref.boundary.json",
+      "category": "extension-prepass",
+      "expected_exit": 20,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 20,
+          "reason": "uses the authority extension: source_revised.payload.authority_ref",
+          "duty_id": "x",
+          "event_id": "x#1"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "extension-waiver-id",
+      "events": "extension-waiver-id.events.jsonl",
+      "boundary": "extension-waiver-id.boundary.json",
+      "category": "extension-prepass",
+      "expected_exit": 20,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 20,
+          "reason": "uses the authority extension: fired.payload.waiver_id",
+          "duty_id": "obl-ordinary",
+          "event_id": "obl-ordinary#2"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "extension-expires",
+      "events": "extension-expires.events.jsonl",
+      "boundary": "extension-expires.boundary.json",
+      "category": "extension-prepass",
+      "expected_exit": 20,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 20,
+          "reason": "uses the authority extension: fired.payload.expires",
+          "duty_id": "obl-ordinary",
+          "event_id": "obl-ordinary#2"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "extension-public-cutoff",
+      "events": "extension-public-cutoff.events.jsonl",
+      "boundary": "extension-public-cutoff.boundary.json",
+      "category": "extension-prepass",
+      "expected_exit": 20,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 20,
+          "reason": "uses the authority extension: fired.payload.next_review_cutoff",
+          "duty_id": "obl-ordinary",
+          "event_id": "obl-ordinary#2"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "extension-later-date-authority-ref",
+      "events": "extension-later-date-authority-ref.events.jsonl",
+      "boundary": "extension-later-date-authority-ref.boundary.json",
+      "category": "extension-prepass",
+      "expected_exit": 20,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 20,
+          "reason": "uses the authority extension: fired.payload.later_date_authority_ref",
+          "duty_id": "obl-ordinary",
+          "event_id": "obl-ordinary#2"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "extension-event-map-waiver-lapsed",
+      "events": "extension-event-map-waiver-lapsed.events.jsonl",
+      "boundary": "extension-event-map-waiver-lapsed.boundary.json",
+      "category": "extension-prepass",
+      "expected_exit": 20,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 20,
+          "reason": "uses the authority extension: evaluator_batch.event_ids.waiver_lapsed"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "extension-manifest-waiver-lapsed",
+      "events": "extension-manifest-waiver-lapsed.events.jsonl",
+      "boundary": "extension-manifest-waiver-lapsed.boundary.json",
+      "category": "extension-prepass",
+      "expected_exit": 20,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 20,
+          "reason": "uses the authority extension: observations_manifest entry kind waiver_lapsed"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "extension-boundary-lapse-satisfaction",
+      "events": "extension-boundary-lapse-satisfaction.events.jsonl",
+      "boundary": "extension-boundary-lapse-satisfaction.boundary.json",
+      "category": "extension-prepass",
+      "expected_exit": 20,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 20,
+          "reason": "uses the authority extension: boundary.lapse_satisfaction"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "extension-batch-lapse-satisfaction",
+      "events": "extension-batch-lapse-satisfaction.events.jsonl",
+      "boundary": "extension-batch-lapse-satisfaction.boundary.json",
+      "category": "extension-prepass",
+      "expected_exit": 20,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 20,
+          "reason": "uses the authority extension: evaluator_batch.lapse_satisfaction"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "extension-malformed-kind-independent-marker",
+      "events": "extension-malformed-kind-independent-marker.events.jsonl",
+      "boundary": "extension-waived-kind.boundary.json",
+      "category": "extension-prepass",
+      "expected_exit": 20,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 20,
+          "reason": "uses the authority extension: event.authority_ref"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "precedence-waived-alone",
+      "events": "precedence-waived-alone.events.jsonl",
+      "boundary": "extension-waived-kind.boundary.json",
+      "category": "precedence",
+      "expected_exit": 20,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 20,
+          "reason": "uses the authority extension: event kind waived"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "precedence-waived-with-malformed-boundary",
+      "events": "precedence-extension-over-envelope-error.events.jsonl",
+      "boundary": "precedence-waived-with-malformed-boundary.boundary.json",
+      "category": "precedence",
+      "expected_exit": 65,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 65,
+          "reason": "invalid JSON or duplicate keys: precedence-waived-with-malformed-boundary.boundary.json"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "precedence-extension-over-envelope-error",
+      "events": "precedence-extension-over-envelope-error.events.jsonl",
+      "boundary": "precedence-extension-over-envelope-error.boundary.json",
+      "category": "extension-prepass",
+      "expected_exit": 20,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 20,
+          "reason": "uses the authority extension: event kind waived"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "precedence-malformed-over-extension-token",
+      "events": "precedence-malformed-over-extension-token.events.jsonl",
+      "boundary": "precedence-malformed-over-extension-token.boundary.json",
+      "category": "precedence",
+      "expected_exit": 65,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 65,
+          "reason": "invalid JSON or duplicate keys at precedence-malformed-over-extension-token.events.jsonl:1"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": []
+    },
+    {
+      "name": "shared-key-discharged-occurrence-ids",
+      "events": "shared-key-discharged-occurrence-ids.events.jsonl",
+      "boundary": "shared-key-discharged-occurrence-ids.boundary.json",
+      "category": "shared-key",
+      "expected_exit": 0,
+      "expected_block": false,
+      "expected_required_actions": [],
+      "expected_errors": [],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-ordinary",
+          "occurrence_id": "sha256:1fd4b859f45162837b9169f3c3f09ee66ce65a2fd72952403d7dd9386d2c07e5",
+          "state": "discharged",
+          "contribution": "PASS"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-ordinary",
+          "state": "discharged",
+          "contribution": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "identifier-duty-names-not-extension",
+      "events": "identifier-duty-names-not-extension.events.jsonl",
+      "boundary": "identifier-duty-names-not-extension.boundary.json",
+      "category": "identifier",
+      "expected_exit": 0,
+      "expected_block": false,
+      "expected_required_actions": [],
+      "expected_errors": [],
+      "expected_occurrences": [],
+      "expected_duties": [
+        {
+          "id": "authority",
+          "state": "dropped",
+          "contribution": "PASS"
+        },
+        {
+          "id": "lapse_satisfaction",
+          "state": "dropped",
+          "contribution": "PASS"
+        },
+        {
+          "id": "waiver_lapsed",
+          "state": "dropped",
+          "contribution": "PASS"
+        }
+      ]
+    },
+    {
+      "name": "identifier-arbitrary-occurrence-key-not-extension",
+      "events": "identifier-arbitrary-occurrence-key-not-extension.events.jsonl",
+      "boundary": "identifier-arbitrary-occurrence-key-not-extension.boundary.json",
+      "category": "identifier",
+      "expected_exit": 19,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 19,
+          "reason": "duty observation manifest must contain exactly every known occurrence",
+          "duty_id": "obl-ordinary"
+        }
+      ],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-ordinary",
+          "occurrence_id": "sha256:1fd4b859f45162837b9169f3c3f09ee66ce65a2fd72952403d7dd9386d2c07e5",
+          "state": "discharged",
+          "contribution": "FAIL"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-ordinary",
+          "state": "discharged",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "misplaced-shared-key-ordinary-schema-error",
+      "events": "misplaced-shared-key-ordinary-schema-error.events.jsonl",
+      "boundary": "misplaced-shared-key-ordinary-schema-error.boundary.json",
+      "category": "shared-key",
+      "expected_exit": 11,
+      "expected_block": true,
+      "expected_required_actions": [],
+      "expected_errors": [
+        {
+          "code": 11,
+          "reason": "fired payload must contain exactly its required fields",
+          "duty_id": "obl-ordinary",
+          "event_id": "obl-ordinary"
+        },
+        {
+          "code": 14,
+          "reason": "predicate_evaluated names an unknown occurrence",
+          "duty_id": "obl-ordinary",
+          "event_id": "obl-ordinary",
+          "occurrence_id": "sha256:1fd4b859f45162837b9169f3c3f09ee66ce65a2fd72952403d7dd9386d2c07e5"
+        },
+        {
+          "code": 14,
+          "reason": "discharged names unknown occurrence(s): sha256:1fd4b859f45162837b9169f3c3f09ee66ce65a2fd72952403d7dd9386d2c07e5",
+          "duty_id": "obl-ordinary",
+          "event_id": "obl-ordinary"
+        },
+        {
+          "code": 14,
+          "reason": "discharged names unknown occurrence(s): sha256:1fd4b859f45162837b9169f3c3f09ee66ce65a2fd72952403d7dd9386d2c07e5",
+          "duty_id": "obl-ordinary",
+          "event_id": "obl-ordinary"
+        },
+        {
+          "code": 19,
+          "reason": "duty observation manifest must contain exactly every known occurrence",
+          "duty_id": "obl-ordinary"
+        }
+      ],
+      "expected_occurrences": [],
+      "expected_duties": [
+        {
+          "id": "obl-ordinary",
+          "state": "invalid",
+          "contribution": "FAIL"
+        }
+      ]
+    },
+    {
+      "name": "shared-key-superseded-by-control",
+      "events": "linked-reciprocal-pass.events.jsonl",
+      "boundary": "linked-reciprocal-pass.boundary.json",
+      "category": "shared-key",
+      "expected_exit": 0,
+      "expected_block": false,
+      "expected_required_actions": [
+        {
+          "kind": "obligation",
+          "duty_id": "linked-pass-b",
+          "occurrence_id": "sha256:4ad9d021b60fbfaec9017ab8443c2834c0f63d76c6b56860c2e5c22347c2bcb0",
+          "state": "open"
+        }
+      ],
+      "expected_errors": [],
+      "expected_occurrences": [
+        {
+          "duty_id": "linked-pass-b",
+          "occurrence_id": "sha256:4ad9d021b60fbfaec9017ab8443c2834c0f63d76c6b56860c2e5c22347c2bcb0",
+          "state": "open",
+          "contribution": "WARN-recorded"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "linked-pass-a",
+          "state": "superseded",
+          "contribution": "PASS"
+        },
+        {
+          "id": "linked-pass-b",
+          "state": "open",
+          "contribution": "WARN-recorded"
+        }
+      ]
+    },
+    {
+      "name": "shared-key-deadline-at-and-boundary-id-control",
+      "events": "due-date-fresh.events.jsonl",
+      "boundary": "due-date-fresh.boundary.json",
+      "category": "shared-key",
+      "expected_exit": 0,
+      "expected_block": false,
+      "expected_required_actions": [
+        {
+          "kind": "obligation",
+          "duty_id": "obl-date",
+          "occurrence_id": "sha256:be44d0f81d3ddb42a34bf61f292d080d343a6f26826cd63a3f81d9c17233044b",
+          "state": "open"
+        }
+      ],
+      "expected_errors": [],
+      "expected_occurrences": [
+        {
+          "duty_id": "obl-date",
+          "occurrence_id": "sha256:be44d0f81d3ddb42a34bf61f292d080d343a6f26826cd63a3f81d9c17233044b",
+          "state": "open",
+          "contribution": "WARN-recorded"
+        }
+      ],
+      "expected_duties": [
+        {
+          "id": "obl-date",
+          "state": "open",
+          "contribution": "WARN-recorded"
+        }
+      ]
+    }
+  ]
+}

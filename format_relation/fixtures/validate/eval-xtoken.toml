@@ -1,0 +1,15 @@
+relation_version = "0.1.0"
+repo = "example-kit"
+
+[[edges]]
+from = "example-kit:template/ASSUMPTIONS.md"
+relation = "x-example-kit-fill"
+to = "example-kit:template/NEXT.md"
+propagates = "from-to"
+note = "custom propagation direction: a filled ASSUMPTIONS.md impacts NEXT.md"
+
+[[edges]]
+from = "example-kit:template/A.md"
+relation = "x-inert-link"
+to = "example-kit:template/B.md"
+note = "no propagates field -- defaults to 'none', never fires in an impact query"

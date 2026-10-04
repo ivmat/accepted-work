@@ -1,0 +1,13 @@
+trigger_version = "0.1.0"
+repo = "acme"
+
+[[triggers]]
+id = "t1"
+retrigger = "every-event"
+
+[triggers.when]
+source = "acme"
+event = "cadence"
+
+[triggers.when.params]
+every = "7d\n"

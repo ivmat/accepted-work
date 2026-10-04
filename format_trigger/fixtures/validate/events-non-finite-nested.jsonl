@@ -1,0 +1,1 @@
+{"event_id": "nf-1", "event": "instantiated", "source": "acme:x", "at": "2026-01-01T00:00:00Z", "params": {"probe": [1e400, 1, [2, 1e400]]}}

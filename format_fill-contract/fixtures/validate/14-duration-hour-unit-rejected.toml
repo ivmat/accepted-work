@@ -1,0 +1,9 @@
+fill_version = "0.1.0"
+template = "t"
+
+[[contracts]]
+file = "x"
+importance = "normal"
+urgency_after_due = "1h"
+filled_when = { predicate = "no-marker" }
+due_when = { predicate = "instantiated" }

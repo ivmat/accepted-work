@@ -1,0 +1,18 @@
+trigger_version = "0.1.0"
+repo = "acme"
+
+[[triggers]]
+id = "dup-id"
+retrigger = "every-event"
+
+[triggers.when]
+source = "acme"
+event = "instantiated"
+
+[[triggers]]
+id = "dup-id"
+retrigger = "once"
+
+[triggers.when]
+source = "acme"
+event = "first-release"

@@ -1,0 +1,9 @@
+fill_version = "0.1.0"
+template = "template-kit:full@v5"
+
+[[contracts]]
+file = "X.md"
+importance = "low"
+urgency_after_due = "1d"
+filled_when = { not = { predicate = "not-contains", text = "placeholder" } }
+due_when = { any = [ { predicate = "instantiated" } ] }

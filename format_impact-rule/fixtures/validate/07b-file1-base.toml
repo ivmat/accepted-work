@@ -1,0 +1,20 @@
+# Invented, independently-designed rules file (not a record of any real repository).
+impact_version = "0.1.0"
+repo = "alpha-service"
+
+[[rules]]
+id = "shared-id"
+relation = "governs"
+importance = "critical"
+urgency = "before-commit"
+
+[rules.when]
+changed = ["schema/**"]
+
+[rules.decided_by]
+detect = "program"
+fix = "human"
+
+[[rules.must_update]]
+target = "SCHEMA-FREEZE.md"
+action = "re-verify"

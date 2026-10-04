@@ -1,0 +1,4 @@
+{"event_id": "cont-01-exact-file", "event": "rule-added", "source": "acme:rules/core.toml", "at": "2026-09-24T00:00:00Z", "params": {}}
+{"event_id": "cont-02-other-file-in-subtree", "event": "rule-added", "source": "acme:rules/other.toml", "at": "2026-09-24T00:01:00Z", "params": {}}
+{"event_id": "cont-03-outside-subtree", "event": "rule-added", "source": "acme:docs/x.md", "at": "2026-09-24T00:02:00Z", "params": {}}
+{"event_id": "cont-04-wrong-repo", "event": "rule-added", "source": "other-repo:rules/core.toml", "at": "2026-09-24T00:03:00Z", "params": {}}

@@ -1,0 +1,13 @@
+trigger_version = "0.1.0"
+repo = "acme"
+
+[[triggers]]
+id = "adversarial-star-backtrack"
+retrigger = "every-event"
+
+[triggers.when]
+source = "acme"
+event = "path-changed"
+
+[triggers.when.params]
+paths = ["a*a*a*a*a*a*a*a*a*a*b"]

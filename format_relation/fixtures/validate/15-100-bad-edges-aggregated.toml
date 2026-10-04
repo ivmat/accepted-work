@@ -1,0 +1,403 @@
+relation_version = "0.1.0"
+repo = "alpha-service"
+
+[[edges]]
+from = "alpha-service:f0.md"
+to = "alpha-service:g0.md"
+
+[[edges]]
+from = "alpha-service:f1.md"
+to = "alpha-service:g1.md"
+
+[[edges]]
+from = "alpha-service:f2.md"
+to = "alpha-service:g2.md"
+
+[[edges]]
+from = "alpha-service:f3.md"
+to = "alpha-service:g3.md"
+
+[[edges]]
+from = "alpha-service:f4.md"
+to = "alpha-service:g4.md"
+
+[[edges]]
+from = "alpha-service:f5.md"
+to = "alpha-service:g5.md"
+
+[[edges]]
+from = "alpha-service:f6.md"
+to = "alpha-service:g6.md"
+
+[[edges]]
+from = "alpha-service:f7.md"
+to = "alpha-service:g7.md"
+
+[[edges]]
+from = "alpha-service:f8.md"
+to = "alpha-service:g8.md"
+
+[[edges]]
+from = "alpha-service:f9.md"
+to = "alpha-service:g9.md"
+
+[[edges]]
+from = "alpha-service:f10.md"
+to = "alpha-service:g10.md"
+
+[[edges]]
+from = "alpha-service:f11.md"
+to = "alpha-service:g11.md"
+
+[[edges]]
+from = "alpha-service:f12.md"
+to = "alpha-service:g12.md"
+
+[[edges]]
+from = "alpha-service:f13.md"
+to = "alpha-service:g13.md"
+
+[[edges]]
+from = "alpha-service:f14.md"
+to = "alpha-service:g14.md"
+
+[[edges]]
+from = "alpha-service:f15.md"
+to = "alpha-service:g15.md"
+
+[[edges]]
+from = "alpha-service:f16.md"
+to = "alpha-service:g16.md"
+
+[[edges]]
+from = "alpha-service:f17.md"
+to = "alpha-service:g17.md"
+
+[[edges]]
+from = "alpha-service:f18.md"
+to = "alpha-service:g18.md"
+
+[[edges]]
+from = "alpha-service:f19.md"
+to = "alpha-service:g19.md"
+
+[[edges]]
+from = "alpha-service:f20.md"
+to = "alpha-service:g20.md"
+
+[[edges]]
+from = "alpha-service:f21.md"
+to = "alpha-service:g21.md"
+
+[[edges]]
+from = "alpha-service:f22.md"
+to = "alpha-service:g22.md"
+
+[[edges]]
+from = "alpha-service:f23.md"
+to = "alpha-service:g23.md"
+
+[[edges]]
+from = "alpha-service:f24.md"
+to = "alpha-service:g24.md"
+
+[[edges]]
+from = "alpha-service:f25.md"
+to = "alpha-service:g25.md"
+
+[[edges]]
+from = "alpha-service:f26.md"
+to = "alpha-service:g26.md"
+
+[[edges]]
+from = "alpha-service:f27.md"
+to = "alpha-service:g27.md"
+
+[[edges]]
+from = "alpha-service:f28.md"
+to = "alpha-service:g28.md"
+
+[[edges]]
+from = "alpha-service:f29.md"
+to = "alpha-service:g29.md"
+
+[[edges]]
+from = "alpha-service:f30.md"
+to = "alpha-service:g30.md"
+
+[[edges]]
+from = "alpha-service:f31.md"
+to = "alpha-service:g31.md"
+
+[[edges]]
+from = "alpha-service:f32.md"
+to = "alpha-service:g32.md"
+
+[[edges]]
+from = "alpha-service:f33.md"
+to = "alpha-service:g33.md"
+
+[[edges]]
+from = "alpha-service:f34.md"
+to = "alpha-service:g34.md"
+
+[[edges]]
+from = "alpha-service:f35.md"
+to = "alpha-service:g35.md"
+
+[[edges]]
+from = "alpha-service:f36.md"
+to = "alpha-service:g36.md"
+
+[[edges]]
+from = "alpha-service:f37.md"
+to = "alpha-service:g37.md"
+
+[[edges]]
+from = "alpha-service:f38.md"
+to = "alpha-service:g38.md"
+
+[[edges]]
+from = "alpha-service:f39.md"
+to = "alpha-service:g39.md"
+
+[[edges]]
+from = "alpha-service:f40.md"
+to = "alpha-service:g40.md"
+
+[[edges]]
+from = "alpha-service:f41.md"
+to = "alpha-service:g41.md"
+
+[[edges]]
+from = "alpha-service:f42.md"
+to = "alpha-service:g42.md"
+
+[[edges]]
+from = "alpha-service:f43.md"
+to = "alpha-service:g43.md"
+
+[[edges]]
+from = "alpha-service:f44.md"
+to = "alpha-service:g44.md"
+
+[[edges]]
+from = "alpha-service:f45.md"
+to = "alpha-service:g45.md"
+
+[[edges]]
+from = "alpha-service:f46.md"
+to = "alpha-service:g46.md"
+
+[[edges]]
+from = "alpha-service:f47.md"
+to = "alpha-service:g47.md"
+
+[[edges]]
+from = "alpha-service:f48.md"
+to = "alpha-service:g48.md"
+
+[[edges]]
+from = "alpha-service:f49.md"
+to = "alpha-service:g49.md"
+
+[[edges]]
+from = "alpha-service:f50.md"
+to = "alpha-service:g50.md"
+
+[[edges]]
+from = "alpha-service:f51.md"
+to = "alpha-service:g51.md"
+
+[[edges]]
+from = "alpha-service:f52.md"
+to = "alpha-service:g52.md"
+
+[[edges]]
+from = "alpha-service:f53.md"
+to = "alpha-service:g53.md"
+
+[[edges]]
+from = "alpha-service:f54.md"
+to = "alpha-service:g54.md"
+
+[[edges]]
+from = "alpha-service:f55.md"
+to = "alpha-service:g55.md"
+
+[[edges]]
+from = "alpha-service:f56.md"
+to = "alpha-service:g56.md"
+
+[[edges]]
+from = "alpha-service:f57.md"
+to = "alpha-service:g57.md"
+
+[[edges]]
+from = "alpha-service:f58.md"
+to = "alpha-service:g58.md"
+
+[[edges]]
+from = "alpha-service:f59.md"
+to = "alpha-service:g59.md"
+
+[[edges]]
+from = "alpha-service:f60.md"
+to = "alpha-service:g60.md"
+
+[[edges]]
+from = "alpha-service:f61.md"
+to = "alpha-service:g61.md"
+
+[[edges]]
+from = "alpha-service:f62.md"
+to = "alpha-service:g62.md"
+
+[[edges]]
+from = "alpha-service:f63.md"
+to = "alpha-service:g63.md"
+
+[[edges]]
+from = "alpha-service:f64.md"
+to = "alpha-service:g64.md"
+
+[[edges]]
+from = "alpha-service:f65.md"
+to = "alpha-service:g65.md"
+
+[[edges]]
+from = "alpha-service:f66.md"
+to = "alpha-service:g66.md"
+
+[[edges]]
+from = "alpha-service:f67.md"
+to = "alpha-service:g67.md"
+
+[[edges]]
+from = "alpha-service:f68.md"
+to = "alpha-service:g68.md"
+
+[[edges]]
+from = "alpha-service:f69.md"
+to = "alpha-service:g69.md"
+
+[[edges]]
+from = "alpha-service:f70.md"
+to = "alpha-service:g70.md"
+
+[[edges]]
+from = "alpha-service:f71.md"
+to = "alpha-service:g71.md"
+
+[[edges]]
+from = "alpha-service:f72.md"
+to = "alpha-service:g72.md"
+
+[[edges]]
+from = "alpha-service:f73.md"
+to = "alpha-service:g73.md"
+
+[[edges]]
+from = "alpha-service:f74.md"
+to = "alpha-service:g74.md"
+
+[[edges]]
+from = "alpha-service:f75.md"
+to = "alpha-service:g75.md"
+
+[[edges]]
+from = "alpha-service:f76.md"
+to = "alpha-service:g76.md"
+
+[[edges]]
+from = "alpha-service:f77.md"
+to = "alpha-service:g77.md"
+
+[[edges]]
+from = "alpha-service:f78.md"
+to = "alpha-service:g78.md"
+
+[[edges]]
+from = "alpha-service:f79.md"
+to = "alpha-service:g79.md"
+
+[[edges]]
+from = "alpha-service:f80.md"
+to = "alpha-service:g80.md"
+
+[[edges]]
+from = "alpha-service:f81.md"
+to = "alpha-service:g81.md"
+
+[[edges]]
+from = "alpha-service:f82.md"
+to = "alpha-service:g82.md"
+
+[[edges]]
+from = "alpha-service:f83.md"
+to = "alpha-service:g83.md"
+
+[[edges]]
+from = "alpha-service:f84.md"
+to = "alpha-service:g84.md"
+
+[[edges]]
+from = "alpha-service:f85.md"
+to = "alpha-service:g85.md"
+
+[[edges]]
+from = "alpha-service:f86.md"
+to = "alpha-service:g86.md"
+
+[[edges]]
+from = "alpha-service:f87.md"
+to = "alpha-service:g87.md"
+
+[[edges]]
+from = "alpha-service:f88.md"
+to = "alpha-service:g88.md"
+
+[[edges]]
+from = "alpha-service:f89.md"
+to = "alpha-service:g89.md"
+
+[[edges]]
+from = "alpha-service:f90.md"
+to = "alpha-service:g90.md"
+
+[[edges]]
+from = "alpha-service:f91.md"
+to = "alpha-service:g91.md"
+
+[[edges]]
+from = "alpha-service:f92.md"
+to = "alpha-service:g92.md"
+
+[[edges]]
+from = "alpha-service:f93.md"
+to = "alpha-service:g93.md"
+
+[[edges]]
+from = "alpha-service:f94.md"
+to = "alpha-service:g94.md"
+
+[[edges]]
+from = "alpha-service:f95.md"
+to = "alpha-service:g95.md"
+
+[[edges]]
+from = "alpha-service:f96.md"
+to = "alpha-service:g96.md"
+
+[[edges]]
+from = "alpha-service:f97.md"
+to = "alpha-service:g97.md"
+
+[[edges]]
+from = "alpha-service:f98.md"
+to = "alpha-service:g98.md"
+
+[[edges]]
+from = "alpha-service:f99.md"
+to = "alpha-service:g99.md"
+

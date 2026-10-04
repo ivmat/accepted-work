@@ -1,0 +1,20 @@
+relation_version = "0.1.0"
+repo = "alpha-service"
+
+[[edges]]
+from = "alpha-service:src/"
+relation = "owns"
+to = "alpha-service:src/sys/"
+note = "subtree entity-refs on both sides; a structural (non-propagating) relation"
+
+[[edges]]
+from = "alpha-service"
+relation = "depends-on"
+to = "resource:gpu-slot@build-host"
+note = "whole-repo <repo> form on 'from' + a resource:<name>@<host> entity-ref on 'to'"
+
+[[edges]]
+from = "alpha-service:**"
+relation = "documents"
+to = "formats-lib:format_relation/"
+note = "the explicit '<repo>:**' whole-repo form is equivalent to the bare '<repo>' form; 'to' is a cross-repo subtree"

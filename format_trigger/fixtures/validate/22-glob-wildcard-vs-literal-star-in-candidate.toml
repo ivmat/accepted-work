@@ -1,0 +1,24 @@
+trigger_version = "0.1.0"
+repo = "acme"
+
+[[triggers]]
+id = "wildcard-matches-candidate-with-literal-star"
+retrigger = "every-event"
+
+[triggers.when]
+source = "acme"
+event = "path-changed"
+
+[triggers.when.params]
+paths = ["spec/*"]
+
+[[triggers]]
+id = "literal-pattern-exact-match-only"
+retrigger = "every-event"
+
+[triggers.when]
+source = "acme"
+event = "path-changed"
+
+[triggers.when.params]
+paths = ["spec/report"]

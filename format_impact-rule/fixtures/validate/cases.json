@@ -1,0 +1,1194 @@
+{
+  "digest": "impact_validate.py / impact_evaluate.py --selftest fixture data. validate_cases: one case per exit class (10-18, 65), positive baselines (0) for globs/enums/derive/urgency, a cross-file duplicate-id case, and regressions for repo-id grammar tightening, glob limits, the typed per-deriver params registry (unknown keys, parameterless derivers, wrong scalar types and numeric bounds), JSON representability, and signed-64-bit integer magnitude. evaluate_cases cover matching, sorting, obligations, input contracts, bounded adversarial cases and timestamp bounds.",
+  "validate_cases": [
+    {
+      "name": "00-valid-minimal",
+      "rules": [
+        "00-valid-minimal.toml"
+      ],
+      "expected_exit": 0,
+      "expected_error_codes": []
+    },
+    {
+      "name": "00b-valid-with-derive",
+      "rules": [
+        "00b-valid-with-derive.toml"
+      ],
+      "expected_exit": 0,
+      "expected_error_codes": []
+    },
+    {
+      "name": "00c-valid-cross-repo-glob",
+      "rules": [
+        "00c-valid-cross-repo-glob.toml"
+      ],
+      "expected_exit": 0,
+      "expected_error_codes": []
+    },
+    {
+      "name": "01-missing-required-key-relation",
+      "rules": [
+        "01-missing-required-key.toml"
+      ],
+      "expected_exit": 10,
+      "expected_error_codes": [
+        10
+      ]
+    },
+    {
+      "name": "02-unknown-key-in-rule",
+      "rules": [
+        "02-unknown-key.toml"
+      ],
+      "expected_exit": 11,
+      "expected_error_codes": [
+        11
+      ]
+    },
+    {
+      "name": "03-must-update-empty-array",
+      "rules": [
+        "03-bad-type-empty-must-update.toml"
+      ],
+      "expected_exit": 12,
+      "expected_error_codes": [
+        12
+      ]
+    },
+    {
+      "name": "04-bad-enum-relation",
+      "rules": [
+        "04-bad-enum-relation.toml"
+      ],
+      "expected_exit": 13,
+      "expected_error_codes": [
+        13
+      ]
+    },
+    {
+      "name": "05-bad-glob-absolute-path",
+      "rules": [
+        "05-bad-glob-absolute.toml"
+      ],
+      "expected_exit": 14,
+      "expected_error_codes": [
+        14
+      ]
+    },
+    {
+      "name": "05b-bad-glob-dotdot-segment",
+      "rules": [
+        "05b-bad-glob-dotdot.toml"
+      ],
+      "expected_exit": 14,
+      "expected_error_codes": [
+        14
+      ]
+    },
+    {
+      "name": "05c-bad-glob-star-star-mixed-with-chars",
+      "rules": [
+        "05c-bad-glob-star-star-mixed.toml"
+      ],
+      "expected_exit": 14,
+      "expected_error_codes": [
+        14
+      ]
+    },
+    {
+      "name": "05d-bad-glob-cross-repo-prefix",
+      "rules": [
+        "05d-bad-glob-cross-repo-prefix.toml"
+      ],
+      "expected_exit": 14,
+      "expected_error_codes": [
+        14
+      ]
+    },
+    {
+      "name": "06-when-both-changed-and-event",
+      "rules": [
+        "06-when-both.toml"
+      ],
+      "expected_exit": 15,
+      "expected_error_codes": [
+        15
+      ]
+    },
+    {
+      "name": "06b-when-neither-changed-nor-event",
+      "rules": [
+        "06b-when-neither.toml"
+      ],
+      "expected_exit": 15,
+      "expected_error_codes": [
+        15
+      ]
+    },
+    {
+      "name": "07-dup-rule-id-within-one-file",
+      "rules": [
+        "07-dup-rule-id-single-file.toml"
+      ],
+      "expected_exit": 16,
+      "expected_error_codes": [
+        16
+      ]
+    },
+    {
+      "name": "07b-dup-rule-id-across-rules-files",
+      "rules": [
+        "07b-file1-base.toml",
+        "07b-file2-redefines.toml"
+      ],
+      "expected_exit": 16,
+      "expected_error_codes": [
+        16
+      ]
+    },
+    {
+      "name": "08-bad-urgency-duration-unit",
+      "rules": [
+        "08-bad-urgency.toml"
+      ],
+      "expected_exit": 17,
+      "expected_error_codes": [
+        17
+      ]
+    },
+    {
+      "name": "08b-bad-urgency-unrecognized-literal",
+      "rules": [
+        "08b-bad-urgency-unrecognized.toml"
+      ],
+      "expected_exit": 17,
+      "expected_error_codes": [
+        17
+      ]
+    },
+    {
+      "name": "09-bad-derive-unknown-name",
+      "rules": [
+        "09-bad-derive.toml"
+      ],
+      "expected_exit": 18,
+      "expected_error_codes": [
+        18
+      ]
+    },
+    {
+      "name": "10-malformed-toml-syntax",
+      "rules": [
+        "10-malformed.toml"
+      ],
+      "expected_exit": 65,
+      "expected_error_codes": [
+        65
+      ]
+    },
+    {
+      "name": "11-unreadable-rules-file",
+      "rules": [
+        "does-not-exist.toml"
+      ],
+      "expected_exit": 65,
+      "expected_error_codes": [
+        65
+      ]
+    },
+    {
+      "name": "eval-rules-file-itself-is-valid",
+      "rules": [
+        "eval-rules.toml"
+      ],
+      "expected_exit": 0,
+      "expected_error_codes": []
+    },
+    {
+      "name": "12-bad-glob-trailing-newline",
+      "rules": [
+        "12-bad-glob-trailing-newline.toml"
+      ],
+      "expected_exit": 14,
+      "expected_error_codes": [
+        14
+      ]
+    },
+    {
+      "name": "13-bad-urgency-duration-trailing-newline",
+      "rules": [
+        "13-bad-urgency-duration-trailing-newline.toml"
+      ],
+      "expected_exit": 17,
+      "expected_error_codes": [
+        17
+      ]
+    },
+    {
+      "name": "14-bad-repo-trailing-newline",
+      "rules": [
+        "14-bad-repo-trailing-newline.toml"
+      ],
+      "expected_exit": 12,
+      "expected_error_codes": [
+        12
+      ]
+    },
+    {
+      "name": "15-bad-repo-uppercase-not-a-valid-repo-id",
+      "rules": [
+        "15-bad-repo-uppercase.toml"
+      ],
+      "expected_exit": 12,
+      "expected_error_codes": [
+        12
+      ]
+    },
+    {
+      "name": "16-bad-glob-cross-repo-prefix-uppercase",
+      "rules": [
+        "16-bad-glob-cross-repo-prefix-uppercase.toml"
+      ],
+      "expected_exit": 14,
+      "expected_error_codes": [
+        14
+      ]
+    },
+    {
+      "name": "17-bad-repo-too-long",
+      "rules": [
+        "17-bad-repo-too-long.toml"
+      ],
+      "expected_exit": 12,
+      "expected_error_codes": [
+        12
+      ]
+    },
+    {
+      "name": "18-bad-derive-table-unknown-name",
+      "rules": [
+        "18-bad-derive-table-unknown-name.toml"
+      ],
+      "expected_exit": 18,
+      "expected_error_codes": [
+        18
+      ]
+    },
+    {
+      "name": "19-bad-derive-table-params-not-table",
+      "rules": [
+        "19-bad-derive-table-params-not-table.toml"
+      ],
+      "expected_exit": 12,
+      "expected_error_codes": [
+        12
+      ]
+    },
+    {
+      "name": "20-bad-glob-over-length-limit",
+      "rules": [
+        "20-bad-glob-over-length-limit.toml"
+      ],
+      "expected_exit": 14,
+      "expected_error_codes": [
+        14
+      ]
+    },
+    {
+      "name": "21-bad-glob-too-many-segments",
+      "rules": [
+        "21-bad-glob-too-many-segments.toml"
+      ],
+      "expected_exit": 14,
+      "expected_error_codes": [
+        14
+      ]
+    },
+    {
+      "name": "22-bad-glob-too-many-stars",
+      "rules": [
+        "22-bad-glob-too-many-stars.toml"
+      ],
+      "expected_exit": 14,
+      "expected_error_codes": [
+        14
+      ]
+    },
+    {
+      "name": "23-bad-repo-control-char",
+      "rules": [
+        "23-bad-repo-control-char.toml"
+      ],
+      "expected_exit": 12,
+      "expected_error_codes": [
+        12
+      ]
+    },
+    {
+      "name": "24-bad-rule-id-control-char",
+      "rules": [
+        "24-bad-rule-id-control-char.toml"
+      ],
+      "expected_exit": 12,
+      "expected_error_codes": [
+        12
+      ]
+    },
+    {
+      "name": "eval-rules-adversarial-glob-file-itself-is-valid",
+      "rules": [
+        "eval-rules-adversarial-glob.toml"
+      ],
+      "expected_exit": 0,
+      "expected_error_codes": []
+    },
+    {
+      "name": "25-bad-repo-type-toml-date",
+      "rules": [
+        "25-bad-repo-type-toml-date.toml"
+      ],
+      "expected_exit": 12,
+      "expected_error_codes": [
+        12
+      ]
+    },
+    {
+      "name": "26-bad-urgency-duration-over-max",
+      "rules": [
+        "26-bad-urgency-duration-over-max.toml"
+      ],
+      "expected_exit": 17,
+      "expected_error_codes": [
+        17
+      ]
+    },
+    {
+      "name": "27-bad-urgency-duration-hours-over-max",
+      "rules": [
+        "27-bad-urgency-duration-hours-over-max.toml"
+      ],
+      "expected_exit": 17,
+      "expected_error_codes": [
+        17
+      ]
+    },
+    {
+      "name": "28-valid-urgency-duration-at-max",
+      "rules": [
+        "28-valid-urgency-duration-at-max.toml"
+      ],
+      "expected_exit": 0,
+      "expected_error_codes": []
+    },
+    {
+      "name": "29-bad-derive-params-toml-date",
+      "rules": [
+        "29-bad-derive-params-toml-date.toml"
+      ],
+      "expected_exit": 18,
+      "expected_error_codes": [
+        18
+      ],
+      "expected_error_substrings": ["contain a date value"]
+    },
+    {
+      "name": "30-bad-derive-params-nan",
+      "rules": [
+        "30-bad-derive-params-nan.toml"
+      ],
+      "expected_exit": 18,
+      "expected_error_codes": [
+        18
+      ],
+      "expected_error_substrings": ["contain a non-finite float"]
+    },
+    {
+      "name": "31-bad-derive-params-inf",
+      "rules": [
+        "31-bad-derive-params-inf.toml"
+      ],
+      "expected_exit": 18,
+      "expected_error_codes": [
+        18
+      ],
+      "expected_error_substrings": ["contain a non-finite float"]
+    },
+    {
+      "name": "32-bad-derive-params-neg-inf",
+      "rules": [
+        "32-bad-derive-params-neg-inf.toml"
+      ],
+      "expected_exit": 18,
+      "expected_error_codes": [
+        18
+      ],
+      "expected_error_substrings": ["contain a non-finite float"]
+    },
+    {
+      "name": "33-bad-derive-params-exponent-overflow-to-inf",
+      "rules": [
+        "33-bad-derive-params-exponent-overflow-to-inf.toml"
+      ],
+      "expected_exit": 18,
+      "expected_error_codes": [
+        18
+      ],
+      "expected_error_substrings": ["contain a non-finite float"]
+    },
+    {
+      "name": "34-bad-urgency-duration-16-digits",
+      "rules": [
+        "34-bad-urgency-duration-16-digits.toml"
+      ],
+      "expected_exit": 17,
+      "expected_error_codes": [
+        17
+      ]
+    },
+    {
+      "name": "35-bad-urgency-duration-5000-digits",
+      "rules": [
+        "35-bad-urgency-duration-5000-digits.toml"
+      ],
+      "expected_exit": 17,
+      "expected_error_codes": [
+        17
+      ]
+    },
+    {
+      "name": "36-bad-derive-params-int-overflow-2to63",
+      "rules": [
+        "36-bad-derive-params-int-overflow-2to63.toml"
+      ],
+      "expected_exit": 18,
+      "expected_error_codes": [
+        18
+      ],
+      "expected_error_substrings": ["contain an integer outside the supported"]
+    },
+    {
+      "name": "37-valid-derive-params-int-at-max-2to63-minus-1",
+      "rules": [
+        "37-valid-derive-params-int-at-max-2to63-minus-1.toml"
+      ],
+      "expected_exit": 0,
+      "expected_error_codes": []
+    },
+    {
+      "name": "38-bad-derive-params-int-at-min-neg-2to63",
+      "rules": [
+        "38-bad-derive-params-int-at-min-neg-2to63.toml"
+      ],
+      "expected_exit": 18,
+      "expected_error_codes": [
+        18
+      ]
+    },
+    {
+      "name": "39-bad-derive-params-int-nested-hex-in-array",
+      "rules": [
+        "39-bad-derive-params-int-nested-hex-in-array.toml"
+      ],
+      "expected_exit": 18,
+      "expected_error_codes": [
+        18
+      ],
+      "expected_error_substrings": ["contain an integer outside the supported"]
+    },
+    {
+      "name": "40-bad-repo-huge-int",
+      "rules": [
+        "40-bad-repo-huge-int.toml"
+      ],
+      "expected_exit": 12,
+      "expected_error_codes": [
+        12
+      ]
+    },
+    {
+      "name": "41-bad-derive-git-cochange-unknown-param",
+      "rules": ["41-bad-derive-git-cochange-unknown-param.toml"],
+      "expected_exit": 18,
+      "expected_error_codes": [18],
+      "expected_error_substrings": ["git-cochange.surprise", "deriver git-cochange"]
+    },
+    {
+      "name": "42-bad-derive-erlang-xref-param",
+      "rules": ["42-bad-derive-erlang-xref-param.toml"],
+      "expected_exit": 18,
+      "expected_error_codes": [18],
+      "expected_error_substrings": ["erlang-xref.advisory", "deriver erlang-xref"]
+    },
+    {
+      "name": "43-bad-derive-pinned-sha-param",
+      "rules": ["43-bad-derive-pinned-sha-param.toml"],
+      "expected_exit": 18,
+      "expected_error_codes": [18],
+      "expected_error_substrings": ["pinned-sha.advisory", "deriver pinned-sha"]
+    },
+    {
+      "name": "44-bad-derive-covers-tags-param",
+      "rules": ["44-bad-derive-declared-coverage-param.toml"],
+      "expected_exit": 18,
+      "expected_error_codes": [18],
+      "expected_error_substrings": ["declared-coverage.advisory", "deriver declared-coverage"]
+    },
+    {
+      "name": "45-bad-derive-min-support-type",
+      "rules": ["45-bad-derive-min-support-type.toml"],
+      "expected_exit": 18,
+      "expected_error_codes": [18],
+      "expected_error_substrings": ["git-cochange.min_support", "deriver git-cochange"]
+    },
+    {
+      "name": "46-bad-derive-min-confidence-type",
+      "rules": ["46-bad-derive-min-confidence-type.toml"],
+      "expected_exit": 18,
+      "expected_error_codes": [18],
+      "expected_error_substrings": ["git-cochange.min_confidence", "deriver git-cochange"]
+    },
+    {
+      "name": "47-bad-derive-advisory-type",
+      "rules": ["47-bad-derive-advisory-type.toml"],
+      "expected_exit": 18,
+      "expected_error_codes": [18],
+      "expected_error_substrings": ["git-cochange.advisory", "deriver git-cochange"]
+    },
+    {
+      "name": "48-bad-derive-min-confidence-high",
+      "rules": ["48-bad-derive-min-confidence-high.toml"],
+      "expected_exit": 18,
+      "expected_error_codes": [18],
+      "expected_error_substrings": ["git-cochange.min_confidence", "deriver git-cochange"]
+    },
+    {
+      "name": "49-bad-derive-min-confidence-negative",
+      "rules": ["49-bad-derive-min-confidence-negative.toml"],
+      "expected_exit": 18,
+      "expected_error_codes": [18],
+      "expected_error_substrings": ["git-cochange.min_confidence", "deriver git-cochange"]
+    },
+    {
+      "name": "50-bad-derive-min-support-zero",
+      "rules": ["50-bad-derive-min-support-zero.toml"],
+      "expected_exit": 18,
+      "expected_error_codes": [18],
+      "expected_error_substrings": ["git-cochange.min_support", "deriver git-cochange"]
+    }
+  ],
+  "evaluate_cases": [
+    {
+      "name": "eval-01-basic-match-and-sort-order",
+      "rules": [
+        "eval-rules.toml"
+      ],
+      "changed": [
+        "schema/pricing.yaml",
+        "src/foo.py",
+        "billing-schemas:pricing/tools/pricing_sync.py"
+      ],
+      "events": [],
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [
+        [
+          "pricing-schema-freeze",
+          "SCHEMA-FREEZE.md"
+        ],
+        [
+          "python-unit-tests",
+          "pytest"
+        ],
+        [
+          "pricing-service-pin",
+          "src/pricing_client.py"
+        ]
+      ],
+      "expected_not_evaluated_derivers": [
+        "pinned-sha",
+        "declared-coverage"
+      ]
+    },
+    {
+      "name": "eval-02-no-match-gives-empty-fired-exit-0",
+      "rules": [
+        "eval-rules.toml"
+      ],
+      "changed": [
+        "README.md"
+      ],
+      "events": [],
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [],
+      "expected_not_evaluated_derivers": [
+        "pinned-sha",
+        "declared-coverage"
+      ]
+    },
+    {
+      "name": "eval-03-event-trigger-fires",
+      "rules": [
+        "eval-rules.toml"
+      ],
+      "changed": [],
+      "events": [
+        "new-dependency"
+      ],
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [
+        [
+          "new-dependency-note",
+          "DEPENDENCIES.md"
+        ]
+      ]
+    },
+    {
+      "name": "eval-04-invalid-rules-gives-unknown-not-empty-fired",
+      "rules": [
+        "04-bad-enum-relation.toml"
+      ],
+      "changed": [],
+      "events": [],
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 13,
+      "expect_fired_null": true
+    },
+    {
+      "name": "eval-05-single-segment-star-does-not-cross-slash",
+      "rules": [
+        "eval-rules.toml"
+      ],
+      "changed": [
+        "src/sub/foo.py",
+        "schema/a/b/c.yaml"
+      ],
+      "events": [],
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [
+        [
+          "pricing-schema-freeze",
+          "SCHEMA-FREEZE.md"
+        ]
+      ]
+    },
+    {
+      "name": "eval-06-changed-file-equivalent-to-repeated-changed",
+      "rules": [
+        "eval-rules.toml"
+      ],
+      "changed_file": "eval-changed-list.txt",
+      "events": [],
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [
+        [
+          "pricing-schema-freeze",
+          "SCHEMA-FREEZE.md"
+        ],
+        [
+          "python-unit-tests",
+          "pytest"
+        ],
+        [
+          "pricing-service-pin",
+          "src/pricing_client.py"
+        ]
+      ]
+    },
+    {
+      "name": "eval-07-cross-repo-target-glob-matches-exact-repo-prefix",
+      "rules": [
+        "eval-rules.toml"
+      ],
+      "changed": [
+        "billing-schemas:pricing/tools/pricing_sync.py"
+      ],
+      "events": [],
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [
+        [
+          "pricing-service-pin",
+          "src/pricing_client.py"
+        ]
+      ]
+    },
+    {
+      "name": "eval-07b-cross-repo-target-negative-wrong-repo-prefix",
+      "rules": [
+        "eval-rules.toml"
+      ],
+      "changed": [
+        "other-repo:pricing/tools/pricing_sync.py"
+      ],
+      "events": [],
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": []
+    },
+    {
+      "name": "eval-08-obligations-projection-symbolic-and-within-duration",
+      "rules": [
+        "eval-rules.toml"
+      ],
+      "changed": [
+        "schema/pricing.yaml"
+      ],
+      "events": [
+        "new-dependency"
+      ],
+      "now": "2026-09-24T00:00:00Z",
+      "obligations": true,
+      "expected_exit": 0,
+      "expected_fired": [
+        [
+          "pricing-schema-freeze",
+          "SCHEMA-FREEZE.md"
+        ],
+        [
+          "new-dependency-note",
+          "DEPENDENCIES.md"
+        ]
+      ],
+      "expected_required_by": {
+        "pricing-schema-freeze|SCHEMA-FREEZE.md": "before-commit",
+        "new-dependency-note|DEPENDENCIES.md": "2026-10-08T00:00:00+00:00"
+      }
+    },
+    {
+      "name": "alpha-service-change-1-export-freeze",
+      "rules": [
+        "alpha-service.impact.toml"
+      ],
+      "changed_file": "change-1-python-and-parity.txt",
+      "events": [],
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [
+        [
+          "invoice-export-freeze",
+          "EXPORT-FREEZE.md"
+        ]
+      ]
+    },
+    {
+      "name": "alpha-service-change-2-docs-only-no-match",
+      "rules": [
+        "alpha-service.impact.toml"
+      ],
+      "changed_file": "change-2-docs-only-no-match.txt",
+      "events": [],
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": []
+    },
+    {
+      "name": "alpha-service-change-3-billing-and-cross-repo",
+      "rules": [
+        "alpha-service.impact.toml"
+      ],
+      "changed_file": "change-3-spec-and-cross-repo.txt",
+      "events": [],
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [
+        [
+          "billing-notes-parity",
+          "docs/BILLING-NOTES.md"
+        ],
+        [
+          "billing-notes-parity",
+          "docs/CHANGELOG.md"
+        ],
+        [
+          "cross-repo-schema-pin",
+          "src/billing_state.py"
+        ],
+        [
+          "python-source-gates",
+          "lint gate"
+        ]
+      ]
+    },
+    {
+      "name": "alpha-service-change-4-python-source-only",
+      "rules": [
+        "alpha-service.impact.toml"
+      ],
+      "changed_file": "change-4-python-source-only.txt",
+      "events": [],
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [
+        [
+          "python-source-gates",
+          "lint gate"
+        ]
+      ]
+    },
+    {
+      "name": "alpha-service-change-5-export-and-python",
+      "rules": [
+        "alpha-service.impact.toml"
+      ],
+      "changed_file": "change-5-spec-only.txt",
+      "events": [],
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [
+        [
+          "invoice-export-freeze",
+          "EXPORT-FREEZE.md"
+        ],
+        [
+          "python-source-gates",
+          "lint gate"
+        ]
+      ]
+    },
+    {
+      "name": "eval-09-bad-changed-path-control-char",
+      "rules": [
+        "eval-rules.toml"
+      ],
+      "changed": [
+        "spec/\u0001bad"
+      ],
+      "events": [],
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 65,
+      "expect_fired_null": true
+    },
+    {
+      "name": "eval-10-bad-changed-path-absolute",
+      "rules": [
+        "eval-rules.toml"
+      ],
+      "changed": [
+        "/etc/passwd"
+      ],
+      "events": [],
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 65,
+      "expect_fired_null": true
+    },
+    {
+      "name": "eval-11-changed-path-over-length-limit",
+      "rules": [
+        "eval-rules.toml"
+      ],
+      "changed": [
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      ],
+      "events": [],
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 65,
+      "expect_fired_null": true
+    },
+    {
+      "name": "eval-12-changed-path-too-many-segments",
+      "rules": [
+        "eval-rules.toml"
+      ],
+      "changed": [
+        "a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a/a"
+      ],
+      "events": [],
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 65,
+      "expect_fired_null": true
+    },
+    {
+      "name": "eval-13-changed-path-cross-repo-invalid-prefix",
+      "rules": [
+        "eval-rules.toml"
+      ],
+      "changed": [
+        "Bad!Repo:spec/x"
+      ],
+      "events": [],
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 65,
+      "expect_fired_null": true,
+      "expected_error_substring": "malformed cross-repo prefix"
+    },
+    {
+      "name": "eval-14-changed-file-bare-cr-rejected",
+      "rules": [
+        "eval-rules.toml"
+      ],
+      "changed_file": "eval-changed-list-bare-cr.txt",
+      "events": [],
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 65,
+      "expect_fired_null": true,
+      "expected_error_substring": "bare CR"
+    },
+    {
+      "name": "eval-15-changed-file-crlf-accepted",
+      "rules": [
+        "eval-rules.toml"
+      ],
+      "changed_file": "eval-changed-list-crlf.txt",
+      "events": [],
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 0,
+      "expected_fired": [
+        [
+          "pricing-schema-freeze",
+          "SCHEMA-FREEZE.md"
+        ]
+      ]
+    },
+    {
+      "name": "eval-16-adversarial-glob-timed",
+      "rules": [
+        "eval-rules-adversarial-glob.toml"
+      ],
+      "changed": [
+        "abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbba"
+      ],
+      "events": [],
+      "now": "2026-09-24T00:00:00Z",
+      "max_seconds": 3.0,
+      "expected_exit": 0,
+      "expected_fired": [
+        [
+          "adversarial-glob",
+          "nowhere"
+        ]
+      ]
+    },
+    {
+      "name": "eval-17-changed-file-leading-trailing-whitespace-rejected",
+      "rules": [
+        "eval-rules.toml"
+      ],
+      "changed_file": "eval-changed-list-leading-space.txt",
+      "events": [],
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 65,
+      "expect_fired_null": true,
+      "expected_error_substring": "leading/trailing space or tab"
+    },
+    {
+      "name": "eval-18-bad-urgency-duration-over-max-never-crashes-to-65",
+      "rules": [
+        "26-bad-urgency-duration-over-max.toml"
+      ],
+      "changed": [
+        "src/foo.py"
+      ],
+      "events": [],
+      "now": "2026-09-24T00:00:00Z",
+      "obligations": true,
+      "expected_exit": 17,
+      "expect_fired_null": true
+    },
+    {
+      "name": "eval-19-now-year-past-max-is-usage-error",
+      "rules": [
+        "00-valid-minimal.toml"
+      ],
+      "changed": [
+        "schema/x"
+      ],
+      "events": [],
+      "now": "9500-01-01T00:00:00Z",
+      "expected_exit": 64,
+      "expect_fired_null": true
+    },
+    {
+      "name": "eval-20-obligations-required-by-at-max-duration-no-overflow",
+      "rules": [
+        "28-valid-urgency-duration-at-max.toml"
+      ],
+      "changed": [
+        "src/foo.py"
+      ],
+      "events": [],
+      "now": "2026-09-24T00:00:00Z",
+      "obligations": true,
+      "expected_exit": 0,
+      "expected_fired": [
+        [
+          "urgency-duration-at-max",
+          "test suite"
+        ]
+      ],
+      "expected_required_by": {
+        "urgency-duration-at-max|test suite": "2126-08-31T00:00:00+00:00"
+      }
+    },
+    {
+      "name": "eval-21-bad-derive-params-toml-date-never-crashes-to-65",
+      "rules": [
+        "29-bad-derive-params-toml-date.toml"
+      ],
+      "changed": [
+        "src/foo.py"
+      ],
+      "events": [],
+      "now": "2026-09-24T00:00:00Z",
+      "expected_exit": 18,
+      "expect_fired_null": true
+    },
+    {
+      "name": "eval-22-now-trailing-newline-rejected-not-trimmed",
+      "rules": [
+        "00-valid-minimal.toml"
+      ],
+      "changed": [
+        "schema/x"
+      ],
+      "events": [],
+      "now": "2026-09-30T00:00:00Z\n",
+      "expected_exit": 64,
+      "expect_fired_null": true
+    },
+    {
+      "name": "eval-23-now-tz-conversion-underflow-is-usage-error",
+      "rules": [
+        "00-valid-minimal.toml"
+      ],
+      "changed": [
+        "schema/x"
+      ],
+      "events": [],
+      "now": "0001-01-01T00:00:00+01:00",
+      "expected_exit": 64,
+      "expect_fired_null": true
+    },
+    {
+      "name": "eval-24-now-tz-conversion-overflow-is-usage-error",
+      "rules": [
+        "00-valid-minimal.toml"
+      ],
+      "changed": [
+        "schema/x"
+      ],
+      "events": [],
+      "now": "9999-12-31T23:59:59-01:00",
+      "expected_exit": 64,
+      "expect_fired_null": true
+    },
+    {
+      "name": "eval-25-now-offset-minutes-over-max-is-usage-error",
+      "rules": [
+        "00-valid-minimal.toml"
+      ],
+      "changed": [
+        "schema/x"
+      ],
+      "events": [],
+      "now": "2026-09-30T00:00:00+00:60",
+      "expected_exit": 64,
+      "expect_fired_null": true
+    },
+    {
+      "name": "eval-26-now-offset-hour-and-minutes-both-over-max-is-usage-error",
+      "rules": [
+        "00-valid-minimal.toml"
+      ],
+      "changed": [
+        "schema/x"
+      ],
+      "events": [],
+      "now": "2026-09-30T00:00:00+12:99",
+      "expected_exit": 64,
+      "expect_fired_null": true
+    },
+    {
+      "name": "eval-27-now-offset-hour-at-24-is-usage-error",
+      "rules": [
+        "00-valid-minimal.toml"
+      ],
+      "changed": [
+        "schema/x"
+      ],
+      "events": [],
+      "now": "2026-09-30T00:00:00+24:00",
+      "expected_exit": 64,
+      "expect_fired_null": true
+    },
+    {
+      "name": "eval-28-now-negative-offset-minutes-over-max-is-usage-error",
+      "rules": [
+        "00-valid-minimal.toml"
+      ],
+      "changed": [
+        "schema/x"
+      ],
+      "events": [],
+      "now": "2026-09-30T00:00:00-00:60",
+      "expected_exit": 64,
+      "expect_fired_null": true
+    },
+    {
+      "name": "eval-29-now-offset-at-max-bound-accepted",
+      "rules": [
+        "00-valid-minimal.toml"
+      ],
+      "changed": [
+        "schema/x"
+      ],
+      "events": [],
+      "now": "2026-09-30T00:00:00+23:59",
+      "expected_exit": 0
+    },
+    {
+      "name": "eval-30-now-clock-hour-at-24-is-usage-error",
+      "rules": [
+        "00-valid-minimal.toml"
+      ],
+      "changed": [
+        "schema/x"
+      ],
+      "events": [],
+      "now": "2026-09-30T24:00:00Z",
+      "expected_exit": 64,
+      "expect_fired_null": true
+    },
+    {
+      "name": "eval-31-now-clock-minute-at-60-is-usage-error",
+      "rules": [
+        "00-valid-minimal.toml"
+      ],
+      "changed": [
+        "schema/x"
+      ],
+      "events": [],
+      "now": "2026-09-30T23:60:00Z",
+      "expected_exit": 64,
+      "expect_fired_null": true
+    },
+    {
+      "name": "eval-32-now-clock-second-at-60-is-usage-error",
+      "rules": [
+        "00-valid-minimal.toml"
+      ],
+      "changed": [
+        "schema/x"
+      ],
+      "events": [],
+      "now": "2026-09-30T23:59:60Z",
+      "expected_exit": 64,
+      "expect_fired_null": true
+    },
+    {
+      "name": "eval-33-now-clock-at-max-bound-accepted",
+      "rules": [
+        "00-valid-minimal.toml"
+      ],
+      "changed": [
+        "schema/x"
+      ],
+      "events": [],
+      "now": "2026-09-30T23:59:59Z",
+      "expected_exit": 0
+    }
+  ]
+}

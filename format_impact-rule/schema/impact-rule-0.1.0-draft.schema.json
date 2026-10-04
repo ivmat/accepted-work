@@ -1,0 +1,337 @@
+{
+  "$id": "https://formats.example/schema/impact-rule-0.1.0-draft.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "impact-rule/first-cut 0.1.0-draft",
+  "description": "Two object families: (1) the parsed rules FILE (TOML, read as an equivalent JSON structure by tomllib — this schema describes that JSON-shaped structure, not TOML syntax itself), and (2) one FIRED ENTRY of `impact_evaluate.py`'s report. SHAPE vs SEMANTICS: this schema is shape/enum-normative for both; a few cross-field/cross-document rules are stated in `x-semantic-only-rules` below because this draft does not encode them structurally — `tools/impact_rules.py` is the executable norm for those. DERIVERS (`derive[]`) have a closed name and typed per-deriver parameter registry (see `deriver_string`/`deriver_table`) but are never evaluated — see the evaluate report's `not_evaluated_derivers`.",
+  "$defs": {
+    "closed_event": {
+      "type": "string",
+      "enum": ["new-dependency", "template-tag-moved", "first-src-commit", "first-test", "first-spec",
+               "first-release", "public", "session-closed", "rule-added"]
+    },
+    "closed_relation": {
+      "type": "string",
+      "enum": ["depends-on", "template-of", "pins", "traces-to", "records", "governs", "documents"]
+    },
+    "closed_action": {
+      "type": "string",
+      "enum": ["re-verify", "re-render", "update", "attend"]
+    },
+    "closed_decider": {
+      "description": "One of a small closed set of actor-kind tags for decided_by.{detect,fix} below: which kind of actor can notice the need for an update, and which kind is positioned to make it.",
+      "type": "string",
+      "enum": ["program", "model", "human"]
+    },
+    "closed_importance": {
+      "type": "string",
+      "enum": ["critical", "high", "normal", "low"]
+    },
+    "closed_retrigger": {
+      "type": "string",
+      "enum": ["once", "every-event"]
+    },
+    "urgency": {
+      "description": "One of three closed literals, or the parameterized form 'within:<duration>' where <duration> matches ^[1-9][0-9]*[dhm]$. This schema's `pattern` alternation checks the SHAPE of the parameterized form only; it does not check that the duration has no leading zero beyond what the pattern itself already excludes — `tools/impact_rules.py::_validate_urgency` is the executable norm.",
+      "type": "string",
+      "pattern": "^(before-commit|same-session|next-maturity-event|within:[1-9][0-9]*[dhm])$"
+    },
+    "glob_string": {
+      "description": "A when.changed[] entry. Minimal shape check (non-empty string); this draft does not encode the full glob grammar (no absolute path, no '.'/'..' segment, '**' as its own whole segment, allowed character set, an optional '<repo>:' cross-repo prefix whose <repo> is a valid repo id, and the length/segment/'*'-count size limits) — `tools/impact_rules.py::validate_glob_grammar` checks it (see x-semantic-only-rules 'glob-grammar').",
+      "type": "string",
+      "minLength": 1
+    },
+    "when": {
+      "type": "object",
+      "properties": {
+        "changed": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/glob_string"}},
+        "event": {"$ref": "#/$defs/closed_event"}
+      },
+      "additionalProperties": false,
+      "description": "SEMANTIC: exactly one of changed/event is required — a cross-field XOR this draft does not encode; `tools/impact_rules.py::_validate_when` checks it."
+    },
+    "decided_by": {
+      "description": "Who can notice the need for this update (`detect`) and who is positioned to make the fix (`fix`) — two closed-vocabulary actor-kind tags.",
+      "type": "object",
+      "properties": {
+        "detect": {"$ref": "#/$defs/closed_decider"},
+        "fix": {"$ref": "#/$defs/closed_decider"}
+      },
+      "required": ["detect", "fix"],
+      "additionalProperties": false
+    },
+    "must_update_entry": {
+      "type": "object",
+      "properties": {
+        "target": {"type": "string", "minLength": 1},
+        "action": {"$ref": "#/$defs/closed_action"},
+        "check": {"type": "string", "minLength": 1},
+        "note": {"type": "string"}
+      },
+      "required": ["target", "action"],
+      "additionalProperties": false
+    },
+    "rule": {
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "when": {"$ref": "#/$defs/when"},
+        "relation": {"$ref": "#/$defs/closed_relation"},
+        "must_update": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/must_update_entry"}},
+        "decided_by": {"$ref": "#/$defs/decided_by"},
+        "importance": {"$ref": "#/$defs/closed_importance"},
+        "urgency": {"$ref": "#/$defs/urgency"},
+        "retrigger": {"$ref": "#/$defs/closed_retrigger"}
+      },
+      "required": ["id", "when", "relation", "must_update", "decided_by", "importance", "urgency"],
+      "additionalProperties": false,
+      "description": "SEMANTIC: `id` must be unique within its file AND across every --rules file passed to one invocation, earlier file wins — a cross-document rule this draft does not encode; `tools/impact_rules.py::validate_merged` checks it. `retrigger` defaults to 'every-event' when absent."
+    },
+    "deriver_string": {"type": "string", "enum": ["erlang-xref", "pinned-sha", "declared-coverage", "git-cochange"]},
+    "deriver_params_erlang_xref": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    },
+    "deriver_params_pinned_sha": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    },
+    "deriver_params_covers_tags": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    },
+    "deriver_params_git_cochange": {
+      "type": "object",
+      "properties": {
+        "min_support": {"type": "integer", "minimum": 1},
+        "min_confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "advisory": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "deriver_table": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {"erlang-xref": {"$ref": "#/$defs/deriver_params_erlang_xref"}},
+          "required": ["erlang-xref"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {"pinned-sha": {"$ref": "#/$defs/deriver_params_pinned_sha"}},
+          "required": ["pinned-sha"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {"declared-coverage": {"$ref": "#/$defs/deriver_params_covers_tags"}},
+          "required": ["declared-coverage"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {"git-cochange": {"$ref": "#/$defs/deriver_params_git_cochange"}},
+          "required": ["git-cochange"],
+          "additionalProperties": false
+        }
+      ],
+      "description": "A typed registry: the table has exactly one closed deriver-name key. `git-cochange` accepts only optional `min_support` (integer >=1), `min_confidence` (number from 0 through 1), and `advisory` (boolean); the other three derivers accept only an empty params table. Every parameter value must also be JSON-representable, and every integer must fit the signed 64-bit range; `tools/impact_rules.py::_validate_derive_entry`/`_find_non_json_value` enforce those validation-time rules (exit `E_BAD_DERIVE`/18)."
+    },
+    "rules_file": {
+      "type": "object",
+      "properties": {
+        "impact_version": {"type": "string", "minLength": 1},
+        "repo": {"type": "string", "minLength": 1},
+        "inherit": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "derive": {"type": "array", "items": {"anyOf": [{"$ref": "#/$defs/deriver_string"},
+                                                          {"$ref": "#/$defs/deriver_table"}]}},
+        "rules": {"type": "array", "items": {"$ref": "#/$defs/rule"}}
+      },
+      "required": ["impact_version", "repo", "rules"],
+      "additionalProperties": false,
+      "description": "SEMANTIC: `repo` must be a valid <repo> id (`^[a-z0-9][a-z0-9_-]*$`, 1-64 characters, no control character) — this draft's `minLength` check alone does not encode that charset/length rule; `tools/impact_rules.py::validate_one_doc` checks it."
+    },
+    "fired_entry": {
+      "description": "One element of impact_evaluate.py's `fired` array. `obligation` is present only when --obligations was passed — a REPORT-ONLY summary shaped like `obligation_projection` below, not a `format_obligation` duty record.",
+      "type": "object",
+      "properties": {
+        "rule_id": {"type": "string", "minLength": 1},
+        "origin": {"type": "string", "enum": ["declared"]},
+        "target": {"type": "string", "minLength": 1},
+        "action": {"$ref": "#/$defs/closed_action"},
+        "check": {"type": "string"},
+        "note": {"type": "string"},
+        "decided_by": {"$ref": "#/$defs/decided_by"},
+        "importance": {"$ref": "#/$defs/closed_importance"},
+        "urgency": {"$ref": "#/$defs/urgency"},
+        "retrigger": {"$ref": "#/$defs/closed_retrigger"},
+        "relation": {"$ref": "#/$defs/closed_relation"},
+        "trigger": {"$ref": "#/$defs/fired_trigger"},
+        "obligation": {"$ref": "#/$defs/obligation_projection"}
+      },
+      "required": ["rule_id", "origin", "target", "action", "decided_by", "importance", "urgency",
+                   "retrigger", "relation", "trigger"],
+      "additionalProperties": false
+    },
+    "fired_trigger": {
+      "type": "object",
+      "properties": {
+        "rule_id": {"type": "string"},
+        "when": {"$ref": "#/$defs/when"},
+        "matched": {
+          "type": "object",
+          "properties": {
+            "changed_paths": {"type": "array", "items": {"type": "string"}},
+            "event": {"$ref": "#/$defs/closed_event"}
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": ["rule_id", "when", "matched"],
+      "additionalProperties": false
+    },
+    "obligation_projection": {
+      "description": "A REPORT-ONLY SUMMARY of one fired entry, shaped like a small subset of a format_obligation duty record's fields — NOT a format_obligation duty record and not conformant to that format: it carries none of that format's own required identity/provenance/status fields (id, natural_key, scope, source, source_revision, duty_kind, authority, created_by, created_at, occurrences, status, waiver, discharge_evidence, …). A caller that wants a real duty record builds one FROM this summary; this summary is not one and needs no such conversion to be understood as report-only.",
+      "type": "object",
+      "properties": {
+        "trigger": {"$ref": "#/$defs/fired_trigger"},
+        "action": {"$ref": "#/$defs/closed_action"},
+        "target": {"type": "string"},
+        "required_by": {"type": "string", "description": "An ISO-8601 datetime (for urgency: within:<duration>) or one of the three symbolic literals before-commit/same-session/next-maturity-event."},
+        "discharge_predicate": {
+          "type": "object",
+          "properties": {
+            "kind": {"type": "string", "enum": ["command", "recorded-judgment"]},
+            "command": {"type": "string"},
+            "fix": {"$ref": "#/$defs/closed_decider"}
+          },
+          "required": ["kind"],
+          "additionalProperties": false
+        },
+        "retrigger": {"$ref": "#/$defs/closed_retrigger"},
+        "priority": {"$ref": "#/$defs/closed_importance"}
+      },
+      "required": ["trigger", "action", "target", "required_by", "discharge_predicate", "retrigger",
+                   "priority"],
+      "additionalProperties": false
+    },
+    "not_evaluated_deriver": {
+      "type": "object",
+      "properties": {
+        "deriver": {"$ref": "#/$defs/deriver_string"},
+        "status": {"type": "string", "enum": ["not-evaluated"]},
+        "note": {"type": "string"},
+        "params": {
+          "anyOf": [
+            {"$ref": "#/$defs/deriver_params_erlang_xref"},
+            {"$ref": "#/$defs/deriver_params_pinned_sha"},
+            {"$ref": "#/$defs/deriver_params_covers_tags"},
+            {"$ref": "#/$defs/deriver_params_git_cochange"}
+          ]
+        }
+      },
+      "required": ["deriver", "status", "note"],
+      "additionalProperties": false
+    },
+    "error_item": {
+      "description": "One diagnostic emitted by an impact-rule tool.",
+      "type": "object",
+      "properties": {
+        "code": {"type": "integer"},
+        "reason": {"type": "string"}
+      },
+      "required": ["code", "reason"],
+      "additionalProperties": false
+    },
+    "validate_report": {
+      "type": "object",
+      "properties": {
+        "status": {"type": "string", "enum": ["valid", "invalid", "unknown"]},
+        "exit_code": {"type": "integer"},
+        "errors": {"type": "array", "items": {"$ref": "#/$defs/error_item"}},
+        "files": {"type": "array", "items": {"type": "string"}},
+        "rule_count": {"type": "integer", "minimum": 0},
+        "impact_version": {"type": ["string", "null"]},
+        "repo": {"type": ["string", "null"]},
+        "impact_rules_version": {"type": "string"}
+      },
+      "required": ["status", "exit_code", "errors"],
+      "additionalProperties": false
+    },
+    "evaluate_report": {
+      "type": "object",
+      "properties": {
+        "status": {"type": "string", "enum": ["ok", "unknown"]},
+        "exit_code": {"type": "integer"},
+        "errors": {"type": "array", "items": {"$ref": "#/$defs/error_item"}},
+        "fired": {"type": ["array", "null"], "items": {"$ref": "#/$defs/fired_entry"}},
+        "not_evaluated_derivers": {"type": ["array", "null"], "items": {"$ref": "#/$defs/not_evaluated_deriver"}},
+        "impact_rules_version": {"type": "string"}
+      },
+      "required": ["status", "exit_code"],
+      "additionalProperties": false,
+      "description": "SEMANTIC: status=='unknown' REQUIRES fired==null and not_evaluated_derivers==null (invalid input never reports an empty fired list); status=='ok' REQUIRES both to be arrays (possibly empty). This draft does not encode that conditional; `tools/impact_evaluate.py` enforces it."
+    },
+    "run_case_report": {
+      "description": "Closed internal self-test envelope. Every success and error form carries the inner command status and its schema-valid evaluate report.",
+      "type": "object",
+      "properties": {
+        "code": {"type": "integer"},
+        "report": {"$ref": "#/$defs/evaluate_report"}
+      },
+      "required": ["code", "report"],
+      "additionalProperties": false
+    }
+  },
+  "oneOf": [
+    {"$ref": "#/$defs/rules_file"},
+    {"$ref": "#/$defs/validate_report"},
+    {"$ref": "#/$defs/evaluate_report"},
+    {"$ref": "#/$defs/run_case_report"}
+  ],
+  "x-semantic-only-rules": [
+    {
+      "id": "glob-grammar",
+      "description": "Every when.changed[] entry must satisfy the full grammar: an optional '<repo>:' cross-repo prefix (a valid <repo> id), no leading '/', no '.'/'..' segment, no empty segment, '**' only as a whole segment, each other segment restricted to [A-Za-z0-9_.*-]+, no control character, and size limits (<=1024 characters, <=64 segments, <=16 '*' per segment). The schema's glob_string def only requires a non-empty string.",
+      "enforced_by": "tools/impact_rules.py::validate_glob_grammar"
+    },
+    {
+      "id": "when-exactly-one-of-changed-or-event",
+      "description": "rule.when must carry exactly one of 'changed'/'event' — both or neither is invalid.",
+      "enforced_by": "tools/impact_rules.py::_validate_when"
+    },
+    {
+      "id": "rule-id-uniqueness-cross-file",
+      "description": "A rule id must be unique within one rules file AND across every --rules file passed to one invocation; a later file may not redefine an earlier file's id.",
+      "enforced_by": "tools/impact_rules.py::validate_merged"
+    },
+    {
+      "id": "repo-id-grammar",
+      "description": "Every <repo> id — the top-level 'repo' field, and any '<repo>:' cross-repo prefix in a glob or a changed path — matches ^[a-z0-9][a-z0-9_-]*$, 1-64 characters, with no control character.",
+      "enforced_by": "tools/impact_rules.py::_valid_repo_id"
+    },
+    {
+      "id": "urgency-duration-positivity",
+      "description": "The 'within:<duration>' duration must be a POSITIVE integer (no '0d', no leading zeros, no fractional units) followed by exactly one of d/h/m.",
+      "enforced_by": "tools/impact_rules.py::_validate_urgency (regex ^[1-9][0-9]*[dhm]$)"
+    },
+    {
+      "id": "fired-sort-order",
+      "description": "The evaluate report's fired[] array is sorted by importance rank, then urgency rank (duration-ordered within the 'within' class), then rule_id, then target.",
+      "enforced_by": "tools/impact_rules.py::evaluate"
+    },
+    {
+      "id": "derivers-never-fire",
+      "description": "A derive[] entry never contributes a fired[] entry; it only ever appears, once validated, in not_evaluated_derivers.",
+      "enforced_by": "tools/impact_rules.py::evaluate"
+    },
+    {
+      "id": "changed-path-grammar",
+      "description": "Every --changed/--changed-file entry must satisfy the same grammar as an authored glob (see glob-grammar above), sized against the larger changed-path size ceiling (<=4096 characters, <=256 segments); a violating entry is reported as an input error, never a crash or a silent non-match.",
+      "enforced_by": "tools/impact_rules.py::validate_changed_paths"
+    }
+  ]
+}

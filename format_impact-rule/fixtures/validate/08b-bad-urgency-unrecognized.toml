@@ -1,0 +1,19 @@
+impact_version = "0.1.0"
+repo = "alpha-service"
+
+[[rules]]
+id = "bad-urgency-word"
+relation = "governs"
+importance = "high"
+urgency = "sometime-soon"
+
+[rules.when]
+changed = ["src/*.py"]
+
+[rules.decided_by]
+detect = "program"
+fix = "model"
+
+[[rules.must_update]]
+target = "test suite"
+action = "re-verify"

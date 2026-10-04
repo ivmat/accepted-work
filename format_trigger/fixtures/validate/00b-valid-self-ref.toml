@@ -1,0 +1,10 @@
+trigger_version = "0.1.0"
+repo = "acme"
+
+[[triggers]]
+id = "self-scoped-alert"
+retrigger = "once"
+
+[triggers.when]
+source = "@self:ASSUMPTIONS.md"
+event = "rule-added"

@@ -1,0 +1,19 @@
+impact_version = "0.1.0"
+repo = "alpha-service"
+
+[[rules]]
+id = "adversarial-glob"
+relation = "governs"
+importance = "low"
+urgency = "next-maturity-event"
+
+[rules.when]
+changed = ["a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a*a"]
+
+[rules.decided_by]
+detect = "program"
+fix = "human"
+
+[[rules.must_update]]
+target = "nowhere"
+action = "attend"

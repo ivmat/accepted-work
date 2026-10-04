@@ -1,0 +1,2 @@
+# CRLF changed-paths fixture
+schema/pricing.yaml

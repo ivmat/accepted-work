@@ -1,0 +1,10 @@
+trigger_version = "0.1.0"
+repo = "acme"
+
+[[triggers]]
+id = "t1"
+retrigger = "every-event"
+
+[triggers.when]
+source = "acme:src/*.py"
+event = "instantiated"
