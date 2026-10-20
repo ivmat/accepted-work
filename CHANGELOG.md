@@ -3,6 +3,12 @@
 Each entry is one export from the separate working repository, which is not public. The dates are export dates, not
 the dates of the work.
 
+## Unreleased — licence
+
+- The format family is now dual licensed under Apache-2.0 or MIT.
+- LICENSE-APACHE and LICENSE-MIT are in the repository root.
+- README.md and NOTICE.md state the licence. The "not yet open" status note is removed.
+
 ## 2026-10-04 — fourth export, the first public one
 
 This is the first export published on GitHub. The entries below it were local exports that were not

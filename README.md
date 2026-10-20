@@ -2,16 +2,8 @@
 
 Record formats for work you did not watch being done.
 
-> **Status: work in progress, not yet open.**
-> accepted-work is still work in progress, and I do not yet use it extensively in my own internal
-> systems. That is why it is not open yet. I develop it in public because I want to show what I am
-> working on. I plan to change the licence once these formats are in use within my internal
-> systems; then I intend to open them under Apache-2.0 or MIT. That is a plan, not a grant.
-> Until a licence file is in this repository, all rights are reserved: you may read the files and
-> run the checks on your own copy, nothing more (see [NOTICE.md](NOTICE.md)). Every format here
-> can change without notice. Comments are welcome; contributions are not accepted yet.
-> If you would like to use one of the formats now, contact me, and I can split it into its own
-> repository under a suitable licence.
+> **Status: work in progress.**
+> Every format can change without notice. Comments are welcome. Contributions are not accepted yet.
 
 ## What this is
 
@@ -26,8 +18,7 @@ work, its evidence, its assumptions and its open gaps. It is published separatel
 this repository describe the work around an acceptance decision. The name of this repository says
 what the family is for: work that was accepted, with a record of why.
 
-This repository is public for development, not yet for adoption: it is published so that the work
-can be read and commented on while it is still in progress (see "Licence").
+The formats are open under Apache-2.0 or MIT. They are still in development.
 
 ## Who made it
 
@@ -104,13 +95,8 @@ checks the shape of a record, not the truth of its content.
 
 ## Licence
 
-All rights reserved, for now. This repository is public for development: you may read the files,
-and you may run the checks on your own copy to verify the claims. No other licence is granted yet.
-See [NOTICE.md](NOTICE.md).
-
-The plan is to open the formats of this family under Apache-2.0 or MIT, each once it has shown that
-it is useful in my own internal systems. Until then, comments are welcome; contributions of code or text are not
-accepted, so that the licence can change later without asking anyone else.
+Dual licensed under Apache-2.0 or MIT; see [LICENSE-APACHE](LICENSE-APACHE) and
+[LICENSE-MIT](LICENSE-MIT). Contributions are not accepted yet.
 
 The acceptance format and its protocol are a separate work, only referenced here. They are
 published at [github.com/ivmat/acceptance-format](https://github.com/ivmat/acceptance-format). Its

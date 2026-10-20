@@ -5,7 +5,7 @@
       "sha256": "a12984df97648c973a4e023696bb8063ed7a3d0cef14a6bf7f41ba9d4b5625d2"
     },
     "CHANGELOG.md": {
-      "sha256": "1de8e0c71e88115a66ad7b97ed790f6707b17210f0207f3f37fbb8fb37828fbf"
+      "sha256": "4617ce3a1cbc82e56f35aa5f9099aa53ae86ff890eb4eb32790bb62af21f6763"
     },
     "MAP.md": {
       "sha256": "8d6d564d901b47b0a7fa790322b8089e9b33431424642c814bf3aad6ef900ee6"
@@ -14,10 +14,10 @@
       "sha256": "12e95cf30bb025bd177128fd93af7584631164b8f96d90bda6e24dcd2701c3e6"
     },
     "NOTICE.md": {
-      "sha256": "b123776ecbad118db48fc9ffcda59a14d19edf67893ddd62a2a106c947ff7409"
+      "sha256": "277330adf9aea7cd648d176e65e6813ca1bd74a99e4d480ec757febadcc399cc"
     },
     "README.md": {
-      "sha256": "7831c58b2fe19763d3ccbe12560abe2d1c61c2a2a1a3cd5feb299e26f5c70819"
+      "sha256": "969a87194a6774dfb5dbda53ae39495087970827cdee8bca87fa860bd3bfb81a"
     },
     "docs/01-work-as-typed-calls.md": {
       "sha256": "0a227d77966e518011f39ab719060776454404db81a110f8136126688b3652b6"
@@ -1424,5 +1424,5 @@
       "sha256": "15e00355230e7f187c3e360488b1c25d09009fe2f1e7172f1f3b04516aa3e6ed"
     }
   },
-  "tree_sha256": "77a381b42ae7f79c5725ef31fca9bd1a29a575d0ff737d22dd68bc3eb77e09bc"
+  "tree_sha256": "c3274ad8afddeef07485f64d4ac75b1cef10e4917a036011d5df60075a48d63e"
 }
