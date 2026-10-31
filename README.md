@@ -2,77 +2,28 @@
 
 Record formats for work you did not watch being done.
 
-> **Status: work in progress.**
-> Every format can change without notice. Comments are welcome. Contributions are not accepted yet.
+> **Status: work in progress.** Formats can change without notice. Comments are welcome;
+> contributions are not accepted yet. See [MATURITY.md](MATURITY.md) for current limits.
 
 ## What this is
 
-A family of record formats and the programs that check them. A record format is a fixed file
-shape for one kind of fact about work: a duty, a dependency, a check, a finding. With a record,
-the person who accepts a piece of work can check it with tools that the producer does not control,
-whether a person or a language model did the work.
-
-The main format of the family is the **acceptance format**: the record of a claim about a piece of
-work, its evidence, its assumptions and its open gaps. It is published separately, at
-[github.com/ivmat/acceptance-format](https://github.com/ivmat/acceptance-format). The formats in
-this repository describe the work around an acceptance decision. The name of this repository says
-what the family is for: work that was accepted, with a record of why.
-
-The formats are open under Apache-2.0 or MIT. They are still in development.
-
-## Who made it
-
-Ivo Matijašević.
-
-## The one rule behind it
-
-**Reduce assumptions, never eliminate them, and know what is left.** A record writes down "what is
-left", in a form that a stranger can check. So:
-
-1. A person or a model proposes. A deterministic program decides only what it is able to decide.
-2. In this export, the obligation self-test includes cases built to fail on purpose, and checks
-   that each one is rejected as expected. The acceptance format's own rule on this is at
-   [its README](https://github.com/ivmat/acceptance-format#why-a-green-check-is-not-enough-the-check-must-be-able-to-fail).
-3. If a program cannot decide, the result is "unknown", never "pass".
-4. Assumptions and open gaps are fields of the record, not footnotes.
+A family of file formats and tools for recording duties, dependencies and checks around an
+acceptance decision. The [acceptance format](https://github.com/ivmat/acceptance-format), which
+records claims, evidence, assumptions and open gaps, is published separately.
 
 ## What is in it, and how far each part is
 
-- **planned** — a design note only. No schema, no code.
-- **first cut** — a specification, a validator and test cases; a draft schema where one exists. No file outside
-  the format's own directory is written to it, and no tool outside it reads it.
-- **candidate** — a first cut that is also on trial in my private work: files there are written
-  to the format, or a tool there reads it. The trial blocks nothing yet.
-- **in use** — real work depends on it, and a routine check enforces it. No part of this
-  repository is in use.
+| format | what it records |
+|---|---|
+| [Obligation](format_obligation/) | a duty, its deadline and the recorded judgments about it |
+| [Relation](format_relation/) | a typed dependency edge |
+| [Trigger](format_trigger/) | a rule that fires on a named event |
+| [Impact rule](format_impact-rule/) | which updates a change requires |
+| [Fill contract](format_fill-contract/) | what makes a generated file filled, and when filling is due |
 
-Details: [MATURITY.md](MATURITY.md). Relations: [MAP.md](MAP.md).
-
-| part | what it records | status |
-|---|---|---|
-| [Concept notes](docs/) | how a format is made; what a program can decide | not a format |
-| [Obligation](format_obligation/) | a duty: trigger, deadline, a mechanical test for "done" | candidate: one pilot; no routine check runs it |
-| [Relation](format_relation/) | a typed dependency edge, with a query report shape for what a change affects | first cut: a draft schema and a validator; not wired to anything else here |
-| [Trigger](format_trigger/) | a rule that fires when a named event happens; owns the vocabulary of event kinds | first cut: a draft schema, a validator and a firing evaluator; not wired to anything else here |
-| [Impact rule](format_impact-rule/) | a per-repository rule: when these paths change or this event happens, these targets must be updated, how important, how urgent | first cut: a draft schema, a validator and an evaluator; not wired to anything else here |
-| [Fill contract](format_fill-contract/) | what "filled" means for a file a template creates, and when filling becomes due | first cut: a draft schema, a validator, an observer and an evaluator; not wired to anything else here |
-| Gate manifest, mechanism, grant, intent | the checks a repository runs; what a program decides; delegated authority; a requirement | validators and test cases exist; being prepared for a later export; not in this export |
-| Claim, work surface, change impact | a general statement; one worker's allowed files and tools; change impact as one record | planned; not exported |
-| [Acceptance](https://github.com/ivmat/acceptance-format) | a claim, its evidence, assumptions and open gaps | separate work; see "Licence" |
-
-## How the work is produced
-
-The work is done in a separate working repository, which is not public. Selected parts are exported
-here, with their text rewritten for a reader without context. The history here is the history of the exports, not
-of the work. The working history, the trials and the reviews stay private. Language
-models wrote most of the text and code, under my direction. I read most of each export, and I
-am responsible for every claim on this page.
-
-What I do not read line by line is held by hard gates: checks that a program runs and that must pass
-before anything is exported. They include the schemas and their checkers, self-tests with cases built
-to fail on purpose, a comparison of the validators with their schemas, and a scan for private names. A
-gate is only as good as what it checks, so the gates are meant to become stricter with every export:
-each weakness that a review finds becomes a new check, not a one-off fix.
+[MATURITY.md](MATURITY.md) owns the status definitions, inventories and missing features.
+[MAP.md](MAP.md) explains the relationships between formats. [Concept notes](docs/) explain the
+shared ideas; [How to read a format](docs/06-how-to-read-a-format.md) gives a reading and usage guide.
 
 ## How to check something yourself
 
@@ -80,32 +31,48 @@ each weakness that a review finds becomes a new check, not a one-off fix.
 bash gates/run_checks.sh
 ```
 
-It needs bash and Python 3.11 or later. The obligation tool also needs a time-zone database (on
-some systems, the Python package `tzdata`). A tool in a `tools/` folder also accepts `--selftest`,
-which runs it on its own test cases, including inputs that it must reject. A green run means that
-all selected self-tests passed. It does not show that a tool is correct in general. A validator
-checks the shape of a record, not the truth of its content.
+Requires bash and Python 3.11 or later. Obligation also needs a time-zone database (on some
+systems, the Python package `tzdata`); fill contract's observer self-test needs `git` on `PATH`.
+The runner checks inventories and runs the exported tools' self-tests. It reports justified
+platform skips separately from passed cases. A green run means the applicable checks passed, not that the tools are correct in general. A validator checks records, not whether
+their contents are true.
+
+Audited independent suites run with two workers; other suites run alone. `GATE_JOBS=1` forces
+serial execution; values up to 4 are capped by CPU count. Every tool has a 900-second timeout,
+and results are reported in roster order. No result is cached. Run without `-O` or
+`PYTHONOPTIMIZE`: optimized Python disables assertion controls and is refused.
+
+## The one rule behind it
+
+**Reduce assumptions, never eliminate them, and know what is left.** A person or model proposes;
+a program decides only what it can check. Undecidable results remain unknown. Assumptions and
+gaps stay visible in the record. Self-tests include inputs that must be rejected; the
+[format principles](docs/04-format-principles.md) explain the rules and their current limits.
+
+## How the work is produced
+
+Selected parts of a separate repository are exported here for readers without that context.
+The source, working notes, trials and reviews stay private; this history records exports. Language
+models wrote most text and code under my direction. I read most of each export and am responsible
+for its claims. Export checks cover schemas, self-tests, validator/schema agreement and private
+names; each check provides only the assurance its scope supports.
 
 ## What is deliberately not here
 
-- **Records of real use.** The test cases here were made for testing. Records from my own work
-  stay private.
-- **Some members of the family.** Their absence is a decision, not an oversight.
-- **A copy of the acceptance format.** It is linked, so that one text has one licence.
+Real-use records stay private; public fixtures are synthetic. Some family members are not yet
+exported; [MATURITY.md](MATURITY.md#other-parts) lists them. Acceptance is linked, not copied.
+
+## Who made it
+
+Ivo Matijašević.
 
 ## Licence
 
 Dual licensed under Apache-2.0 or MIT; see [LICENSE-APACHE](LICENSE-APACHE) and
-[LICENSE-MIT](LICENSE-MIT). Contributions are not accepted yet.
-
-The acceptance format and its protocol are a separate work, only referenced here. They are
-published at [github.com/ivmat/acceptance-format](https://github.com/ivmat/acceptance-format). Its
-repository states its licence as: "Dual licensed under Apache-2.0 or MIT".
+[LICENSE-MIT](LICENSE-MIT). Contributions are not accepted yet. The separate
+[acceptance repository](https://github.com/ivmat/acceptance-format) states its own licence.
 
 ## How to reply
 
-The most useful reply is one line: "this duplicates X", "the boundary you are missing is Y", or
-"the smallest experiment that would break this is Z". Comments are welcome; you can reach me
-through my GitHub profile, [github.com/ivmat](https://github.com/ivmat).
-
-Changes: [CHANGELOG.md](CHANGELOG.md).
+Comments about overlap, missing boundaries or useful experiments are welcome through
+[my GitHub profile](https://github.com/ivmat). See [CHANGELOG.md](CHANGELOG.md) for export history.

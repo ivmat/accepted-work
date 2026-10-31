@@ -8,16 +8,16 @@
       "sha256": "4617ce3a1cbc82e56f35aa5f9099aa53ae86ff890eb4eb32790bb62af21f6763"
     },
     "MAP.md": {
-      "sha256": "8d6d564d901b47b0a7fa790322b8089e9b33431424642c814bf3aad6ef900ee6"
+      "sha256": "c297714321bb77506aa8dd940368c4a924c8d6b71189f348026b571966ef4552"
     },
     "MATURITY.md": {
-      "sha256": "12e95cf30bb025bd177128fd93af7584631164b8f96d90bda6e24dcd2701c3e6"
+      "sha256": "6c2c8d9f4505ec05a7e00a8373905e9dd1554d80a09678f1fa7f0d4403f09d26"
     },
     "NOTICE.md": {
       "sha256": "277330adf9aea7cd648d176e65e6813ca1bd74a99e4d480ec757febadcc399cc"
     },
     "README.md": {
-      "sha256": "969a87194a6774dfb5dbda53ae39495087970827cdee8bca87fa860bd3bfb81a"
+      "sha256": "4e2a08be96c4a4607be66f42a586c7053d19f5fa75029b624ab3c4c2db30c6ae"
     },
     "docs/01-work-as-typed-calls.md": {
       "sha256": "0a227d77966e518011f39ab719060776454404db81a110f8136126688b3652b6"
@@ -29,19 +29,19 @@
       "sha256": "777d2e0bd5ac02c868268555caddcced59bc794a69af5db7f8b0c61646c7f367"
     },
     "docs/04-format-principles.md": {
-      "sha256": "be085a1066e52780dd0d0c0703daaf94392ec57082d611f1260595122d4bf96a"
+      "sha256": "6cf3f1f2844ef1dcb3e7fcb06d76976c74acc54a2d0fa5bca10ff7fc1142a19f"
     },
     "docs/05-glossary.md": {
-      "sha256": "cc9df9cc6f3a835dda06ef63a1ab5262fb3e49772c0361c447cb112c10bdb3f1"
+      "sha256": "3e024a917e88c3e27dd8142bb4471f70342719faa87cb03692459381f5f8e28e"
     },
     "docs/06-how-to-read-a-format.md": {
-      "sha256": "fb069038924aa5a9771819a2e1c0597702ccc2454ca1cec1a0286ff95e6a4dc1"
+      "sha256": "a614999abfdb0f74413b2b67c51b5af76a2d0e68c3673a3772f18f91af031263"
     },
     "docs/README.md": {
       "sha256": "b9c8bff3f6122478be5eb5ad3a9e3f454422776e47744d185f343f54c398c8ed"
     },
     "format_fill-contract/README.md": {
-      "sha256": "ce739a3acd43abe39061a12fea1470f2ce4319a7e4b98e7bdc7ee454aa0e5f3b"
+      "sha256": "8153b9941b8efd3ceea20811e63a0087f7da1065eb06497dbcd870104692e555"
     },
     "format_fill-contract/fixtures/validate/01-valid.toml": {
       "sha256": "6a7eab0780031401953b1a1aec3c5f22724dd7513eeb5dcab2d01bacc87c3bf2"
@@ -185,7 +185,7 @@
       "sha256": "6149ed314220f9657ddc60b654a2d2dff08ea4796863a381efa829d18908b325"
     },
     "format_fill-contract/tools/fill_observe.py": {
-      "sha256": "77cbdd137cee5b06276e5e30d895ab1948a8245a61e3570f660d1380a2360cbd"
+      "sha256": "704fea923a491e8aebe44e19bd18361bc05733059758d54ff55184f7b824bdc0"
     },
     "format_fill-contract/tools/fill_validate.py": {
       "sha256": "c4ef0f0be83ce44bc75f61c5633f8ebe473e7cde4246747c6a9ad87a520bd4db"
@@ -428,7 +428,7 @@
       "sha256": "683d2295c2044ca46f2cdcd456d708de7fe386b4d7c7774a4782f64176ff547a"
     },
     "format_obligation/KNOWN-LIMITS.md": {
-      "sha256": "4d311f57500b6d85353202d74778a1d8e358f48c29937d7d116da7097080ccdc"
+      "sha256": "6842049d8240abdfef1f114acd82efdd7fa385f6ef3e409be830a873aed2785c"
     },
     "format_obligation/README.md": {
       "sha256": "e7a4dce749353e15b264caaa1c909cc95a5790ac82e429e5e05377af375fdd72"
@@ -452,7 +452,7 @@
       "sha256": "3e5f92324a497d70050e03277c0928826f902a59003521b2a702e697b935c557"
     },
     "format_obligation/fixtures/fold-cases/cases.json": {
-      "sha256": "b2019e90080d23ee91a43db71104563a0c336c6f76448222e5fdc14109fcb2ad"
+      "sha256": "970e0c87690a421899b86f681176df8421e557029c370610a09eef2c01467a07"
     },
     "format_obligation/fixtures/fold-cases/drop-after-firing-no-observations-zero-batch.boundary.json": {
       "sha256": "df20e0c7495f1aa4a845373ae6c8be247fe94bd67473cb632cb50f01a87b61ee"
@@ -1420,9 +1420,15 @@
     "format_trigger/tools/trigger_vocab.py": {
       "sha256": "867a9ee30dd9c8422e6a9960dbc804212cc85e9c1fad11ee640f41be54691bc6"
     },
+    "gates/check_selftest_result.py": {
+      "sha256": "5b98cf6540415836afd6328424aaafdb7343425f9a8487b69e7953a865d4adec"
+    },
     "gates/run_checks.sh": {
-      "sha256": "15e00355230e7f187c3e360488b1c25d09009fe2f1e7172f1f3b04516aa3e6ed"
+      "sha256": "e72be09709f94b68d502bf6d6b2ae5dafafff2ad5a479fa26a3f421864d21e00"
+    },
+    "gates/selftest_jobs.py": {
+      "sha256": "2aedd1a11a9497ed2f97857ea1f8641371a126bd0de3a553292fcfe5063a41ef"
     }
   },
-  "tree_sha256": "c3274ad8afddeef07485f64d4ac75b1cef10e4917a036011d5df60075a48d63e"
+  "tree_sha256": "46fc72abf2f051bdbb93556c66379e2e9c8b65b0ef119264d21acbc161b3a6b7"
 }

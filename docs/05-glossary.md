@@ -66,7 +66,7 @@ entry points there.*
 
 ## Maturity
 
-- **Status words** (planned, first cut, candidate, in use): defined in the [README](../README.md).
+- **Status words** (planned, first cut, candidate, in use): defined in [MATURITY.md](../MATURITY.md#status-words).
 
 ## The formats
 

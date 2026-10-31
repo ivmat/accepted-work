@@ -1362,7 +1362,7 @@
       "expected_errors": [
         {
           "code": 65,
-          "reason": "nesting is deeper than 64 levels at migrated-nesting-depth-100000-rejected-not-a-crash.events.jsonl:1"
+          "reason": "invalid JSON or duplicate keys at migrated-nesting-depth-100000-rejected-not-a-crash.events.jsonl:1"
         }
       ],
       "expected_occurrences": [],

@@ -14,7 +14,8 @@ core.
 
 - There is no evaluator. The tool never reads a live clock, runs a resolver, resolves evidence, or
   computes a context hash.
-- There is no storage or atomic-append protocol, signature scheme, or JSON Schema.
+- There is no storage or atomic-append protocol, signature scheme, or input JSON Schema.
+  The fold report has an output schema.
 - References such as `source`, `target`, and evidence refs are opaque strings.
 - The boundary's `input_snapshot_digest` is required but not recomputed.
 - `occurrence_rule` is required free text and is not interpreted.
@@ -39,6 +40,11 @@ admits it.
 - Every boundary requires a fresh evaluation for every occurrence that is neither superseded nor
   dropped.
 - Events split on LF; CRLF is accepted and a bare CR is rejected.
+- JSON decoding precedes the 64-level container-depth check. If decoding succeeds, deeper input
+  gets the explicit depth-limit diagnostic. If the decoder raises `RecursionError` first, the
+  tool reports the generic `invalid JSON or duplicate keys` diagnostic with input error 65 and
+  blocks the result. That message does not identify excessive nesting; the decoder's recursion
+  ceiling depends on the runtime. There is no depth check before decoding.
 - The boundary schema is `obligation-boundary/v0`.
 
 The specification is candidate text. The synthetic fixtures show agreement between the validator

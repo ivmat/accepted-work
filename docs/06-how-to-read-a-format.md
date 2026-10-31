@@ -11,27 +11,28 @@ This export has five format directories: [`format_obligation/`](../format_obliga
 
 | part | what it holds | obligation | relation | trigger | impact rule | fill contract |
 |---|---|---|---|---|---|---|
-| `README.md` | a status line, what the format is, an example, how to run its tools | yes | yes | yes | yes | yes |
+| `README.md` | status, purpose, links to examples or fixtures, tool commands | yes | yes | yes | yes | yes |
 | `spec/` | the specification: fields, events, rules, and the lifecycle | yes | — | — | — | — |
 | `KNOWN-LIMITS.md` | what the format does not do, and what is still open | yes | — | — | — | — |
-| `schema/` | a draft JSON Schema; the tool checks what the schema does not encode | — | yes | yes | yes | yes |
+| `schema/` | JSON Schema contracts; tools also check rules beyond schema validation | output only | yes | yes | yes | yes |
 | `tools/` | the reference tools, each with its self-test | yes | yes | yes | yes | yes |
 | `fixtures/` | test inputs; `cases.json` lists each case with its expected result | yes | yes | yes | yes | yes |
 
-The obligation format has no JSON Schema; it is typed by its specification and its program. For
-relation, trigger, impact rule and fill contract, the README carries the field definitions and the
-limits, and the schema's descriptions name what only the tool checks.
+Obligation inputs are defined by its specification and validator; there is no input JSON Schema.
+Its [fold-report schema](../format_obligation/schema/obligation-fold-0.1.0-draft.schema.json) checks
+outputs. For the other four formats, the README describes the fields and limits, and schema
+descriptions name rules checked only by the tools.
 
 Read in this order: the README, then the specification and known limits where the format has them, then the schema.
 
 ## How to run a format's tool
 
 ```bash
-python3 format_obligation/tools/obligation_fold.py --selftest    # prints: SELFTEST PASS: N fixture cases
+python3 format_obligation/tools/obligation_fold.py --selftest    # prints: SELFTEST PASS: N cases
 python3 format_obligation/tools/obligation_fold.py fold --events EVENTS.jsonl --boundary BOUNDARY.json
 ```
 
-- The tools need Python 3 with its standard library; the obligation tool also needs a time-zone
+- The tools need Python 3.11 or later with its standard library; the obligation tool also needs a time-zone
   database, and one tool, fill contract's `fill_observe.py`, needs `git` on `PATH`. The runner
   `gates/run_checks.sh` requires Python 3.11 or later, and runs every tool's self-test in this
   export; `SKIP_GIT_SELFTESTS=1` skips the one that needs git.
@@ -46,7 +47,8 @@ decide is the subject of [What a program can decide](02-what-a-program-can-decid
 
 ## Example
 
-You want to know whether the release-notes duty in the obligation README blocks a release. You run
-the self-test, then `fold` with the event log and a boundary file. The JSON report gives each
-occurrence a result and sets the block bit. You read `KNOWN-LIMITS.md` before you rely on the
-result.
+The obligation [evaluator-provenance fixture](../format_obligation/fixtures/fold-cases/r3-evaluator-provenance-pass.events.jsonl)
+contains a duty and its recorded events. Its matching boundary and expected outcome are listed in
+[the case index](../format_obligation/fixtures/fold-cases/cases.json). Run `fold` with those two
+inputs to inspect the occurrence results and block bit. Read
+[KNOWN-LIMITS.md](../format_obligation/KNOWN-LIMITS.md) before relying on the result.

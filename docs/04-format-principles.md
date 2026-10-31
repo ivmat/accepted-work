@@ -32,14 +32,10 @@ kinds of events; the relation format owns the kinds of dependency edges and, unt
 format exists, the grammar of references. Closed value lists shared by many formats belong in one
 shared annex. No such annex is in this export.
 
-*Current exception.* The obligation format's own worked example uses `release/published` as a
-trigger event name. That name is not in the trigger format's closed event list, and obligation does
-not reference trigger for it: obligation's `trigger.event` is a free string, chosen per obligation,
-not drawn from trigger's vocabulary. The two formats do not yet share this vocabulary in practice,
-even though principle 2 says a shared one should have a single owner. Until obligation's own event
-names are declared as its own free-form field (or it is rewired to reference trigger's closed
-list), read this as an open gap between the principle and what is exported, not as a rule either
-format enforces today.
+*Current exception.* Obligation's `trigger.event` is a free string chosen per obligation.
+The [evaluator-provenance fixture](../format_obligation/fixtures/fold-cases/r3-evaluator-provenance-pass.events.jsonl)
+uses `trigger/review`, outside trigger's closed event vocabulary. The formats do not yet share
+this vocabulary; principle 2 is a proposed design rule, not an enforced integration.
 
 **3. A profile narrows, never widens.** What a profile admits is a subset of what its parent
 admits. Its checks may only add errors. It may extend a blocklist, never shrink it.
@@ -63,7 +59,7 @@ and checks that each is rejected as expected. The acceptance format states its o
 **8. Deterministic tools.** A tool is a pure function of its inputs. Time is an explicit argument.
 There is no network access. Output is sorted. Tools use the standard library of one language only.
 
-**9. One ladder of maturity.** The status words are defined in the [README](../README.md). A format
+**9. One ladder of maturity.** The status words are defined in [MATURITY.md](../MATURITY.md#status-words). A format
 enters real use in stages that can be reversed, never in one step.
 
 **10. A flow is not done until a protocol shows it.** Formats are types. A protocol is the program

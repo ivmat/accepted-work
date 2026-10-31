@@ -1,7 +1,7 @@
 # Fill-contract format
 
 **Status: first cut.** A draft JSON Schema, three reference tools, and self-tests with
-79 + 81 + 77 self-test cases that pass. See [Status](#status).
+79 + 81 + 77 planned self-test cases. See [Status](#status).
 
 ## What it records
 
@@ -316,8 +316,8 @@ There is no `spec/` directory and no `KNOWN-LIMITS.md` in this export.
 ## Status
 
 **First cut**: a specification (not exported as prose; the schema and the three tools carry the
-rules), a validator, an observer, an evaluator, and self-tests that pass 79 + 81 + 77
-cases. Here: 51 files total (this README, 1 draft schema, 5 tools, 44 test-case files), 79 + 81 + 77 self-test cases.
+rules), a validator, an observer, an evaluator, and self-tests with 79 + 81 + 77
+planned cases. Here: 51 files total (this README, 1 draft schema, 5 tools, 44 test-case files), 79 + 81 + 77 self-test cases.
 
 What is missing: the specification text as a standalone document; the `command` predicate is never
 executed; `public`, `session-closed` and `new-dependency` are never observed; `retrigger` and
@@ -339,13 +339,12 @@ python3 -B format_fill-contract/tools/fill_observe.py --selftest
 python3 -B format_fill-contract/tools/fill_evaluate.py --selftest
 ```
 
-The last lines of their output were:
-
-```
-SELFTEST PASS: 79 cases
-SELFTEST PASS: 81 cases
-SELFTEST PASS: 77 cases
-```
+The validator and evaluator report `SELFTEST PASS: 79 cases` and `SELFTEST PASS: 77 cases`.
+The observer reports its actual executed count plus a `SELFTEST SUMMARY` with passed, failed and
+named skipped cases. Its roster stays at 81: a skipped platform probe is not counted as passed.
+The runner independently checks temporary-filesystem capabilities and effective-user constraints
+before accepting a skip (case aliases, permission probes under root, or unavailable symlinks).
+Missing cases, unknown skips and unexpected infrastructure failures fail the check.
 
 Inventory: 51 files total, 5 tools, 44 test-case files, 79 + 81 + 77 self-test cases.
 

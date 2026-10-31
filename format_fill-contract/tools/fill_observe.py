@@ -980,7 +980,9 @@ def _run_argv_fuzz(tool_script, parser, baseline_by_subcommand: dict, documented
 
 def run_selftest() -> int:
     import tempfile
+    import errno
     results = []
+    skipped = []
     try:
         with tempfile.TemporaryDirectory(prefix="fill_observe_selftest_") as tmp:
             root = pathlib.Path(tmp)
@@ -1169,8 +1171,9 @@ def run_selftest() -> int:
                     print(f"selftest repo-case-variant-alias-accepted: unexpected "
                           f"FillError({exc.code}) [MISMATCH]")
             else:
-                print("selftest repo-case-variant-alias-accepted: [skip] (filesystem here is not "
-                      "case-insensitive/case-preserving for this path)")
+                skipped.append({"case": "repo-case-variant-alias-accepted",
+                                "reason": "filesystem is case-sensitive"})
+                print("selftest repo-case-variant-alias-accepted: [skip] (filesystem is case-sensitive)")
 
             # a tracked file whose NAME is a glob/pathspec-magic character (but not a leading ':',
             # which validate_path_grammar now rejects outright) must get its OWN last-modified date,
@@ -1222,8 +1225,12 @@ def run_selftest() -> int:
             # `unreadable_reason`, the same shape as a symlink escape -- never the reserved
             # catch-all aborting every OTHER file's observation in the same run.
             if hasattr(os, "geteuid") and os.geteuid() == 0:
-                print("selftest unreadable-file-permission-error: [skip] (running as root; "
-                      "permission bits do not block root's own reads)")
+                skipped.append({"case": "unreadable-file-permission-error",
+                                "reason": "root bypasses permission bits"})
+                skipped.append({"case": "unreadable-parent-directory-chmod-000",
+                                "reason": "root bypasses permission bits"})
+                print("selftest unreadable-file-permission-error: [skip] (root bypasses permission bits)")
+                print("selftest unreadable-parent-directory-chmod-000: [skip] (root bypasses permission bits)")
             else:
                 chmod_dir = root / "chmodrepo"
                 chmod_repo = _build_selftest_repo(chmod_dir)
@@ -1594,8 +1601,10 @@ def run_selftest() -> int:
             # this selftest); the permission is always restored in a `finally`, even on failure, so
             # `tempfile.TemporaryDirectory`'s own cleanup can still remove the directory tree.
             if hasattr(os, "geteuid") and os.geteuid() == 0:
+                skipped.append({"case": "unreadable-refs-with-real-commit-raises-not-null",
+                                "reason": "root bypasses permission bits"})
                 print("selftest unreadable-refs-with-real-commit-raises-not-null: [skip] "
-                      "(running as root; permission bits do not block root's own reads)")
+                      "(root bypasses permission bits)")
             else:
                 unreadable_refs_dir = root / "unreadablerefsrepo"
                 unreadable_refs_repo = _build_selftest_repo(unreadable_refs_dir)
@@ -1775,8 +1784,14 @@ def run_selftest() -> int:
             try:
                 escape_link.symlink_to(secret)
                 have_symlink = True
-            except OSError:
-                have_symlink = False  # platform without symlink support/permission — skip gracefully
+            except OSError as exc:
+                if exc.errno not in {errno.EPERM, errno.EACCES, errno.ENOSYS, errno.ENOTSUP}:
+                    raise  # disk exhaustion and unexpected errors are test infrastructure failures
+                have_symlink = False
+                skipped.append({"case": "symlink-escapes-repo",
+                                "reason": "symlink creation is unsupported or forbidden"})
+                print("selftest symlink-escapes-repo: [skip] "
+                      "(symlink creation is unsupported or forbidden)")
             if have_symlink:
                 escape_contract = root / "escape.toml"
                 escape_contract.write_text(
@@ -2040,6 +2055,11 @@ def run_selftest() -> int:
               f"[{'ok' if boundary_controls_ok else 'MISMATCH'}]")
 
         status = 0 if results and all(results) and boundary_controls_ok else E_SELFTEST
+        print("SELFTEST SUMMARY: " + json.dumps({
+            "passed": sum(bool(result) for result in results),
+            "failed": sum(not result for result in results),
+            "skipped": skipped,
+        }, sort_keys=True))
         print(f"SELFTEST {'PASS' if status == 0 else 'FAIL'}: {len(results)} cases")
         return status
     except Exception as exc:

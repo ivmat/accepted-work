@@ -4,12 +4,14 @@
 # Needs: bash, python3 (3.11 or newer). This export's own tool does not need that floor; the
 # runner sets one version for every format this family may add.
 # Uses nothing outside this tree. Writes nothing into this tree (bytecode is disabled).
+# GATE_JOBS defaults to 2; values 1..4 are capped by CPU count. Each tool has a 900s timeout.
 # Some self-tests create and remove their own temporary directories. If a self-test in this tree
 # ever needs git, its tool path goes in NEEDS_GIT below, and SKIP_GIT_SELFTESTS=1 skips it.
 #
 # Rule: a tool that supports --selftest is run with --selftest. It passes only if it exits 0 and,
 # when its expected result line is pinned below, that exact line appears in its output. A pinned
-# line catches a silent change of the number of test cases.
+# line catches a silent change of the number of test cases. The observer instead accounts for
+# all 81 planned cases as executed or independently justified platform skips.
 #
 # Usage:  bash gates/run_checks.sh            # run all self-tests
 #         SKIP_GIT_SELFTESTS=1 bash gates/run_checks.sh   # skip the self-tests that need git
@@ -19,8 +21,8 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT" || exit 2
 export PYTHONDONTWRITEBYTECODE=1
 
-python3 -c 'import sys; sys.exit(0 if sys.version_info >= (3, 11) else 1)' || {
-  echo "run_checks: python3 3.11 or newer is required"; exit 2; }
+python3 -c 'import sys; sys.exit(0 if sys.version_info >= (3, 11) and sys.flags.optimize == 0 else 1)' || {
+  echo "run_checks: unoptimized python3 3.11 or newer is required (no -O/PYTHONOPTIMIZE)"; exit 2; }
 
 # tool path | expected result line ("" = not pinned: exit code only)
 PINNED="
@@ -34,9 +36,15 @@ format_fill-contract/tools/fill_validate.py|SELFTEST PASS: 79 cases
 format_fill-contract/tools/fill_observe.py|SELFTEST PASS: 81 cases
 format_fill-contract/tools/fill_evaluate.py|SELFTEST PASS: 77 cases
 "
+# Literal space-separated roster paths; no shell expansion or inline comments.
 NEEDS_GIT="format_fill-contract/tools/fill_observe.py"
 
 pass=0; fail=0; skipped=0
+if python3 -B gates/check_selftest_result.py --selftest; then
+  pass=$((pass+1))
+else
+  echo "FAIL  observer accounting controls"; fail=$((fail+1))
+fi
 
 # MATURITY's inventories are derived from this exported tree and the PINNED self-test roster:
 # cases may share files, and cases.json itself is also a fixture file. This check covers every row,
@@ -95,7 +103,7 @@ else
 fi
 
 # Each format README has one canonical Inventory line. Check every stated total against this tree
-# and the same runner pins used above. The in-memory 999-files mutation proves the rule can fail.
+# and the same runner pins used above. Mutating the current count proves the rule can fail.
 if python3 -B - "$ROOT/gates/run_checks.sh" <<'PY'
 import pathlib, re, sys
 
@@ -138,39 +146,31 @@ fill_path = root / "format_fill-contract" / "README.md"
 if not fill_path.exists():
     fill_path = fill_path.with_suffix(".md.in")
 fill = fill_path.read_text(encoding="utf-8")
-planted = fill.replace("Inventory: 51 files total", "Inventory: 999 files total", 1)
-if not inventory_errors({"format_fill-contract": planted}):
-    errors.append("README 999-files planted control did not fire")
+count = re.search(r"^Inventory: ([0-9]+) files total,", fill, re.MULTILINE)
+if count is None:
+    errors.append("README file-count mutation target missing")
+else:
+    planted = fill[:count.start(1)] + str(int(count.group(1)) + 1) + fill[count.end(1):]
+    if not inventory_errors({"format_fill-contract": planted}):
+        errors.append("README current-count-plus-one planted control did not fire")
 for error in errors:
     print(error)
 raise SystemExit(bool(errors))
 PY
 then
-  echo "PASS  README file/tool/fixture/self-test counts agree; 999-files control fired"
+  echo "PASS  README file/tool/fixture/self-test counts agree; current-count-plus-one control fired"
   pass=$((pass+1))
 else
   echo "FAIL  README inventory mismatch or inert planted control"
   fail=$((fail+1))
 fi
 
-for tool in format_*/tools/*.py; do
-  grep -q -- '--selftest' "$tool" || continue
-  if [ "${SKIP_GIT_SELFTESTS:-0}" = "1" ]; then
-    case " $NEEDS_GIT " in *" $tool "*) echo "SKIP  $tool (needs git; SKIP_GIT_SELFTESTS=1)"; skipped=$((skipped+1)); continue;; esac
-  fi
-  expected="$(printf '%s\n' "$PINNED" | awk -F'|' -v t="$tool" '$1==t {print $2; found=1} END {if (!found) print "__UNLISTED__"}')"
-  out="$(python3 -B "$tool" --selftest 2>&1)"; rc=$?
-  last="$(printf '%s\n' "$out" | tail -n 1)"
-  if [ $rc -ne 0 ]; then
-    echo "FAIL  $tool (exit $rc): $last"; fail=$((fail+1))
-  elif [ "$expected" = "__UNLISTED__" ] || [ -z "$expected" ]; then
-    echo "PASS  $tool (exit 0, result line not pinned): $last"; pass=$((pass+1))
-  elif printf '%s\n' "$out" | grep -qxF -- "$expected"; then
-    echo "PASS  $tool: $expected"; pass=$((pass+1))
-  else
-    echo "FAIL  $tool: expected line '$expected' not found; last line: $last"; fail=$((fail+1))
-  fi
-done
-
-echo "run_checks: $pass passed, $fail failed, $skipped skipped"
-[ $fail -eq 0 ] && [ $pass -gt 0 ]
+# The pinned roster remains authoritative. Audited independent suites use bounded
+# subprocess parallelism; unknown suites run exclusively. No results are cached.
+if python3 -B gates/selftest_jobs.py --selftest; then
+  pass=$((pass+1))
+else
+  echo "FAIL  subprocess scheduling controls"; fail=$((fail+1))
+fi
+python3 -B gates/selftest_jobs.py --public "$ROOT" \
+  --initial-passed "$pass" --initial-failed "$fail"

@@ -24,9 +24,8 @@ Relation records a typed dependency edge between two things, with a query report
 change affects. See [format_relation/README.md](format_relation/README.md). Trigger records a rule
 that fires when a named event happens, and owns the vocabulary of event kinds; other formats use
 that vocabulary or narrow it. See [format_trigger/README.md](format_trigger/README.md). Neither is
-wired to obligation or to acceptance yet, and the obligation format's own worked example does not
-draw its event name from trigger's vocabulary (see
-[Format principles](docs/04-format-principles.md), principle 2).
+wired to obligation or to acceptance yet. Obligation uses its own free-form trigger event names;
+see [Format principles](docs/04-format-principles.md#the-principles), principle 2, for an existing fixture.
 
 Impact rule records a per-repository rule: when these paths change, or this event happens, these
 targets must be updated, and how important and how urgent that is. It draws its event kinds from
@@ -37,4 +36,4 @@ It draws its maturity event kinds from trigger's vocabulary too. See
 to acceptance.
 
 Four further formats are being prepared for a later export: gate manifest, mechanism, grant and
-intent. See [README.md](README.md) for the status of each part.
+intent. See [MATURITY.md](MATURITY.md) for the status of each part.
